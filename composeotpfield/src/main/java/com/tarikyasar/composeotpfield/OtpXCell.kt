@@ -70,11 +70,7 @@ fun OtpXCell(
                 },
             singleLine = true,
             value = value,
-            onValueChange = {
-                if (it.length <= 1 && it != " ") {
-                    onValueChange(it)
-                }
-            },
+            onValueChange = onValueChange,
             keyboardActions = KeyboardActions(
                 onNext = {},
                 onDone = {}

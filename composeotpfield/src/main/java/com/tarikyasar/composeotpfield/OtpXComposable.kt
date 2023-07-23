@@ -54,7 +54,12 @@ fun OtpXComposable(
         ) {
             repeat(cellsCount) { index ->
                 OtpXCell(
-                    value = otpValue[index].toString().replace("-", ""),
+                    value = otpValue[index]
+                        .toString()
+                        .replace("-", "")
+                        .takeIf {
+                            it.isEmpty().not()
+                        } ?: placeHolder,
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
                     modifier = cellConfigurations.modifier
@@ -62,12 +67,14 @@ fun OtpXComposable(
                         .focusOrder(focusRequester = focusRequester[index]),
                     cellConfigurations = cellConfigurations,
                     onValueChange = {
-                        if (it.isBlank()) {
+                        val text = it.replace(placeHolder, String.EMPTY)
+
+                        if (text.isBlank()) {
                             focusRequester[(index - 1).coerceIn(0, cellsCount - 1)].requestFocus()
                             otpValue.set(index = index, value = '-')
                         } else {
                             focusRequester[(index + 1).coerceIn(0, cellsCount - 1)].requestFocus()
-                            otpValue[index] = it.first()
+                            otpValue[index] = text.first()
                         }
                         onValueChange(otpValue.joinToString("").replace("-", String.EMPTY))
                     }
