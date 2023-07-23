@@ -21,6 +21,8 @@ import com.tarikyasar.composeotpfield.configuration.OtpXDefaults
 import com.tarikyasar.composeotpfield.utils.EMPTY
 import com.tarikyasar.composeotpfield.utils.orElse
 
+private const val NOT_ENTERED_CELL_INDICATOR = '∆'
+
 @Composable
 fun OtpXComposable(
     cellsCount: Int,
@@ -36,9 +38,9 @@ fun OtpXComposable(
     val otpValue = remember(value, isErrorOccurred) {
         val charList = CharArray(cellsCount) { index ->
             if (isErrorOccurred) {
-                '-'
+                NOT_ENTERED_CELL_INDICATOR
             } else {
-                value.getOrElse(index) { '-' }
+                value.getOrElse(index) { NOT_ENTERED_CELL_INDICATOR }
             }
         }
         mutableStateOf(charList).value
@@ -68,7 +70,7 @@ fun OtpXComposable(
                 OtpXCell(
                     value = otpValue[index]
                         .toString()
-                        .replace("-", "")
+                        .replace(NOT_ENTERED_CELL_INDICATOR.toString(), "")
                         .let {
                             if (it.isNotEmpty() && obscureText.isNotEmpty()) {
                                 obscureText
@@ -90,7 +92,7 @@ fun OtpXComposable(
 
                         if (text.isBlank()) {
                             focusRequester[(index - 1).coerceIn(0, cellsCount - 1)].requestFocus()
-                            otpValue.set(index = index, value = '-')
+                            otpValue.set(index = index, value = NOT_ENTERED_CELL_INDICATOR)
                         } else {
                             // todo: Find the first empty cell and focus it
                             focusRequester[(index + 1).coerceIn(0, cellsCount - 1)].requestFocus()

@@ -46,8 +46,8 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(2.dp),
                             elevation = 8.dp,
                         ),
-                        obscureText = "*",
-                        placeHolder = "o"
+                        obscureText = "",
+                        placeHolder = "-"
                     )
                 }
             }
