@@ -1,0 +1,25 @@
+default_platform(:android)
+
+platform :android do
+    desc "Compose Otp Library"
+    lane :distribute do |options|
+        gradle(
+            task: 'assemble',
+            build_type: 'Debug'
+        )
+        firebase_app_distribution(
+            app: options[:firebase_app_id],
+            testers: "m.tarikyasar@gmail.com",
+            release_notes: "Lots of amazing new features to test out!",
+            firebase_cli_token: options[:firebase_token],
+            android_artifact_type: "APK",
+        )
+       end
+
+  lane :increment_version do |options|
+    latest_release = firebase_app_distribution_get_latest_release(
+      app: options[:firebase_app_id]
+    )
+    increment_version_code({ version_code: latest_release[:buildVersion].to_i + 1 })
+  end
+end

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "844735844653",
+    "project_id": "otp-library-f9512",
+    "storage_bucket": "otp-library-f9512.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844735844653:android:3651ac0c924441aedf83a4",
+        "android_client_info": {
+          "package_name": "com.tarikyasar.otpfield"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844735844653-g7j3f7820u0i00a0v6od8si6h8gfuqe1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjbFzLRClpPfguAhjy7kD_SMu_GJvnkxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844735844653-g7j3f7820u0i00a0v6od8si6h8gfuqe1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
