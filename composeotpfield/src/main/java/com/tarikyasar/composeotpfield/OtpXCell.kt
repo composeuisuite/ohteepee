@@ -27,15 +27,16 @@ fun OtpXCell(
     value: String,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType,
-    modifier: Modifier = Modifier,
     cellConfigurations: CellConfigurations,
-    onFocusChanged: ((isFocused: Boolean) -> Unit)? = null
+    modifier: Modifier = Modifier,
+    isErrorOccurred: Boolean = false,
+    onFocusChanged: ((isFocused: Boolean) -> Unit)? = null,
 ) {
-    var code by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
     val cellConfigurationState by remember(
         key1 = value,
-        key2 = isFocused
+        key2 = isFocused,
+        key3 = isErrorOccurred
     ) {
         mutableStateOf(cellConfigurations.emptyCellConfig)
     }
@@ -62,11 +63,10 @@ fun OtpXCell(
                     isFocused = it.isFocused
                 },
             singleLine = true,
-            value = code,
+            value = value,
             onValueChange = {
                 if (it.length <= 1 && it != " ") {
-                    code = it
-                    onValueChange(code)
+                    onValueChange(it)
                 }
             },
             keyboardActions = KeyboardActions(
