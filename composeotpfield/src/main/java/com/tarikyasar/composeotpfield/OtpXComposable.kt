@@ -68,11 +68,16 @@ fun OtpXComposable(
                 OtpXCell(
                     value = otpValue[index]
                         .toString()
-                        .replace("-", String.EMPTY)
+                        .replace("-", "")
+                        .let {
+                            if (it.isNotEmpty() && obscureText.isNotEmpty()) {
+                                obscureText
+                            } else {
+                                it
+                            }
+                        }
                         .takeIf { it.isNotEmpty() }
-                        .orElse(placeHolder)
-                        .takeIf { it == placeHolder }
-                        .orElse(obscureText),
+                        .orElse(placeHolder),
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
                     modifier = cellConfigurations.modifier
@@ -81,6 +86,7 @@ fun OtpXComposable(
                     cellConfigurations = cellConfigurations,
                     onValueChange = {
                         val text = it.replace(placeHolder, String.EMPTY)
+                            .replace(obscureText, String.EMPTY)
 
                         if (text.isBlank()) {
                             focusRequester[(index - 1).coerceIn(0, cellsCount - 1)].requestFocus()
