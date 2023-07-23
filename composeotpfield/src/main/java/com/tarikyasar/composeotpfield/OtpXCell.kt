@@ -1,9 +1,11 @@
 package com.tarikyasar.composeotpfield
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -12,26 +14,47 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
+import com.tarikyasar.composeotpfield.configuration.CellConfigurations
 
 @Composable
-fun ComposeOtpField(
+fun OtpXCell(
+    value: String,
     onValueChange: (String) -> Unit,
+    keyboardType: KeyboardType,
     modifier: Modifier = Modifier,
+    cellConfigurations: CellConfigurations,
     onFocusChanged: ((isFocused: Boolean) -> Unit)? = null
 ) {
     var code by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
+    val cellConfigurationState by remember(
+        key1 = value,
+        key2 = isFocused
+    ) {
+        mutableStateOf(cellConfigurations.emptyCellConfig)
+    }
 
+    // TODO: Wrap in Surface for elevation
+    // TODO: Cursor color
     TextField(
         modifier = modifier
-            .background(MaterialTheme.colors.surface)
+//            .absolutePadding(left = 2.dp, right = 1.dp)
+            .width(cellConfigurations.width)
+            .height(cellConfigurations.height)
+            .clip(cellConfigurationState.shape)
+            .border(
+                border = BorderStroke(
+                    width = cellConfigurationState.borderWidth,
+                    color = cellConfigurationState.borderColor
+                ),
+                shape = cellConfigurationState.shape
+            )
             .onFocusEvent {
                 onFocusChanged?.invoke(it.isFocused)
                 isFocused = it.isFocused
@@ -49,19 +72,17 @@ fun ComposeOtpField(
             onDone = {}
         ),
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number,
+            keyboardType = keyboardType,
             imeAction = ImeAction.Next
         ),
         colors = TextFieldDefaults.textFieldColors(
-            textColor = MaterialTheme.colors.primary,
-            backgroundColor = MaterialTheme.colors.surface,
+            textColor = cellConfigurationState.textStyle.color,
+            backgroundColor = cellConfigurationState.backgroundColor,
             disabledIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
+            unfocusedIndicatorColor = Color.Transparent,
+            cursorColor = Color.Transparent
         ),
-        textStyle = TextStyle(
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center
-        )
+        textStyle = cellConfigurationState.textStyle.copy(textAlign = TextAlign.Center)
     )
 }
