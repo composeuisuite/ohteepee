@@ -38,7 +38,13 @@ fun OtpXCell(
         key2 = isFocused,
         key3 = isErrorOccurred
     ) {
-        mutableStateOf(cellConfigurations.emptyCellConfig)
+        val config = when {
+            isErrorOccurred -> cellConfigurations.errorCellConfig
+            isFocused -> cellConfigurations.activeCellConfig
+            value.isNotEmpty() -> cellConfigurations.filledCellConfig
+            else -> cellConfigurations.emptyCellConfig
+        }
+        mutableStateOf(config)
     }
 
     Surface(

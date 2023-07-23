@@ -38,9 +38,18 @@ class MainActivity : ComponentActivity() {
                             otpValue = it
                             println(it)
                         },
+                        isErrorOccurred = otpValue == "111111",
                         cellConfigurations = OtpXDefaults.cellConfigurations(
                             emptyCellConfig = OtpXDefaults.singleCellConfiguration(
                                 elevation = 8.dp
+                            ),
+                            errorCellConfig = OtpXDefaults.singleCellConfiguration(
+                                elevation = 8.dp,
+                                borderColor = Color.Red
+                            ),
+                            activeCellConfig = OtpXDefaults.singleCellConfiguration(
+                                elevation = 8.dp,
+                                borderColor = Color.Magenta
                             ),
                             modifier = Modifier.padding(2.dp)
                         )
