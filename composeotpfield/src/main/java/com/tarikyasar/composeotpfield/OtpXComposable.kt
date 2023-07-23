@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import com.tarikyasar.composeotpfield.configuration.CellConfigurations
 import com.tarikyasar.composeotpfield.configuration.OtpXDefaults
 import com.tarikyasar.composeotpfield.utils.EMPTY
+import com.tarikyasar.composeotpfield.utils.orElse
 
 @Composable
 fun OtpXComposable(
@@ -56,10 +57,11 @@ fun OtpXComposable(
                 OtpXCell(
                     value = otpValue[index]
                         .toString()
-                        .replace("-", "")
-                        .takeIf {
-                            it.isEmpty().not()
-                        } ?: placeHolder,
+                        .replace("-", String.EMPTY)
+                        .takeIf { it.isNotEmpty() }
+                        .orElse(placeHolder)
+                        .takeIf { it == placeHolder }
+                        .orElse(obscureText),
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
                     modifier = cellConfigurations.modifier
@@ -82,5 +84,4 @@ fun OtpXComposable(
             }
         }
     }
-
 }

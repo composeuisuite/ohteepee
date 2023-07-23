@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                         cellsCount = 6,
                         onValueChange = {
                             otpValue = it
-                            println(it)
+                            println("MainActivity: $it")
                         },
                         isErrorOccurred = otpValue == "111111",
                         cellConfigurations = OtpXDefaults.cellConfigurations(
