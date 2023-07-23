@@ -20,12 +20,14 @@ object OtpXDefaults {
         backgroundColor: Color = MaterialTheme.colors.surface,
         borderColor: Color = MaterialTheme.colors.primary,
         borderWidth: Dp = BORDER_WIDTH,
-        textStyle: TextStyle = TextStyle()
+        textStyle: TextStyle = TextStyle(),
+        elevation: Dp = 0.dp
     ) = object : SingleCellConfiguration {
         override val shape: Shape = shape
         override val backgroundColor: Color = backgroundColor
         override val borderColor: Color = borderColor
         override val borderWidth: Dp = borderWidth
+        override val elevation: Dp = elevation
         override val textStyle: TextStyle = textStyle
     }
 

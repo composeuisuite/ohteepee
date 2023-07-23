@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Surface
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -14,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
@@ -40,49 +40,53 @@ fun OtpXCell(
         mutableStateOf(cellConfigurations.emptyCellConfig)
     }
 
-    // TODO: Wrap in Surface for elevation
     // TODO: Cursor color
-    TextField(
+    Surface(
         modifier = modifier
-//            .absolutePadding(left = 2.dp, right = 1.dp)
             .width(cellConfigurations.width)
             .height(cellConfigurations.height)
-            .clip(cellConfigurationState.shape)
             .border(
                 border = BorderStroke(
                     width = cellConfigurationState.borderWidth,
                     color = cellConfigurationState.borderColor
                 ),
                 shape = cellConfigurationState.shape
-            )
-            .onFocusEvent {
-                onFocusChanged?.invoke(it.isFocused)
-                isFocused = it.isFocused
+            ),
+        elevation = cellConfigurationState.elevation,
+        shape = cellConfigurationState.shape,
+    ) {
+        TextField(
+            modifier = Modifier
+//            .absolutePadding(left = 2.dp, right = 1.dp)
+                .onFocusEvent {
+                    onFocusChanged?.invoke(it.isFocused)
+                    isFocused = it.isFocused
+                },
+            singleLine = true,
+            value = code,
+            onValueChange = {
+                if (it.length <= 1 && it != " ") {
+                    code = it
+                    onValueChange(code)
+                }
             },
-        singleLine = true,
-        value = code,
-        onValueChange = {
-            if (it.length <= 1 && it != " ") {
-                code = it
-                onValueChange(code)
-            }
-        },
-        keyboardActions = KeyboardActions(
-            onNext = {},
-            onDone = {}
-        ),
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType,
-            imeAction = ImeAction.Next
-        ),
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = cellConfigurationState.textStyle.color,
-            backgroundColor = cellConfigurationState.backgroundColor,
-            disabledIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            cursorColor = Color.Transparent
-        ),
-        textStyle = cellConfigurationState.textStyle.copy(textAlign = TextAlign.Center)
-    )
+            keyboardActions = KeyboardActions(
+                onNext = {},
+                onDone = {}
+            ),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = keyboardType,
+                imeAction = ImeAction.Next
+            ),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = cellConfigurationState.textStyle.color,
+                backgroundColor = cellConfigurationState.backgroundColor,
+                disabledIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                cursorColor = Color.Transparent,
+            ),
+            textStyle = cellConfigurationState.textStyle.copy(textAlign = TextAlign.Center)
+        )
+    }
 }
