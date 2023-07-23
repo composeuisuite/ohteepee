@@ -14,7 +14,5 @@ interface SingleCellConfiguration {
 
     val borderWidth: Dp
 
-    val elevation: Dp
-
     val textStyle: TextStyle
 }

@@ -21,13 +21,11 @@ object OtpXDefaults {
         borderColor: Color = MaterialTheme.colors.primary,
         borderWidth: Dp = BORDER_WIDTH,
         textStyle: TextStyle = TextStyle(),
-        elevation: Dp = 0.dp
     ) = object : SingleCellConfiguration {
         override val shape: Shape = shape
         override val backgroundColor: Color = backgroundColor
         override val borderColor: Color = borderColor
         override val borderWidth: Dp = borderWidth
-        override val elevation: Dp = elevation
         override val textStyle: TextStyle = textStyle
     }
 
@@ -35,6 +33,7 @@ object OtpXDefaults {
     fun cellConfigurations(
         width: Dp = 64.dp,
         height: Dp = 64.dp,
+        elevation: Dp = 0.dp,
         emptyCellConfig: SingleCellConfiguration = ACTIVE_CELL_CONFIG,
         filledCellConfig: SingleCellConfiguration = ACTIVE_CELL_CONFIG,
         activeCellConfig: SingleCellConfiguration = ACTIVE_CELL_CONFIG,
@@ -44,6 +43,7 @@ object OtpXDefaults {
         override val modifier: Modifier = modifier
         override val width: Dp = width
         override val height: Dp = height
+        override val elevation: Dp = elevation
         override val activeCellConfig: SingleCellConfiguration = activeCellConfig
         override val errorCellConfig: SingleCellConfiguration = errorCellConfig
         override val emptyCellConfig: SingleCellConfiguration = emptyCellConfig

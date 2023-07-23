@@ -11,6 +11,8 @@ interface CellConfigurations {
 
     val height: Dp
 
+    val elevation: Dp
+
     val activeCellConfig: SingleCellConfiguration
 
     val errorCellConfig: SingleCellConfiguration

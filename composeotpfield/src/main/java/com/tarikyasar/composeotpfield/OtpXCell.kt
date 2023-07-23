@@ -58,7 +58,7 @@ fun OtpXCell(
                 ),
                 shape = cellConfigurationState.shape
             ),
-        elevation = cellConfigurationState.elevation,
+        elevation = cellConfigurations.elevation,
         shape = cellConfigurationState.shape,
     ) {
         TextField(
