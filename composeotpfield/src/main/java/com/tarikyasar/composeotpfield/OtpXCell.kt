@@ -40,7 +40,6 @@ fun OtpXCell(
         mutableStateOf(cellConfigurations.emptyCellConfig)
     }
 
-    // TODO: Cursor color
     Surface(
         modifier = modifier
             .width(cellConfigurations.width)
