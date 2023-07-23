@@ -33,13 +33,24 @@ fun OtpXComposable(
     placeHolder: String = String.EMPTY,
     keyboardType: KeyboardType = KeyboardType.Number,
 ) {
-    val otpValue = remember(value) {
-        mutableStateOf(CharArray(cellsCount) { index -> value.getOrElse(index) { '-' } }).value
+    val otpValue = remember(value, isErrorOccurred) {
+        val charList = CharArray(cellsCount) { index ->
+            if (isErrorOccurred) {
+                '-'
+            } else {
+                value.getOrElse(index) { '-' }
+            }
+        }
+        mutableStateOf(charList).value
     }
     val focusRequester = remember { List(cellsCount) { FocusRequester() } }
 
     LaunchedEffect(Unit) {
         focusRequester.first().requestFocus()
+    }
+
+    LaunchedEffect(isErrorOccurred) {
+        if (isErrorOccurred) focusRequester.first().requestFocus()
     }
 
     val transparentTextSelectionColors = TextSelectionColors(
@@ -75,6 +86,7 @@ fun OtpXComposable(
                             focusRequester[(index - 1).coerceIn(0, cellsCount - 1)].requestFocus()
                             otpValue.set(index = index, value = '-')
                         } else {
+                            // todo: Find the first empty cell and focus it
                             focusRequester[(index + 1).coerceIn(0, cellsCount - 1)].requestFocus()
                             otpValue[index] = text.first()
                         }

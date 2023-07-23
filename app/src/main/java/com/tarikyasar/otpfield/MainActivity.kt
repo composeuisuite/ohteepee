@@ -44,8 +44,10 @@ class MainActivity : ComponentActivity() {
                             errorCellConfig = OtpXDefaults.singleCellConfiguration(borderColor = Color.Red),
                             activeCellConfig = OtpXDefaults.singleCellConfiguration(borderColor = Color.Magenta),
                             modifier = Modifier.padding(2.dp),
-                            elevation = 8.dp
-                        )
+                            elevation = 8.dp,
+                        ),
+                        obscureText = "*",
+                        placeHolder = "o"
                     )
                 }
             }
