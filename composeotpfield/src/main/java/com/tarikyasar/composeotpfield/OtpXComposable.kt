@@ -95,6 +95,12 @@ fun OtpXComposable(
 
                         if (text == currentCellText) return@OtpXCell
 
+                        if (text.length == cellsCount) {
+                            onValueChange(text)
+                            focusRequester.last().requestFocusSafely()
+                            return@OtpXCell
+                        }
+
                         if (text.isNotEmpty()) {
                             otpValue[index] = text.last()
                             val nextIndex = (index + 1).coerceIn(0, cellsCount - 1)
