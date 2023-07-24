@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,18 +37,23 @@ fun OtpXComposable(
     placeHolder: String = String.EMPTY,
     keyboardType: KeyboardType = KeyboardType.Number,
 ) {
-    val otpValue = remember(value, isErrorOccurred) {
+    val otpValue by remember(value, isErrorOccurred) {
         val charList = CharArray(cellsCount) { index ->
             if (isErrorOccurred) {
                 NOT_ENTERED_CELL_INDICATOR
             } else {
-                value.replace(" ", NOT_ENTERED_CELL_INDICATOR.toString())
-                    .getOrElse(index) { NOT_ENTERED_CELL_INDICATOR }
+                value.getOrElse(index) { NOT_ENTERED_CELL_INDICATOR }
             }
         }
-        mutableStateOf(charList).value
+        mutableStateOf(charList)
     }
     val focusRequester = remember { List(cellsCount) { FocusRequester() } }
+    val transparentTextSelectionColors: TextSelectionColors = remember {
+        TextSelectionColors(
+            handleColor = Transparent,
+            backgroundColor = Transparent
+        )
+    }
 
     LaunchedEffect(Unit) {
         focusRequester.first().requestFocus()
@@ -57,11 +63,6 @@ fun OtpXComposable(
         if (isErrorOccurred) focusRequester.first().requestFocus()
     }
 
-    val transparentTextSelectionColors = TextSelectionColors(
-        handleColor = Transparent,
-        backgroundColor = Transparent
-    )
-
     CompositionLocalProvider(LocalTextSelectionColors provides transparentTextSelectionColors) {
         Row(
             modifier = modifier.fillMaxWidth(),
@@ -70,18 +71,11 @@ fun OtpXComposable(
         ) {
             repeat(cellsCount) { index ->
                 OtpXCell(
-                    value = otpValue[index]
-                        .toString()
-                        .replace(NOT_ENTERED_CELL_INDICATOR.toString(), "")
-                        .let {
-                            if (it.isNotEmpty() && obscureText.isNotEmpty()) {
-                                obscureText
-                            } else {
-                                it
-                            }
-                        }
-                        .takeIf { it.isNotEmpty() }
-                        .orElse(placeHolder),
+                    value = getCellDisplayCharacter(
+                        currentChar = otpValue[index],
+                        obscureText = obscureText,
+                        placeHolder = placeHolder
+                    ),
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
                     modifier = cellConfigurations.modifier
@@ -119,3 +113,21 @@ fun OtpXComposable(
         }
     }
 }
+
+@Composable
+private fun getCellDisplayCharacter(
+    currentChar: Char,
+    obscureText: String,
+    placeHolder: String
+): String = currentChar
+    .toString()
+    .replace(NOT_ENTERED_CELL_INDICATOR.toString(), "")
+    .let {
+        if (it.isNotEmpty() && obscureText.isNotEmpty()) {
+            obscureText
+        } else {
+            it
+        }
+    }
+    .takeIf { it.isNotEmpty() }
+    .orElse(placeHolder)
