@@ -13,15 +13,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusOrder
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.input.KeyboardType
 import com.tarikyasar.composeotpfield.configuration.CellConfigurations
 import com.tarikyasar.composeotpfield.configuration.OtpXDefaults
 import com.tarikyasar.composeotpfield.utils.EMPTY
 import com.tarikyasar.composeotpfield.utils.orElse
+import com.tarikyasar.composeotpfield.utils.requestFocusSafely
 
-private const val NOT_ENTERED_CELL_INDICATOR = '∆'
+private const val NOT_ENTERED_CELL_INDICATOR = ' '
 
 @Composable
 fun OtpXComposable(
@@ -40,7 +41,8 @@ fun OtpXComposable(
             if (isErrorOccurred) {
                 NOT_ENTERED_CELL_INDICATOR
             } else {
-                value.getOrElse(index) { NOT_ENTERED_CELL_INDICATOR }
+                value.replace(" ", NOT_ENTERED_CELL_INDICATOR.toString())
+                    .getOrElse(index) { NOT_ENTERED_CELL_INDICATOR }
             }
         }
         mutableStateOf(charList).value
@@ -84,21 +86,27 @@ fun OtpXComposable(
                     keyboardType = keyboardType,
                     modifier = cellConfigurations.modifier
                         .weight(1f)
-                        .focusOrder(focusRequester = focusRequester[index]),
+                        .focusRequester(focusRequester = focusRequester[index]),
                     cellConfigurations = cellConfigurations,
                     onValueChange = {
+                        val currentCellText = otpValue[index].toString()
                         val text = it.replace(placeHolder, String.EMPTY)
                             .replace(obscureText, String.EMPTY)
 
-                        if (text.isBlank()) {
-                            focusRequester[(index - 1).coerceIn(0, cellsCount - 1)].requestFocus()
-                            otpValue.set(index = index, value = NOT_ENTERED_CELL_INDICATOR)
+                        if (text == currentCellText) return@OtpXCell
+
+                        if (text.isNotEmpty()) {
+                            otpValue[index] = text.last()
+                            val nextIndex = (index + 1).coerceIn(0, cellsCount - 1)
+                            focusRequester[nextIndex].requestFocusSafely()
+                        } else if (currentCellText != NOT_ENTERED_CELL_INDICATOR.toString()) {
+                            otpValue[index] = NOT_ENTERED_CELL_INDICATOR
                         } else {
-                            // todo: Find the first empty cell and focus it
-                            focusRequester[(index + 1).coerceIn(0, cellsCount - 1)].requestFocus()
-                            otpValue[index] = text.first()
+                            val previousIndex = (index - 1).coerceIn(0, cellsCount)
+                            otpValue[previousIndex] = NOT_ENTERED_CELL_INDICATOR
+                            focusRequester[previousIndex].requestFocusSafely()
                         }
-                        onValueChange(otpValue.joinToString("").replace("-", String.EMPTY))
+                        onValueChange(otpValue.joinToString(""))
                     }
                 )
             }

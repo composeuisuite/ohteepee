@@ -1,8 +1,18 @@
 package com.tarikyasar.composeotpfield.utils
 
-val String.Companion.EMPTY: String
+import androidx.compose.ui.focus.FocusRequester
+
+internal val String.Companion.EMPTY: String
     get() = ""
 
-fun String?.orElse(value: String): String {
+internal fun String?.orElse(value: String): String {
     return this ?: value
+}
+
+internal fun FocusRequester.requestFocusSafely() {
+    try {
+        this.requestFocus()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 }

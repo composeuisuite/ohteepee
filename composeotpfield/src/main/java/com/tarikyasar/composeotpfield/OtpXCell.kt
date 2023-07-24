@@ -17,13 +17,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import com.tarikyasar.composeotpfield.configuration.CellConfigurations
 
 @Composable
-fun OtpXCell(
+internal fun OtpXCell(
     value: String,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType,
@@ -45,6 +47,13 @@ fun OtpXCell(
             else -> cellConfigurations.emptyCellConfig
         }
         mutableStateOf(config)
+    }
+
+    val textFieldValue = remember(value) {
+        TextFieldValue(
+            text = value,
+            selection = TextRange(value.length),
+        )
     }
 
     Surface(
@@ -69,8 +78,8 @@ fun OtpXCell(
                     isFocused = it.isFocused
                 },
             singleLine = true,
-            value = value,
-            onValueChange = onValueChange,
+            value = textFieldValue,
+            onValueChange = { onValueChange(it.text) },
             keyboardActions = KeyboardActions(
                 onNext = {},
                 onDone = {}
