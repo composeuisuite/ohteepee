@@ -90,8 +90,10 @@ fun OhTeePee(
                         val currentCellText = otpValue[index].toString()
                         val text = it.replace(placeHolder, String.EMPTY)
                             .replace(obscureText, String.EMPTY)
+                        val isValueChangedTriggeredByCursorChange =
+                            text == currentCellText || (obscureText != String.EMPTY && it == obscureText)
 
-                        if (text == currentCellText) return@OhTeePeeCell
+                        if (isValueChangedTriggeredByCursorChange) return@OhTeePeeCell
 
                         if (text.length == cellsCount) {
                             onValueChange(text)
