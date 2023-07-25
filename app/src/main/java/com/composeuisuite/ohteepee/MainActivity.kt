@@ -3,17 +3,26 @@ package com.composeuisuite.ohteepee
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,11 +34,15 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.composeuisuite.ohteepee.configuration.OhTeePeeDefaults
 import com.composeuisuite.ohteepee.ui.theme.OtpFieldTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,34 +53,23 @@ class MainActivity : ComponentActivity() {
                         .background(Color.White),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Sample1(
-                        modifier = Modifier.weight(1f)
-                    )
 
-                    Sample2(
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Sample3(
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Sample4(
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Sample5(
-                        modifier = Modifier.weight(1f)
-                    )
+                    HorizontalPager(pageCount = 5) {
+                        when (it) {
+                            0 -> Sample1()
+                            1 -> Sample2()
+                            2 -> Sample3()
+                            3 -> Sample4()
+                            4 -> Sample5()
+                        }
+                    }
                 }
             }
         }
     }
 
     @Composable
-    private fun Sample1(
-        modifier: Modifier = Modifier
-    ) {
+    private fun Sample1() {
         var otpValue: String by remember { mutableStateOf("") }
         val defaultConfig = OhTeePeeDefaults.singleCellConfiguration(
             borderColor = Color.LightGray,
@@ -75,12 +77,28 @@ class MainActivity : ComponentActivity() {
         )
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = "Verify to proceed",
+                textAlign = TextAlign.Center,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Please enter the verification code we sent to: +1234",
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Row(modifier = Modifier.padding(vertical = 8.dp)) {
                 OhTeePee(
                     value = otpValue,
@@ -107,13 +125,21 @@ class MainActivity : ComponentActivity() {
                     placeHolder = "-"
                 )
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { }, colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFF8C9EFF)
+                )
+            ) {
+                Text(text = "Login")
+            }
         }
     }
 
     @Composable
-    private fun Sample2(
-        modifier: Modifier = Modifier
-    ) {
+    private fun Sample2() {
         val backgroundColor = Color(0xFFFF9E2A)
         var otpValue: String by remember { mutableStateOf("") }
         val defaultConfig = OhTeePeeDefaults.singleCellConfiguration(
@@ -127,13 +153,29 @@ class MainActivity : ComponentActivity() {
         )
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .background(backgroundColor)
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = "Verify to proceed",
+                textAlign = TextAlign.Center,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Please enter the verification code we sent to: +1234",
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Row(modifier = Modifier.padding(vertical = 8.dp)) {
                 OhTeePee(
                     value = otpValue,
@@ -157,14 +199,28 @@ class MainActivity : ComponentActivity() {
                     ),
                     placeHolder = "-"
                 )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Button(
+                    onClick = {},
+                    elevation = ButtonDefaults.elevation(
+                        defaultElevation = 8.dp,
+                        pressedElevation = (-8).dp
+                    ),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.White
+                    ),
+                    shape = CircleShape
+                ) {
+                    Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "")
+                }
             }
         }
     }
 
     @Composable
-    private fun Sample3(
-        modifier: Modifier = Modifier
-    ) {
+    private fun Sample3() {
         var otpValue: String by remember { mutableStateOf("") }
         val transparentConfig = OhTeePeeDefaults.singleCellConfiguration(
             borderColor = Color(0xFFB388FF),
@@ -177,12 +233,28 @@ class MainActivity : ComponentActivity() {
         )
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFF3D3D49)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = "Verify to proceed",
+                textAlign = TextAlign.Center,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFD3D2D2)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Please enter the verification code we sent to: +1234",
+                textAlign = TextAlign.Center,
+                color = Color(0xFFD3D2D2)
+            )
+
             Row(modifier = Modifier.padding(vertical = 8.dp)) {
                 OhTeePee(
                     value = otpValue,
@@ -210,9 +282,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun Sample4(
-        modifier: Modifier = Modifier
-    ) {
+    private fun Sample4() {
         var otpValue: String by remember { mutableStateOf("") }
         val transparentConfig = OhTeePeeDefaults.singleCellConfiguration(
             borderColor = Color.Transparent,
@@ -221,10 +291,15 @@ class MainActivity : ComponentActivity() {
         )
 
         Column(
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = "Please enter the verification code we sent to: +1234",
+                textAlign = TextAlign.Center
+            )
+
             Row(modifier = Modifier.padding(vertical = 8.dp)) {
                 OhTeePee(
                     value = otpValue,
@@ -260,9 +335,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun Sample5(
-        modifier: Modifier = Modifier
-    ) {
+    private fun Sample5() {
         var otpValue: String by remember { mutableStateOf("") }
         val defaultConfig = OhTeePeeDefaults.singleCellConfiguration(
             borderColor = Color.LightGray,
@@ -274,10 +347,15 @@ class MainActivity : ComponentActivity() {
         )
 
         Column(
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = "Please enter the verification code we sent to: +1234",
+                textAlign = TextAlign.Center
+            )
+
             Row(modifier = Modifier.padding(vertical = 8.dp)) {
                 OhTeePee(
                     modifier = Modifier
