@@ -17,7 +17,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.input.KeyboardType
 import com.composeuisuite.ohteepee.configuration.CellConfigurations
-import com.composeuisuite.ohteepee.configuration.OhTeePeeDefaults
 import com.composeuisuite.ohteepee.utils.EMPTY
 import com.composeuisuite.ohteepee.utils.orElse
 import com.composeuisuite.ohteepee.utils.requestFocusSafely
@@ -30,7 +29,7 @@ fun OhTeePee(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    cellConfigurations: CellConfigurations = OhTeePeeDefaults.cellConfigurations(),
+    cellConfigurations: CellConfigurations,
     isErrorOccurred: Boolean = false,
     obscureText: String = String.EMPTY,
     placeHolder: String = String.EMPTY,

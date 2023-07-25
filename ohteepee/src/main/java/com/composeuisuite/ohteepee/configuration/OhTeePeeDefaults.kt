@@ -8,7 +8,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.composeuisuite.ohteepee.utils.OhTeePeeConstants.ACTIVE_CELL_CONFIG
 
 object OhTeePeeDefaults {
 
@@ -21,28 +20,32 @@ object OhTeePeeDefaults {
         borderColor: Color = MaterialTheme.colors.primary,
         borderWidth: Dp = BORDER_WIDTH,
         textStyle: TextStyle = TextStyle(),
-    ) = object : SingleCellConfiguration {
-        override val shape: Shape = shape
-        override val backgroundColor: Color = backgroundColor
-        override val borderColor: Color = borderColor
-        override val borderWidth: Dp = borderWidth
-        override val textStyle: TextStyle = textStyle
-    }
+    ) = SingleCellConfiguration(
+        shape = shape,
+        backgroundColor = backgroundColor,
+        borderColor = borderColor,
+        borderWidth = borderWidth,
+        textStyle = textStyle
+    )
 
     @Composable
     fun cellConfigurations(
-        elevation: Dp = 0.dp,
-        emptyCellConfig: SingleCellConfiguration = ACTIVE_CELL_CONFIG,
-        filledCellConfig: SingleCellConfiguration = ACTIVE_CELL_CONFIG,
-        activeCellConfig: SingleCellConfiguration = ACTIVE_CELL_CONFIG,
-        errorCellConfig: SingleCellConfiguration = ACTIVE_CELL_CONFIG,
-        modifier: Modifier = Modifier
-    ) = object : CellConfigurations {
-        override val modifier: Modifier = modifier
-        override val elevation: Dp = elevation
-        override val activeCellConfig: SingleCellConfiguration = activeCellConfig
-        override val errorCellConfig: SingleCellConfiguration = errorCellConfig
-        override val emptyCellConfig: SingleCellConfiguration = emptyCellConfig
-        override val filledCellConfig: SingleCellConfiguration = filledCellConfig
-    }
+        emptyCellConfig: SingleCellConfiguration,
+        filledCellConfig: SingleCellConfiguration = emptyCellConfig,
+        activeCellConfig: SingleCellConfiguration = emptyCellConfig.copy(
+            borderColor = MaterialTheme.colors.primary
+        ),
+        errorCellConfig: SingleCellConfiguration = emptyCellConfig.copy(
+            borderColor = MaterialTheme.colors.error
+        ),
+        modifier: Modifier = Modifier,
+        elevation: Dp = 0.dp
+    ) = CellConfigurations(
+        modifier = modifier,
+        elevation = elevation,
+        activeCellConfig = activeCellConfig,
+        errorCellConfig = errorCellConfig,
+        emptyCellConfig = emptyCellConfig,
+        filledCellConfig = filledCellConfig
+    )
 }

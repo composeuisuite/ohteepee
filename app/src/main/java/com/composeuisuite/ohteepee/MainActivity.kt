@@ -41,9 +41,10 @@ class MainActivity : ComponentActivity() {
                         },
                         isErrorOccurred = otpValue == "111111",
                         cellConfigurations = OhTeePeeDefaults.cellConfigurations(
-                            emptyCellConfig = OhTeePeeDefaults.singleCellConfiguration(),
-                            errorCellConfig = OhTeePeeDefaults.singleCellConfiguration(borderColor = Color.Red),
-                            activeCellConfig = OhTeePeeDefaults.singleCellConfiguration(borderColor = Color.Magenta),
+                            emptyCellConfig = OhTeePeeDefaults.singleCellConfiguration(
+                                borderColor = Color.Black,
+                                borderWidth = 2.dp
+                            ),
                             modifier = Modifier
                                 .padding(horizontal = 4.dp)
                                 .weight(1f),
