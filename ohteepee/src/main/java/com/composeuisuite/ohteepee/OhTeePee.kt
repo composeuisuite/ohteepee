@@ -1,6 +1,5 @@
 package com.composeuisuite.ohteepee
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -52,7 +51,7 @@ fun OhTeePee(
         }
         mutableStateOf(charList)
     }
-    val focusRequester = remember { List(cellsCount) { FocusRequester() } }
+    val focusRequester = remember(cellsCount) { List(cellsCount) { FocusRequester() } }
     val transparentTextSelectionColors: TextSelectionColors = remember {
         TextSelectionColors(
             handleColor = Transparent,
@@ -71,8 +70,7 @@ fun OhTeePee(
     CompositionLocalProvider(LocalTextSelectionColors provides transparentTextSelectionColors) {
         Row(
             modifier = modifier,
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
             repeat(cellsCount) { index ->
                 val displayValue = getCellDisplayCharacter(
