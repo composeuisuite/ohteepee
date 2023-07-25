@@ -2,8 +2,6 @@ package com.composeuisuite.ohteepee
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Surface
@@ -58,8 +56,6 @@ internal fun OhTeePeeCell(
 
     Surface(
         modifier = modifier
-            .width(cellConfigurations.width)
-            .height(cellConfigurations.height)
             .border(
                 border = BorderStroke(
                     width = cellConfigurationState.borderWidth,

@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -28,7 +29,8 @@ class MainActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color.White)
+                        .background(Color.White),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     OhTeePee(
                         value = otpValue,
@@ -42,10 +44,12 @@ class MainActivity : ComponentActivity() {
                             emptyCellConfig = OhTeePeeDefaults.singleCellConfiguration(),
                             errorCellConfig = OhTeePeeDefaults.singleCellConfiguration(borderColor = Color.Red),
                             activeCellConfig = OhTeePeeDefaults.singleCellConfiguration(borderColor = Color.Magenta),
-                            modifier = Modifier.padding(2.dp),
+                            modifier = Modifier
+                                .padding(horizontal = 4.dp)
+                                .weight(1f),
                             elevation = 8.dp,
                         ),
-                        obscureText = "",
+                        obscureText = "*",
                         placeHolder = "-"
                     )
                 }

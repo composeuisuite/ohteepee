@@ -2,7 +2,6 @@ package com.composeuisuite.ohteepee
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
@@ -65,7 +64,7 @@ fun OhTeePee(
 
     CompositionLocalProvider(LocalTextSelectionColors provides transparentTextSelectionColors) {
         Row(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -79,7 +78,6 @@ fun OhTeePee(
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
                     modifier = cellConfigurations.modifier
-                        .weight(1f)
                         .focusRequester(focusRequester = focusRequester[index]),
                     cellConfigurations = cellConfigurations,
                     onValueChange = {

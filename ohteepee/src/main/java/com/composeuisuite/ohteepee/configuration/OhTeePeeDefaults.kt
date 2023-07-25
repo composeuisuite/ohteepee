@@ -31,8 +31,6 @@ object OhTeePeeDefaults {
 
     @Composable
     fun cellConfigurations(
-        width: Dp = 64.dp,
-        height: Dp = 64.dp,
         elevation: Dp = 0.dp,
         emptyCellConfig: SingleCellConfiguration = ACTIVE_CELL_CONFIG,
         filledCellConfig: SingleCellConfiguration = ACTIVE_CELL_CONFIG,
@@ -41,8 +39,6 @@ object OhTeePeeDefaults {
         modifier: Modifier = Modifier
     ) = object : CellConfigurations {
         override val modifier: Modifier = modifier
-        override val width: Dp = width
-        override val height: Dp = height
         override val elevation: Dp = elevation
         override val activeCellConfig: SingleCellConfiguration = activeCellConfig
         override val errorCellConfig: SingleCellConfiguration = errorCellConfig

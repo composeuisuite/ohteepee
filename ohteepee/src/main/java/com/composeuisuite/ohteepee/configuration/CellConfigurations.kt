@@ -7,10 +7,6 @@ interface CellConfigurations {
 
     val modifier: Modifier
 
-    val width: Dp
-
-    val height: Dp
-
     val elevation: Dp
 
     val activeCellConfig: SingleCellConfiguration
