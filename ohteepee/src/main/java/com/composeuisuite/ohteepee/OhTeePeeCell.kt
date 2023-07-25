@@ -1,11 +1,15 @@
 package com.composeuisuite.ohteepee
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
-import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,13 +19,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.composeuisuite.ohteepee.configuration.CellConfigurations
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun OhTeePeeCell(
     value: String,
@@ -67,33 +75,37 @@ internal fun OhTeePeeCell(
         elevation = cellConfigurations.elevation,
         shape = cellConfigurationState.shape,
     ) {
-        TextField(
+        val interactionSource = remember { MutableInteractionSource() }
+        BasicTextField(
+            value = textFieldValue,
+            onValueChange = { onValueChange(it.text) },
+            textStyle = cellConfigurationState.textStyle.copy(textAlign = TextAlign.Center),
             modifier = Modifier
-//            .absolutePadding(left = 2.dp, right = 1.dp)
                 .onFocusEvent {
                     onFocusChanged?.invoke(it.isFocused)
                     isFocused = it.isFocused
-                },
-            singleLine = true,
-            value = textFieldValue,
-            onValueChange = { onValueChange(it.text) },
-            keyboardActions = KeyboardActions(
-                onNext = {},
-                onDone = {}
-            ),
+                }
+                .background(cellConfigurationState.backgroundColor),
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = ImeAction.Next
             ),
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = cellConfigurationState.textStyle.color,
-                backgroundColor = cellConfigurationState.backgroundColor,
-                disabledIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = Color.Transparent,
+            keyboardActions = KeyboardActions(
+                onNext = {},
+                onDone = {}
             ),
-            textStyle = cellConfigurationState.textStyle.copy(textAlign = TextAlign.Center)
-        )
+            singleLine = true,
+            cursorBrush = SolidColor(Color.Transparent),
+        ) { innerTextField ->
+            TextFieldDefaults.TextFieldDecorationBox(
+                value = value,
+                visualTransformation = VisualTransformation.None,
+                innerTextField = innerTextField,
+                singleLine = true,
+                enabled = true,
+                interactionSource = interactionSource,
+                contentPadding = PaddingValues(0.dp),
+            )
+        }
     }
 }
