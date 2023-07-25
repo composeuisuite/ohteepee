@@ -37,7 +37,7 @@ fun OhTeePee(
         "PlaceHolder must be a single character"
     }
     require(obscureText.length <= 1) {
-        "obscureText can't be more then 2 characters"
+        "obscureText can't be more then 1 characters"
     }
 
     val placeHolderAsChar = placeHolder.first()
