@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:844735844653:android:3651ac0c924441aedf83a4",
+        "mobilesdk_app_id": "1:844735844653:android:6d39ad5e638bb256df83a4",
         "android_client_info": {
-          "package_name": "com.tarikyasar.otpfield"
+          "package_name": "com.composeuisuite.ohteepee"
         }
       },
       "oauth_client": [
