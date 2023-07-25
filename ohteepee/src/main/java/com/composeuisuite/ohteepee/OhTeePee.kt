@@ -18,10 +18,9 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.input.KeyboardType
 import com.composeuisuite.ohteepee.configuration.CellConfigurations
 import com.composeuisuite.ohteepee.utils.EMPTY
-import com.composeuisuite.ohteepee.utils.orElse
 import com.composeuisuite.ohteepee.utils.requestFocusSafely
 
-private const val NOT_ENTERED_CELL_INDICATOR = ' '
+private const val DEFAULT_PLACE_HOLDER = " "
 
 @Composable
 fun OhTeePee(
@@ -32,15 +31,23 @@ fun OhTeePee(
     cellConfigurations: CellConfigurations,
     isErrorOccurred: Boolean = false,
     obscureText: String = String.EMPTY,
-    placeHolder: String = String.EMPTY,
+    placeHolder: String = DEFAULT_PLACE_HOLDER,
     keyboardType: KeyboardType = KeyboardType.Number,
 ) {
-    val otpValue by remember(value, isErrorOccurred) {
+    require(placeHolder.length == 1) {
+        "PlaceHolder must be a single character"
+    }
+    require(obscureText.length <= 1) {
+        "obscureText can't be more then 2 characters"
+    }
+
+    val placeHolderAsChar = placeHolder.first()
+    val otpValue by remember(value, isErrorOccurred, placeHolder) {
         val charList = CharArray(cellsCount) { index ->
             if (isErrorOccurred) {
-                NOT_ENTERED_CELL_INDICATOR
+                placeHolderAsChar
             } else {
-                value.getOrElse(index) { NOT_ENTERED_CELL_INDICATOR }
+                value.getOrElse(index) { placeHolderAsChar }
             }
         }
         mutableStateOf(charList)
@@ -98,11 +105,11 @@ fun OhTeePee(
                             otpValue[index] = text.last()
                             val nextIndex = (index + 1).coerceIn(0, cellsCount - 1)
                             focusRequester[nextIndex].requestFocusSafely()
-                        } else if (currentCellText != NOT_ENTERED_CELL_INDICATOR.toString()) {
-                            otpValue[index] = NOT_ENTERED_CELL_INDICATOR
+                        } else if (currentCellText != placeHolder) {
+                            otpValue[index] = placeHolderAsChar
                         } else {
                             val previousIndex = (index - 1).coerceIn(0, cellsCount)
-                            otpValue[previousIndex] = NOT_ENTERED_CELL_INDICATOR
+                            otpValue[previousIndex] = placeHolderAsChar
                             focusRequester[previousIndex].requestFocusSafely()
                         }
                         onValueChange(otpValue.joinToString(""))
@@ -120,7 +127,7 @@ private fun getCellDisplayCharacter(
     placeHolder: String
 ): String = currentChar
     .toString()
-    .replace(NOT_ENTERED_CELL_INDICATOR.toString(), "")
+    .replace(placeHolder, "")
     .let {
         if (it.isNotEmpty() && obscureText.isNotEmpty()) {
             obscureText
@@ -128,5 +135,4 @@ private fun getCellDisplayCharacter(
             it
         }
     }
-    .takeIf { it.isNotEmpty() }
-    .orElse(placeHolder)
+    .takeIf { it.isNotEmpty() } ?: placeHolder
