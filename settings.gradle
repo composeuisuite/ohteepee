@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Otp Field"
-include ':app'
+include ':sample'
 include ':ohteepee'
