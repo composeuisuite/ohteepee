@@ -68,17 +68,19 @@ fun OhTeePee(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             repeat(cellsCount) { index ->
+                val displayValue = getCellDisplayCharacter(
+                    currentChar = otpValue[index],
+                    obscureText = obscureText,
+                    placeHolder = placeHolder
+                )
                 OhTeePeeCell(
-                    value = getCellDisplayCharacter(
-                        currentChar = otpValue[index],
-                        obscureText = obscureText,
-                        placeHolder = placeHolder
-                    ),
+                    value = displayValue,
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
                     modifier = cellConfigurations.modifier
                         .focusRequester(focusRequester = focusRequester[index]),
                     cellConfigurations = cellConfigurations,
+                    isCurrentCharAPlaceHolder = displayValue == placeHolder,
                     onValueChange = {
                         val currentCellText = otpValue[index].toString()
                         val text = it.replace(placeHolder, String.EMPTY)

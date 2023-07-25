@@ -27,6 +27,7 @@ internal fun OhTeePeeCell(
     value: String,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType,
+    isCurrentCharAPlaceHolder: Boolean,
     cellConfigurations: CellConfigurations,
     modifier: Modifier = Modifier,
     isErrorOccurred: Boolean = false,
@@ -41,7 +42,7 @@ internal fun OhTeePeeCell(
         val config = when {
             isErrorOccurred -> cellConfigurations.errorCellConfig
             isFocused -> cellConfigurations.activeCellConfig
-            value.isNotEmpty() -> cellConfigurations.filledCellConfig
+            value.isNotEmpty() && isCurrentCharAPlaceHolder.not() -> cellConfigurations.filledCellConfig
             else -> cellConfigurations.emptyCellConfig
         }
         mutableStateOf(config)
