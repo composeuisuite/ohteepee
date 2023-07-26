@@ -36,10 +36,9 @@ internal fun OhTeePeeCell(
     keyboardType: KeyboardType,
     isCurrentCharAPlaceHolder: Boolean,
     cellConfigurations: CellConfigurations,
+    isErrorOccurred: Boolean,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
-    isErrorOccurred: Boolean = false,
-    enabled: Boolean = true,
-    onFocusChanged: ((isFocused: Boolean) -> Unit)? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val cellConfigurationState by remember(
@@ -81,10 +80,7 @@ internal fun OhTeePeeCell(
             onValueChange = { onValueChange(it.text) },
             textStyle = cellConfigurationState.textStyle.copy(textAlign = TextAlign.Center),
             modifier = Modifier
-                .onFocusEvent {
-                    onFocusChanged?.invoke(it.isFocused)
-                    isFocused = it.isFocused
-                }
+                .onFocusEvent { isFocused = it.isFocused }
                 .background(cellConfigurationState.backgroundColor),
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
