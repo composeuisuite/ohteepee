@@ -77,7 +77,10 @@ internal fun OhTeePeeCell(
         val interactionSource = remember { MutableInteractionSource() }
         BasicTextField(
             value = textFieldValue,
-            onValueChange = { onValueChange(it.text) },
+            onValueChange = {
+                if (it.text == value) return@BasicTextField
+                onValueChange(it.text)
+            },
             textStyle = cellConfigurationState.textStyle.copy(textAlign = TextAlign.Center),
             modifier = Modifier
                 .onFocusEvent { isFocused = it.isFocused }
