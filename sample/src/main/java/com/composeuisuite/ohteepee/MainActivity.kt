@@ -109,6 +109,7 @@ class MainActivity : ComponentActivity() {
                     },
                     isErrorOccurred = otpValue == "111111",
                     cellConfigurations = OhTeePeeDefaults.cellConfigurations(
+                        cursorColor = Color(0xFF8C9EFF),
                         emptyCellConfig = defaultConfig,
                         filledCellConfig = defaultConfig.copy(
                             borderColor = Color(0xFF8C9EFF)

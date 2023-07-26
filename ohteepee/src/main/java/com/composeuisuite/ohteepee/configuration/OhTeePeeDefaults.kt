@@ -39,13 +39,15 @@ object OhTeePeeDefaults {
             borderColor = MaterialTheme.colors.error
         ),
         modifier: Modifier = Modifier,
-        elevation: Dp = 0.dp
+        elevation: Dp = 0.dp,
+        cursorColor: Color = Color.Transparent,
     ) = CellConfigurations(
         modifier = modifier,
         elevation = elevation,
         activeCellConfig = activeCellConfig,
         errorCellConfig = errorCellConfig,
         emptyCellConfig = emptyCellConfig,
-        filledCellConfig = filledCellConfig
+        filledCellConfig = filledCellConfig,
+        cursorColor = cursorColor
     )
 }
