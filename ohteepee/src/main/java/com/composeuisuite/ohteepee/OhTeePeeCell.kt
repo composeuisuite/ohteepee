@@ -39,6 +39,7 @@ internal fun OhTeePeeCell(
     cellConfigurations: CellConfigurations,
     modifier: Modifier = Modifier,
     isErrorOccurred: Boolean = false,
+    enabled: Boolean = true,
     onFocusChanged: ((isFocused: Boolean) -> Unit)? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -95,6 +96,7 @@ internal fun OhTeePeeCell(
                 onDone = {}
             ),
             singleLine = true,
+            enabled = enabled,
             cursorBrush = SolidColor(Color.Transparent),
         ) { innerTextField ->
             TextFieldDefaults.TextFieldDecorationBox(
@@ -102,7 +104,7 @@ internal fun OhTeePeeCell(
                 visualTransformation = VisualTransformation.None,
                 innerTextField = innerTextField,
                 singleLine = true,
-                enabled = true,
+                enabled = enabled,
                 interactionSource = interactionSource,
                 contentPadding = PaddingValues(0.dp),
             )

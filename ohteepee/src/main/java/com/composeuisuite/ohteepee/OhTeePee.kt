@@ -32,6 +32,7 @@ fun OhTeePee(
     obscureText: String = String.EMPTY,
     placeHolder: String = DEFAULT_PLACE_HOLDER,
     keyboardType: KeyboardType = KeyboardType.Number,
+    enabled: Boolean = true,
 ) {
     require(placeHolder.length == 1) {
         "PlaceHolder must be a single character"
@@ -84,6 +85,7 @@ fun OhTeePee(
                     keyboardType = keyboardType,
                     modifier = cellConfigurations.modifier
                         .focusRequester(focusRequester = focusRequester[index]),
+                    enabled = enabled,
                     cellConfigurations = cellConfigurations,
                     isCurrentCharAPlaceHolder = displayValue == placeHolder,
                     onValueChange = {
