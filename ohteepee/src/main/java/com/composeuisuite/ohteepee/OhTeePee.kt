@@ -61,6 +61,11 @@ fun OhTeePee(
         )
     }
 
+    fun requestFocus(index: Int) {
+        val nextIndex = index.coerceIn(0, cellsCount - 1)
+        focusRequester[nextIndex].requestFocusSafely()
+    }
+
     LaunchedEffect(autoFocusByDefault) {
         if (autoFocusByDefault) focusRequester.first().requestFocus()
     }
@@ -85,10 +90,11 @@ fun OhTeePee(
             val currentCellText = otpValue[index].toString()
             val text = newValue.replace(placeHolder, String.EMPTY)
                 .replace(obscureText, String.EMPTY)
-            val isValueChangedTriggeredByCursorChange =
-                text == currentCellText || (obscureText != String.EMPTY && newValue == obscureText)
 
-            if (isValueChangedTriggeredByCursorChange) return@onCellInputChange
+            if (text == currentCellText) {
+                requestFocus(index + 1)
+                return@onCellInputChange
+            }
 
             if (text.length == cellsCount) {
                 onValueChange(text)
@@ -98,14 +104,13 @@ fun OhTeePee(
 
             if (text.isNotEmpty()) {
                 otpValue[index] = text.last()
-                val nextIndex = (index + 1).coerceIn(0, cellsCount - 1)
-                focusRequester[nextIndex].requestFocusSafely()
+                requestFocus(index + 1)
             } else if (currentCellText != placeHolder) {
                 otpValue[index] = placeHolderAsChar
             } else {
                 val previousIndex = (index - 1).coerceIn(0, cellsCount)
                 otpValue[previousIndex] = placeHolderAsChar
-                focusRequester[previousIndex].requestFocusSafely()
+                requestFocus(previousIndex)
             }
             onValueChange(otpValue.joinToString(""))
         },
