@@ -33,6 +33,7 @@ fun OhTeePee(
     placeHolder: String = DEFAULT_PLACE_HOLDER,
     keyboardType: KeyboardType = KeyboardType.Number,
     enabled: Boolean = true,
+    autoFocusByDefault: Boolean = true
 ) {
     require(placeHolder.length == 1) {
         "PlaceHolder must be a single character"
@@ -60,8 +61,8 @@ fun OhTeePee(
         )
     }
 
-    LaunchedEffect(Unit) {
-        focusRequester.first().requestFocus()
+    LaunchedEffect(autoFocusByDefault) {
+        if (autoFocusByDefault) focusRequester.first().requestFocus()
     }
 
     LaunchedEffect(isErrorOccurred) {

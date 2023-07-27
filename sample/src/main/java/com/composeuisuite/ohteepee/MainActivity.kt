@@ -3,7 +3,6 @@ package com.composeuisuite.ohteepee
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -145,7 +144,8 @@ private fun Sample2(
                 ),
                 errorCellConfig = defaultConfig
             ),
-            placeHolder = "-"
+            placeHolder = "-",
+            autoFocusByDefault = false
         )
     }
 }
@@ -192,7 +192,8 @@ private fun Sample3(
                 ),
                 errorCellConfig = transparentConfig
             ),
-            obscureText = "•"
+            obscureText = "•",
+            autoFocusByDefault = false
         )
     }
 }
@@ -242,7 +243,8 @@ private fun Sample4(
                 errorCellConfig = transparentConfig
             ),
             obscureText = "•",
-            placeHolder = "-"
+            placeHolder = "-",
+            autoFocusByDefault = false
         )
     }
 }
@@ -292,7 +294,8 @@ private fun Sample5(
                     borderColor = Color.Red
                 ),
             ),
-            placeHolder = " "
+            placeHolder = " ",
+            autoFocusByDefault = false
         )
     }
 }
