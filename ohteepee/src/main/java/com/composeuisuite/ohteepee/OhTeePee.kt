@@ -86,29 +86,29 @@ fun OhTeePee(
         cellConfigurations = cellConfigurations,
         focusRequesters = focusRequester,
         enabled = enabled,
-        onCellInputChange = onCellInputChange@{ index, newValue ->
-            val currentCellText = otpValue[index].toString()
-            val text = newValue.replace(placeHolder, String.EMPTY)
+        onCellInputChange = onCellInputChange@{ currentCellIndex, newValue ->
+            val currentCellText = otpValue[currentCellIndex].toString()
+            val formattedNewValue = newValue.replace(placeHolder, String.EMPTY)
                 .replace(obscureText, String.EMPTY)
 
-            if (text == currentCellText) {
-                requestFocus(index + 1)
+            if (formattedNewValue == currentCellText) {
+                requestFocus(currentCellIndex + 1)
                 return@onCellInputChange
             }
 
-            if (text.length == cellsCount) {
-                onValueChange(text)
+            if (formattedNewValue.length == cellsCount) {
+                onValueChange(formattedNewValue)
                 focusRequester.last().requestFocusSafely()
                 return@onCellInputChange
             }
 
-            if (text.isNotEmpty()) {
-                otpValue[index] = text.last()
-                requestFocus(index + 1)
+            if (formattedNewValue.isNotEmpty()) {
+                otpValue[currentCellIndex] = formattedNewValue.last()
+                requestFocus(currentCellIndex + 1)
             } else if (currentCellText != placeHolder) {
-                otpValue[index] = placeHolderAsChar
+                otpValue[currentCellIndex] = placeHolderAsChar
             } else {
-                val previousIndex = (index - 1).coerceIn(0, cellsCount)
+                val previousIndex = (currentCellIndex - 1).coerceIn(0, cellsCount)
                 otpValue[previousIndex] = placeHolderAsChar
                 requestFocus(previousIndex)
             }
