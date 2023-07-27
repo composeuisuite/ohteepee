@@ -68,7 +68,65 @@ fun OhTeePee(
         if (isErrorOccurred) focusRequester.first().requestFocus()
     }
 
-    CompositionLocalProvider(LocalTextSelectionColors provides transparentTextSelectionColors) {
+    OhTeePee(
+        modifier = modifier,
+        textSelectionColors = transparentTextSelectionColors,
+        cellsCount = cellsCount,
+        otpValue = otpValue,
+        obscureText = obscureText,
+        placeHolder = placeHolder,
+        isErrorOccurred = isErrorOccurred,
+        keyboardType = keyboardType,
+        cellConfigurations = cellConfigurations,
+        focusRequesters = focusRequester,
+        enabled = enabled,
+        onCellInputChange = onCellInputChange@{ index, newValue ->
+            val currentCellText = otpValue[index].toString()
+            val text = newValue.replace(placeHolder, String.EMPTY)
+                .replace(obscureText, String.EMPTY)
+            val isValueChangedTriggeredByCursorChange =
+                text == currentCellText || (obscureText != String.EMPTY && newValue == obscureText)
+
+            if (isValueChangedTriggeredByCursorChange) return@onCellInputChange
+
+            if (text.length == cellsCount) {
+                onValueChange(text)
+                focusRequester.last().requestFocusSafely()
+                return@onCellInputChange
+            }
+
+            if (text.isNotEmpty()) {
+                otpValue[index] = text.last()
+                val nextIndex = (index + 1).coerceIn(0, cellsCount - 1)
+                focusRequester[nextIndex].requestFocusSafely()
+            } else if (currentCellText != placeHolder) {
+                otpValue[index] = placeHolderAsChar
+            } else {
+                val previousIndex = (index - 1).coerceIn(0, cellsCount)
+                otpValue[previousIndex] = placeHolderAsChar
+                focusRequester[previousIndex].requestFocusSafely()
+            }
+            onValueChange(otpValue.joinToString(""))
+        },
+    )
+}
+
+@Composable
+private fun OhTeePee(
+    modifier: Modifier = Modifier,
+    textSelectionColors: TextSelectionColors,
+    cellsCount: Int,
+    otpValue: CharArray,
+    obscureText: String,
+    placeHolder: String,
+    isErrorOccurred: Boolean,
+    keyboardType: KeyboardType,
+    cellConfigurations: CellConfigurations,
+    focusRequesters: List<FocusRequester>,
+    enabled: Boolean,
+    onCellInputChange: (index: Int, value: String) -> Unit
+) {
+    CompositionLocalProvider(LocalTextSelectionColors provides textSelectionColors) {
         Row(
             modifier = modifier,
             verticalAlignment = Alignment.CenterVertically
@@ -84,37 +142,12 @@ fun OhTeePee(
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
                     modifier = cellConfigurations.modifier
-                        .focusRequester(focusRequester = focusRequester[index]),
+                        .focusRequester(focusRequester = focusRequesters[index]),
                     enabled = enabled,
                     cellConfigurations = cellConfigurations,
                     isCurrentCharAPlaceHolder = displayValue == placeHolder,
                     onValueChange = {
-                        val currentCellText = otpValue[index].toString()
-                        val text = it.replace(placeHolder, String.EMPTY)
-                            .replace(obscureText, String.EMPTY)
-                        val isValueChangedTriggeredByCursorChange =
-                            text == currentCellText || (obscureText != String.EMPTY && it == obscureText)
-
-                        if (isValueChangedTriggeredByCursorChange) return@OhTeePeeCell
-
-                        if (text.length == cellsCount) {
-                            onValueChange(text)
-                            focusRequester.last().requestFocusSafely()
-                            return@OhTeePeeCell
-                        }
-
-                        if (text.isNotEmpty()) {
-                            otpValue[index] = text.last()
-                            val nextIndex = (index + 1).coerceIn(0, cellsCount - 1)
-                            focusRequester[nextIndex].requestFocusSafely()
-                        } else if (currentCellText != placeHolder) {
-                            otpValue[index] = placeHolderAsChar
-                        } else {
-                            val previousIndex = (index - 1).coerceIn(0, cellsCount)
-                            otpValue[previousIndex] = placeHolderAsChar
-                            focusRequester[previousIndex].requestFocusSafely()
-                        }
-                        onValueChange(otpValue.joinToString(""))
+                        onCellInputChange(index, it)
                     }
                 )
             }
