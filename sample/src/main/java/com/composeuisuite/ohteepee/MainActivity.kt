@@ -81,7 +81,7 @@ private fun Sample0(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        OhTeePee(
+        OhTeePeeInput(
             value = otpValue,
             cellsCount = 6,
             onValueChange = { newValue, isValid ->
@@ -121,7 +121,7 @@ private fun Sample1(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        OhTeePee(
+        OhTeePeeInput(
             value = otpValue,
             cellsCount = 4,
             onValueChange = { newValue, _ ->
@@ -173,7 +173,7 @@ private fun Sample2(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        OhTeePee(
+        OhTeePeeInput(
             value = otpValue,
             cellsCount = 4,
             onValueChange = { newValue, _ ->
@@ -222,7 +222,7 @@ private fun Sample3(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        OhTeePee(
+        OhTeePeeInput(
             value = otpValue,
             cellsCount = 6,
             onValueChange = { newValue, _ ->
@@ -265,7 +265,7 @@ private fun Sample4(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        OhTeePee(
+        OhTeePeeInput(
             value = otpValue,
             modifier = Modifier.drawBehind {
                 val strokeWidth = 1f * density
@@ -319,7 +319,7 @@ private fun Sample5(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        OhTeePee(
+        OhTeePeeInput(
             modifier = Modifier
                 .padding(8.dp),
             value = otpValue,

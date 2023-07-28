@@ -22,7 +22,7 @@ import com.composeuisuite.ohteepee.utils.requestFocusSafely
 private const val DEFAULT_PLACE_HOLDER = " "
 
 @Composable
-fun OhTeePee(
+fun OhTeePeeInput(
     cellsCount: Int,
     value: String,
     onValueChange: (newValue: String, isValid: Boolean) -> Unit,
@@ -74,7 +74,7 @@ fun OhTeePee(
         if (isErrorOccurred) focusRequester.first().requestFocus()
     }
 
-    OhTeePee(
+    OhTeePeeInput(
         modifier = modifier,
         textSelectionColors = transparentTextSelectionColors,
         cellsCount = cellsCount,
@@ -119,7 +119,7 @@ fun OhTeePee(
 }
 
 @Composable
-private fun OhTeePee(
+private fun OhTeePeeInput(
     modifier: Modifier = Modifier,
     textSelectionColors: TextSelectionColors,
     cellsCount: Int,
