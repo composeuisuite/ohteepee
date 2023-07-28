@@ -8,7 +8,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-data class SingleCellConfiguration(
+data class OhTeePeeCellConfiguration(
     val shape: Shape,
     val backgroundColor: Color,
     val borderColor: Color,
@@ -25,7 +25,7 @@ data class SingleCellConfiguration(
             borderColor: Color = MaterialTheme.colors.primary,
             borderWidth: Dp = BORDER_WIDTH,
             textStyle: TextStyle = TextStyle(),
-        ) = SingleCellConfiguration(
+        ) = OhTeePeeCellConfiguration(
             shape = shape,
             backgroundColor = backgroundColor,
             borderColor = borderColor,

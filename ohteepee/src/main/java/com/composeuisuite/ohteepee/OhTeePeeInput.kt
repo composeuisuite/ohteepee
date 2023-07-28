@@ -15,37 +15,35 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.input.KeyboardType
-import com.composeuisuite.ohteepee.configuration.CellConfigurations
+import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.utils.EMPTY
 import com.composeuisuite.ohteepee.utils.requestFocusSafely
 
-private const val DEFAULT_PLACE_HOLDER = " "
-
 @Composable
 fun OhTeePeeInput(
-    cellsCount: Int,
     value: String,
     onValueChange: (newValue: String, isValid: Boolean) -> Unit,
-    cellConfigurations: CellConfigurations,
+    configurations: OhTeePeeConfigurations,
     modifier: Modifier = Modifier,
-    isErrorOccurred: Boolean = false,
-    obscureText: String = String.EMPTY,
-    placeHolder: String = DEFAULT_PLACE_HOLDER,
+    isValueInvalid: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Number,
     enabled: Boolean = true,
     autoFocusByDefault: Boolean = true
 ) {
-    require(placeHolder.length == 1) {
+    require(configurations.placeHolder.length == 1) {
         "PlaceHolder must be a single character"
     }
-    require(obscureText.length <= 1) {
+    require(configurations.obscureText.length <= 1) {
         "obscureText can't be more then 1 characters"
     }
 
+    val obscureText = configurations.obscureText
+    val placeHolder = configurations.placeHolder
+    val cellsCount = configurations.cellsCount
     val placeHolderAsChar = placeHolder.first()
-    val otpValue by remember(value, isErrorOccurred, placeHolder) {
+    val otpValue by remember(value, isValueInvalid, placeHolder) {
         val charList = CharArray(cellsCount) { index ->
-            if (isErrorOccurred) {
+            if (isValueInvalid) {
                 placeHolderAsChar
             } else {
                 value.getOrElse(index) { placeHolderAsChar }
@@ -70,8 +68,8 @@ fun OhTeePeeInput(
         if (autoFocusByDefault) focusRequester.first().requestFocus()
     }
 
-    LaunchedEffect(isErrorOccurred) {
-        if (isErrorOccurred) focusRequester.first().requestFocus()
+    LaunchedEffect(isValueInvalid) {
+        if (isValueInvalid) focusRequester.first().requestFocus()
     }
 
     OhTeePeeInput(
@@ -81,9 +79,9 @@ fun OhTeePeeInput(
         otpValue = otpValue,
         obscureText = obscureText,
         placeHolder = placeHolder,
-        isErrorOccurred = isErrorOccurred,
+        isErrorOccurred = isValueInvalid,
         keyboardType = keyboardType,
-        cellConfigurations = cellConfigurations,
+        ohTeePeeConfigurations = configurations,
         focusRequesters = focusRequester,
         enabled = enabled,
         onCellInputChange = onCellInputChange@{ currentCellIndex, newValue ->
@@ -128,7 +126,7 @@ private fun OhTeePeeInput(
     placeHolder: String,
     isErrorOccurred: Boolean,
     keyboardType: KeyboardType,
-    cellConfigurations: CellConfigurations,
+    ohTeePeeConfigurations: OhTeePeeConfigurations,
     focusRequesters: List<FocusRequester>,
     enabled: Boolean,
     onCellInputChange: (index: Int, value: String) -> Unit
@@ -148,10 +146,10 @@ private fun OhTeePeeInput(
                     value = displayValue,
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
-                    modifier = cellConfigurations.modifier
+                    modifier = ohTeePeeConfigurations.cellModifier
                         .focusRequester(focusRequester = focusRequesters[index]),
                     enabled = enabled,
-                    cellConfigurations = cellConfigurations,
+                    configurations = ohTeePeeConfigurations,
                     isCurrentCharAPlaceHolder = displayValue == placeHolder,
                     onValueChange = {
                         onCellInputChange(index, it)

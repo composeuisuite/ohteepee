@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.composeuisuite.ohteepee.configuration.CellConfigurations
+import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.utils.conditional
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -39,22 +39,22 @@ internal fun OhTeePeeCell(
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType,
     isCurrentCharAPlaceHolder: Boolean,
-    cellConfigurations: CellConfigurations,
+    configurations: OhTeePeeConfigurations,
     isErrorOccurred: Boolean,
     enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     var isFocused by remember { mutableStateOf(false) }
-    val cellConfigurationState by remember(
+    val cellConfiguration by remember(
         key1 = value,
         key2 = isFocused,
         key3 = isErrorOccurred
     ) {
         val config = when {
-            isErrorOccurred -> cellConfigurations.errorCellConfig
-            isFocused -> cellConfigurations.activeCellConfig
-            value.isNotEmpty() && isCurrentCharAPlaceHolder.not() -> cellConfigurations.filledCellConfig
-            else -> cellConfigurations.emptyCellConfig
+            isErrorOccurred -> configurations.errorCellConfig
+            isFocused -> configurations.activeCellConfig
+            value.isNotEmpty() && isCurrentCharAPlaceHolder.not() -> configurations.filledCellConfig
+            else -> configurations.emptyCellConfig
         }
         mutableStateOf(config)
     }
@@ -68,31 +68,31 @@ internal fun OhTeePeeCell(
 
     Surface(
         modifier = modifier
-            .conditional(cellConfigurations.enableBottomLine) {
+            .conditional(configurations.enableBottomLine) {
                 drawBehind {
-                    if (cellConfigurations.enableBottomLine) {
+                    if (configurations.enableBottomLine) {
                         val y = size.height
 
                         drawLine(
-                            color = cellConfigurationState.borderColor,
+                            color = cellConfiguration.borderColor,
                             start = Offset(0f, y),
                             end = Offset(size.width, y),
-                            strokeWidth = cellConfigurationState.borderWidth.toPx()
+                            strokeWidth = cellConfiguration.borderWidth.toPx()
                         )
                     }
                 }
             }
-            .conditional(cellConfigurations.enableBottomLine.not()) {
+            .conditional(configurations.enableBottomLine.not()) {
                 border(
                     border = BorderStroke(
-                        width = cellConfigurationState.borderWidth,
-                        color = cellConfigurationState.borderColor
+                        width = cellConfiguration.borderWidth,
+                        color = cellConfiguration.borderColor
                     ),
-                    shape = cellConfigurationState.shape
+                    shape = cellConfiguration.shape
                 )
             },
-        elevation = cellConfigurations.elevation,
-        shape = if (cellConfigurations.enableBottomLine) RoundedCornerShape(0.dp) else cellConfigurationState.shape,
+        elevation = configurations.elevation,
+        shape = if (configurations.enableBottomLine) RoundedCornerShape(0.dp) else cellConfiguration.shape,
     ) {
         val interactionSource = remember { MutableInteractionSource() }
         BasicTextField(
@@ -101,10 +101,10 @@ internal fun OhTeePeeCell(
                 if (it.text == value) return@BasicTextField
                 onValueChange(it.text)
             },
-            textStyle = cellConfigurationState.textStyle.copy(textAlign = TextAlign.Center),
+            textStyle = cellConfiguration.textStyle.copy(textAlign = TextAlign.Center),
             modifier = Modifier
                 .onFocusEvent { isFocused = it.isFocused }
-                .background(cellConfigurationState.backgroundColor),
+                .background(cellConfiguration.backgroundColor),
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = ImeAction.Next
@@ -115,7 +115,7 @@ internal fun OhTeePeeCell(
             ),
             singleLine = true,
             enabled = enabled,
-            cursorBrush = SolidColor(cellConfigurations.cursorColor),
+            cursorBrush = SolidColor(configurations.cursorColor),
         ) { innerTextField ->
             TextFieldDefaults.TextFieldDecorationBox(
                 value = value,
