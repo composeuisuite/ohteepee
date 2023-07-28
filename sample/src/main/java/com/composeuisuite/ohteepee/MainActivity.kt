@@ -83,8 +83,9 @@ private fun Sample0(
         OhTeePee(
             value = otpValue,
             cellsCount = 6,
-            onValueChange = {
-                otpValue = it
+            onValueChange = { newValue, isValid ->
+                otpValue = newValue
+                println("MainActivity: $newValue is valid $isValid")
             },
             isErrorOccurred = otpValue == "111111",
             cellConfigurations = OhTeePeeDefaults.cellConfigurations(
@@ -122,9 +123,8 @@ private fun Sample1(
         OhTeePee(
             value = otpValue,
             cellsCount = 4,
-            onValueChange = {
-                otpValue = it
-                println("MainActivity: $it")
+            onValueChange = { newValue, _ ->
+                otpValue = newValue
             },
             isErrorOccurred = otpValue == "111111",
             cellConfigurations = OhTeePeeDefaults.cellConfigurations(
@@ -175,8 +175,8 @@ private fun Sample2(
         OhTeePee(
             value = otpValue,
             cellsCount = 4,
-            onValueChange = {
-                otpValue = it
+            onValueChange = { newValue, _ ->
+                otpValue = newValue
             },
             isErrorOccurred = otpValue == "111111",
             cellConfigurations = OhTeePeeDefaults.cellConfigurations(
@@ -224,8 +224,8 @@ private fun Sample3(
         OhTeePee(
             value = otpValue,
             cellsCount = 6,
-            onValueChange = {
-                otpValue = it
+            onValueChange = { newValue, _ ->
+                otpValue = newValue
             },
             isErrorOccurred = otpValue == "111111",
             cellConfigurations = OhTeePeeDefaults.cellConfigurations(
@@ -278,8 +278,8 @@ private fun Sample4(
                 )
             },
             cellsCount = 4,
-            onValueChange = {
-                otpValue = it
+            onValueChange = { newValue, _ ->
+                otpValue = newValue
             },
             isErrorOccurred = otpValue == "111111",
             cellConfigurations = OhTeePeeDefaults.cellConfigurations(
@@ -323,8 +323,8 @@ private fun Sample5(
                 .padding(8.dp),
             value = otpValue,
             cellsCount = 6,
-            onValueChange = {
-                otpValue = it
+            onValueChange = { newValue, _ ->
+                otpValue = newValue
             },
             isErrorOccurred = otpValue == "111111",
             cellConfigurations = OhTeePeeDefaults.cellConfigurations(

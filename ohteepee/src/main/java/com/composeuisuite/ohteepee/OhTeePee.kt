@@ -25,7 +25,7 @@ private const val DEFAULT_PLACE_HOLDER = " "
 fun OhTeePee(
     cellsCount: Int,
     value: String,
-    onValueChange: (String) -> Unit,
+    onValueChange: (newValue: String, isValid: Boolean) -> Unit,
     cellConfigurations: CellConfigurations,
     modifier: Modifier = Modifier,
     isErrorOccurred: Boolean = false,
@@ -97,7 +97,7 @@ fun OhTeePee(
             }
 
             if (formattedNewValue.length == cellsCount) {
-                onValueChange(formattedNewValue)
+                onValueChange(formattedNewValue, true)
                 focusRequester.last().requestFocusSafely()
                 return@onCellInputChange
             }
@@ -112,7 +112,8 @@ fun OhTeePee(
                 otpValue[previousIndex] = placeHolderAsChar
                 requestFocus(previousIndex)
             }
-            onValueChange(otpValue.joinToString(""))
+            val otpValueAsString = otpValue.joinToString(String.EMPTY)
+            onValueChange(otpValueAsString, otpValueAsString.none { it == placeHolderAsChar })
         },
     )
 }
