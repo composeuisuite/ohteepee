@@ -40,6 +40,8 @@ class MainActivity : ComponentActivity() {
                         .background(Color.White),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    Sample0(modifier = Modifier.weight(1f))
+
                     Sample1(modifier = Modifier.weight(1f))
 
                     Sample2(modifier = Modifier.weight(1f))
@@ -52,6 +54,51 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun Sample0(
+    modifier: Modifier = Modifier
+) {
+    val backgroundColor = Color(0xFFFFFFFF)
+    var otpValue: String by remember { mutableStateOf("") }
+    val defaultConfig = OhTeePeeDefaults.singleCellConfiguration(
+        borderColor = Color.Gray,
+        borderWidth = 2.dp,
+        backgroundColor = backgroundColor.copy(alpha = 0.6f),
+        textStyle = TextStyle(
+            color = Color.Black
+        )
+    )
+
+    Row(
+        modifier = modifier
+            .fillMaxSize()
+            .background(backgroundColor)
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        OhTeePee(
+            value = otpValue,
+            cellsCount = 6,
+            onValueChange = {
+                otpValue = it
+            },
+            isErrorOccurred = otpValue == "111111",
+            cellConfigurations = OhTeePeeDefaults.cellConfigurations(
+                emptyCellConfig = defaultConfig,
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .size(48.dp),
+                activeCellConfig = defaultConfig.copy(
+                    borderColor = Color.Red
+                ),
+                enableBottomLine = true
+            ),
+            placeHolder = "-"
+        )
     }
 }
 
@@ -95,7 +142,8 @@ private fun Sample1(
                     .height(56.dp),
                 elevation = 8.dp,
             ),
-            placeHolder = "-"
+            placeHolder = "-",
+            autoFocusByDefault = false
         )
     }
 }

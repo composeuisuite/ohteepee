@@ -41,6 +41,7 @@ object OhTeePeeDefaults {
         modifier: Modifier = Modifier,
         elevation: Dp = 0.dp,
         cursorColor: Color = Color.Transparent,
+        enableBottomLine: Boolean = false
     ) = CellConfigurations(
         modifier = modifier,
         elevation = elevation,
@@ -48,6 +49,7 @@ object OhTeePeeDefaults {
         errorCellConfig = errorCellConfig,
         emptyCellConfig = emptyCellConfig,
         filledCellConfig = filledCellConfig,
-        cursorColor = cursorColor
+        cursorColor = cursorColor,
+        enableBottomLine = enableBottomLine
     )
 }

@@ -12,6 +12,7 @@ data class CellConfigurations(
     val errorCellConfig: SingleCellConfiguration,
     val emptyCellConfig: SingleCellConfiguration,
     val filledCellConfig: SingleCellConfiguration,
+    val enableBottomLine: Boolean
 )
 
 

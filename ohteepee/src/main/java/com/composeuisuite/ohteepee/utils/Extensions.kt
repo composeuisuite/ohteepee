@@ -1,5 +1,6 @@
 package com.composeuisuite.ohteepee.utils
 
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 
 internal val String.Companion.EMPTY: String
@@ -10,5 +11,13 @@ internal fun FocusRequester.requestFocusSafely() {
         this.requestFocus()
     } catch (e: Exception) {
         e.printStackTrace()
+    }
+}
+
+internal fun Modifier.conditional(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {
+    return if (condition) {
+        then(modifier(Modifier))
+    } else {
+        this
     }
 }
