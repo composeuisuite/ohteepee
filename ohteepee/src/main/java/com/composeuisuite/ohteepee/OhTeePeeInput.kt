@@ -16,6 +16,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.input.KeyboardType
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
+import com.composeuisuite.ohteepee.example.BasicOhTeePeeExample
 import com.composeuisuite.ohteepee.utils.EMPTY
 import com.composeuisuite.ohteepee.utils.requestFocusSafely
 
@@ -50,6 +51,8 @@ import com.composeuisuite.ohteepee.utils.requestFocusSafely
  * you can set it to false when you are waiting for a response from server.
  *
  * @param autoFocusByDefault when set to true, first cell will be focused by default.
+ *
+ * @sample BasicOhTeePeeExample
  */
 @Composable
 fun OhTeePeeInput(
