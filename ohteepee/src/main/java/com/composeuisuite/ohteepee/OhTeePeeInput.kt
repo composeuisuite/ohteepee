@@ -19,6 +19,38 @@ import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.utils.EMPTY
 import com.composeuisuite.ohteepee.utils.requestFocusSafely
 
+/**
+ * OhTeePeeInput is a composable that can be used to get OTP/Pin from user.
+ *
+ * Whenever the user edits the text, [onValueChange] is called with the most up to date state
+ * including the empty values that represented by [OhTeePeeConfigurations.placeHolder].
+ *
+ * When the user fills all the cells, [onValueChange]'s isValid parameter will be `true`,
+ * otherwise it will be `false`.
+ *
+ * To customize the appearance of cells you can pass [configurations] parameter with
+ * a lot of options like , [OhTeePeeConfigurations.cellModifier], [OhTeePeeConfigurations.errorCellConfig] and more.
+ *
+ * If you don't want to pass all the configurations, you can use [OhTeePeeConfigurations.withDefaults] to customize
+ * only the configurations you want.
+ *
+ * @param value will be split to chars and shown in the [OhTeePeeInput].
+ * @param onValueChange Called when user enters or deletes any cell.
+ * @param configurations [OhTeePeeConfigurations] to customize the appearance of cells.
+ *
+ * @param modifier optional [Modifier] for the whole [OhTeePeeInput].
+ * You can use [OhTeePeeConfigurations.cellModifier] to customize each single cell.
+ *
+ * @param isValueInvalid when set to true, all cells will use [OhTeePeeConfigurations.errorCellConfig] and
+ * focus will be requested on first cell. you should set this to false when user starts editing the text.
+ *
+ * @param keyboardType The keyboard type to be used for this text field.
+ *
+ * @param enabled when enabled is false, user will not be able to interact with the text fields.
+ * you can set it to false when you are waiting for a response from server.
+ *
+ * @param autoFocusByDefault when set to true, first cell will be focused by default.
+ */
 @Composable
 fun OhTeePeeInput(
     value: String,
