@@ -13,7 +13,8 @@ data class OhTeePeeCellConfiguration(
     val backgroundColor: Color,
     val borderColor: Color,
     val borderWidth: Dp,
-    val textStyle: TextStyle
+    val textStyle: TextStyle,
+    val placeHolderTextStyle: TextStyle
 ) {
     companion object {
         val BORDER_WIDTH = 1.dp
@@ -25,12 +26,14 @@ data class OhTeePeeCellConfiguration(
             borderColor: Color = MaterialTheme.colors.primary,
             borderWidth: Dp = BORDER_WIDTH,
             textStyle: TextStyle = TextStyle(),
+            placeHolderTextStyle: TextStyle = textStyle
         ) = OhTeePeeCellConfiguration(
             shape = shape,
             backgroundColor = backgroundColor,
             borderColor = borderColor,
             borderWidth = borderWidth,
-            textStyle = textStyle
+            textStyle = textStyle,
+            placeHolderTextStyle = placeHolderTextStyle
         )
     }
 }

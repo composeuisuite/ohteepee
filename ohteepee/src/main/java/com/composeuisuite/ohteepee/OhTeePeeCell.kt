@@ -58,6 +58,14 @@ internal fun OhTeePeeCell(
         }
         mutableStateOf(config)
     }
+    val textStyle by remember(cellConfiguration) {
+        val style = if (isCurrentCharAPlaceHolder) {
+            cellConfiguration.placeHolderTextStyle
+        } else {
+            cellConfiguration.textStyle
+        }
+        mutableStateOf(style.copy(textAlign = TextAlign.Center))
+    }
 
     val textFieldValue = remember(value) {
         TextFieldValue(
@@ -101,7 +109,7 @@ internal fun OhTeePeeCell(
                 if (it.text == value) return@BasicTextField
                 onValueChange(it.text)
             },
-            textStyle = cellConfiguration.textStyle.copy(textAlign = TextAlign.Center),
+            textStyle = textStyle,
             modifier = Modifier
                 .onFocusEvent { isFocused = it.isFocused }
                 .background(cellConfiguration.backgroundColor),
