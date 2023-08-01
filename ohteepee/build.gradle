@@ -45,28 +45,6 @@ android {
     }
 }
 
-publishing {
-    publications {
-        release(MavenPublication) {
-            groupId 'com.composeuisuite'
-            artifactId getArtifactId()
-            version getVersionName()
-            artifact("$buildDir/outputs/aar/${getArtifactId()}-release.aar")
-        }
-    }
-
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Compose-UI-Suite/OhTeePee")
-            credentials {
-                username = "tarikyasar"
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
-
 dependencies {
     // Compose
     implementation "androidx.activity:activity-compose:$composeActivity"
@@ -76,4 +54,19 @@ dependencies {
 
     // Material
     implementation "androidx.compose.material:material:$material"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId 'com.composeuisuite'
+                artifactId getArtifactId()
+                version getVersionName()
+//                artifact("$buildDir/outputs/aar/${getArtifactId()}-release.aar")
+            }
+        }
+    }
 }
