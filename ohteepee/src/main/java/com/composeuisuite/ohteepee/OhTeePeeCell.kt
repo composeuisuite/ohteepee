@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -31,6 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.utils.conditional
+
+private val MIN_HEIGHT_CELL_SIZE = 48.dp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -76,6 +79,9 @@ internal fun OhTeePeeCell(
 
     Surface(
         modifier = modifier
+            .defaultMinSize(
+                minHeight = MIN_HEIGHT_CELL_SIZE
+            )
             .conditional(configurations.enableBottomLine) {
                 drawBehind {
                     if (configurations.enableBottomLine) {
