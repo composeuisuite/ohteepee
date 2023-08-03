@@ -56,6 +56,7 @@ internal fun OhTeePeeCell(
     modifier: Modifier = Modifier,
 ) {
     var isFocused by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
     val cellConfiguration by remember(
         key1 = value,
         key2 = isFocused,
@@ -69,14 +70,12 @@ internal fun OhTeePeeCell(
         }
         mutableStateOf(config)
     }
-
-    val textStyle = remember(cellConfiguration) {
+    val textStyle = remember(cellConfiguration.textStyle) {
         cellConfiguration.textStyle.copy(textAlign = TextAlign.Center)
     }
-    val placeHolderTextStyle = remember(cellConfiguration) {
+    val placeHolderTextStyle = remember(cellConfiguration.placeHolderTextStyle) {
         cellConfiguration.placeHolderTextStyle.copy(textAlign = TextAlign.Center)
     }
-
     val textFieldValue = remember(value) {
         TextFieldValue(
             text = value,
@@ -115,7 +114,6 @@ internal fun OhTeePeeCell(
         elevation = configurations.elevation,
         shape = if (configurations.enableBottomLine) RoundedCornerShape(0.dp) else cellConfiguration.shape,
     ) {
-        val interactionSource = remember { MutableInteractionSource() }
         BasicTextField(
             value = textFieldValue,
             onValueChange = {
