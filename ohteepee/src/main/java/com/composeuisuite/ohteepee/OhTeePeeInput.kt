@@ -15,10 +15,14 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.example.BasicOhTeePeeExample
 import com.composeuisuite.ohteepee.utils.EMPTY
 import com.composeuisuite.ohteepee.utils.requestFocusSafely
+
+private const val NOT_ENTERED_VALUE = '₺'
 
 /**
  * OhTeePeeInput is a composable that can be used to get OTP/Pin from user.
@@ -65,8 +69,8 @@ fun OhTeePeeInput(
     enabled: Boolean = true,
     autoFocusByDefault: Boolean = true
 ) {
-    require(configurations.placeHolder.length == 1) {
-        "PlaceHolder must be a single character"
+    require(configurations.placeHolder.length <= 1) {
+        "placeHolder can't be more then 1 characters"
     }
     require(configurations.obscureText.length <= 1) {
         "obscureText can't be more then 1 characters"
@@ -76,12 +80,14 @@ fun OhTeePeeInput(
     val placeHolder = configurations.placeHolder
     val cellsCount = configurations.cellsCount
     val placeHolderAsChar = placeHolder.first()
-    val otpValue by remember(value, isValueInvalid, placeHolder) {
+    val otpValue by remember(value, isValueInvalid) {
         val charList = CharArray(cellsCount) { index ->
             if (isValueInvalid) {
-                placeHolderAsChar
+                NOT_ENTERED_VALUE
             } else {
-                value.getOrElse(index) { placeHolderAsChar }
+                value.getOrNull(index)
+                    ?.takeIf { it.isWhitespace().not() }
+                    ?: NOT_ENTERED_VALUE
             }
         }
         mutableStateOf(charList)
@@ -92,6 +98,14 @@ fun OhTeePeeInput(
             handleColor = Transparent,
             backgroundColor = Transparent
         )
+    }
+
+    val visualTransformation = remember(obscureText) {
+        if (obscureText.isEmpty()) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation(obscureText.first())
+        }
     }
 
     fun requestFocus(index: Int) {
@@ -112,13 +126,13 @@ fun OhTeePeeInput(
         textSelectionColors = transparentTextSelectionColors,
         cellsCount = cellsCount,
         otpValue = otpValue,
-        obscureText = obscureText,
         placeHolder = placeHolder,
         isErrorOccurred = isValueInvalid,
         keyboardType = keyboardType,
         ohTeePeeConfigurations = configurations,
         focusRequesters = focusRequester,
         enabled = enabled,
+        visualTransformation = visualTransformation,
         onCellInputChange = onCellInputChange@{ currentCellIndex, newValue ->
             val currentCellText = otpValue[currentCellIndex].toString()
             val formattedNewValue = newValue.replace(placeHolder, String.EMPTY)
@@ -138,14 +152,16 @@ fun OhTeePeeInput(
             if (formattedNewValue.isNotEmpty()) {
                 otpValue[currentCellIndex] = formattedNewValue.last()
                 requestFocus(currentCellIndex + 1)
-            } else if (currentCellText != placeHolder) {
-                otpValue[currentCellIndex] = placeHolderAsChar
+            } else if (currentCellText != NOT_ENTERED_VALUE.toString()) {
+                otpValue[currentCellIndex] = NOT_ENTERED_VALUE
             } else {
                 val previousIndex = (currentCellIndex - 1).coerceIn(0, cellsCount)
-                otpValue[previousIndex] = placeHolderAsChar
+                otpValue[previousIndex] = NOT_ENTERED_VALUE
                 requestFocus(previousIndex)
             }
-            val otpValueAsString = otpValue.joinToString(String.EMPTY)
+            val otpValueAsString = otpValue.joinToString(String.EMPTY) {
+                if (it == NOT_ENTERED_VALUE) " " else it.toString()
+            }
             onValueChange(otpValueAsString, otpValueAsString.none { it == placeHolderAsChar })
         },
     )
@@ -157,13 +173,13 @@ private fun OhTeePeeInput(
     textSelectionColors: TextSelectionColors,
     cellsCount: Int,
     otpValue: CharArray,
-    obscureText: String,
     placeHolder: String,
     isErrorOccurred: Boolean,
     keyboardType: KeyboardType,
     ohTeePeeConfigurations: OhTeePeeConfigurations,
     focusRequesters: List<FocusRequester>,
     enabled: Boolean,
+    visualTransformation: VisualTransformation,
     onCellInputChange: (index: Int, value: String) -> Unit
 ) {
     CompositionLocalProvider(LocalTextSelectionColors provides textSelectionColors) {
@@ -174,8 +190,6 @@ private fun OhTeePeeInput(
             repeat(cellsCount) { index ->
                 val displayValue = getCellDisplayCharacter(
                     currentChar = otpValue[index],
-                    obscureText = obscureText,
-                    placeHolder = placeHolder
                 )
                 OhTeePeeCell(
                     value = displayValue,
@@ -185,10 +199,11 @@ private fun OhTeePeeInput(
                         .focusRequester(focusRequester = focusRequesters[index]),
                     enabled = enabled,
                     configurations = ohTeePeeConfigurations,
-                    isCurrentCharAPlaceHolder = displayValue == placeHolder,
                     onValueChange = {
                         onCellInputChange(index, it)
-                    }
+                    },
+                    placeHolder = placeHolder,
+                    visualTransformation = visualTransformation
                 )
             }
         }
@@ -197,17 +212,5 @@ private fun OhTeePeeInput(
 
 @Composable
 private fun getCellDisplayCharacter(
-    currentChar: Char,
-    obscureText: String,
-    placeHolder: String
-): String = currentChar
-    .toString()
-    .replace(placeHolder, "")
-    .let {
-        if (it.isNotEmpty() && obscureText.isNotEmpty()) {
-            obscureText
-        } else {
-            it
-        }
-    }
-    .takeIf { it.isNotEmpty() } ?: placeHolder
+    currentChar: Char
+): String = currentChar.toString().replace(NOT_ENTERED_VALUE.toString(), String.EMPTY)
