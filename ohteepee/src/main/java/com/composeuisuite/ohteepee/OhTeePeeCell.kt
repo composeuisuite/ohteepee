@@ -6,24 +6,31 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -35,14 +42,15 @@ import com.composeuisuite.ohteepee.utils.conditional
 
 private val MIN_HEIGHT_CELL_SIZE = 48.dp
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun OhTeePeeCell(
     value: String,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType,
-    isCurrentCharAPlaceHolder: Boolean,
     configurations: OhTeePeeConfigurations,
+    placeHolder: String,
+    visualTransformation: VisualTransformation,
     isErrorOccurred: Boolean,
     enabled: Boolean,
     modifier: Modifier = Modifier,
@@ -56,18 +64,17 @@ internal fun OhTeePeeCell(
         val config = when {
             isErrorOccurred -> configurations.errorCellConfig
             isFocused -> configurations.activeCellConfig
-            value.isNotEmpty() && isCurrentCharAPlaceHolder.not() -> configurations.filledCellConfig
+            value.isNotEmpty() -> configurations.filledCellConfig
             else -> configurations.emptyCellConfig
         }
         mutableStateOf(config)
     }
-    val textStyle by remember(cellConfiguration) {
-        val style = if (isCurrentCharAPlaceHolder) {
-            cellConfiguration.placeHolderTextStyle
-        } else {
-            cellConfiguration.textStyle
-        }
-        mutableStateOf(style.copy(textAlign = TextAlign.Center))
+
+    val textStyle = remember(cellConfiguration) {
+        cellConfiguration.textStyle.copy(textAlign = TextAlign.Center)
+    }
+    val placeHolderTextStyle = remember(cellConfiguration) {
+        cellConfiguration.placeHolderTextStyle.copy(textAlign = TextAlign.Center)
     }
 
     val textFieldValue = remember(value) {
@@ -115,8 +122,18 @@ internal fun OhTeePeeCell(
                 if (it.text == value) return@BasicTextField
                 onValueChange(it.text)
             },
+            visualTransformation = visualTransformation,
             textStyle = textStyle,
             modifier = Modifier
+                .conditional(value.isEmpty()) {
+                    onKeyEvent {
+                        if (it.key == Key.Backspace) {
+                            onValueChange("")
+                            return@onKeyEvent true
+                        }
+                        false
+                    }
+                }
                 .onFocusEvent { isFocused = it.isFocused }
                 .background(cellConfiguration.backgroundColor),
             keyboardOptions = KeyboardOptions(
@@ -139,7 +156,26 @@ internal fun OhTeePeeCell(
                 enabled = enabled,
                 interactionSource = interactionSource,
                 contentPadding = PaddingValues(0.dp),
+                placeholder = {
+                    CellPlaceHolder(
+                        placeHolder = placeHolder,
+                        placeHolderTextStyle = placeHolderTextStyle
+                    )
+                },
             )
         }
     }
+}
+
+@Composable
+private fun CellPlaceHolder(
+    placeHolder: String,
+    placeHolderTextStyle: TextStyle,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = placeHolder,
+        style = placeHolderTextStyle,
+        modifier = modifier.fillMaxWidth()
+    )
 }
