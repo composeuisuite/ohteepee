@@ -1,15 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'maven-publish'
-}
-
-def getVersionName = { ->
-    return "0.0.1"
-}
-
-def getArtifactId = { ->
-    return "ohteepee"
 }
 
 android {
@@ -54,19 +45,4 @@ dependencies {
 
     // Material
     implementation "androidx.compose.material:material:$material"
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-
-                groupId 'com.composeuisuite'
-                artifactId getArtifactId()
-                version getVersionName()
-//                artifact("$buildDir/outputs/aar/${getArtifactId()}-release.aar")
-            }
-        }
-    }
 }
