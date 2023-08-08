@@ -1,5 +1,6 @@
 package com.composeuisuite.ohteepee
 
+import android.view.KeyEvent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,6 +30,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -124,10 +127,12 @@ internal fun OhTeePeeCell(
             textStyle = textStyle,
             modifier = Modifier
                 .conditional(value.isEmpty()) {
-                    onKeyEvent {
-                        if (it.key == Key.Backspace) {
+                    onPreviewKeyEvent {
+                        val isDeleteKey = it.key == Key.Backspace || it.key == Key.Delete
+
+                        if (isDeleteKey && it.nativeKeyEvent.action == KeyEvent.ACTION_DOWN) {
                             onValueChange("")
-                            return@onKeyEvent true
+                            return@onPreviewKeyEvent true
                         }
                         false
                     }
