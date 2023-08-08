@@ -1,8 +1,6 @@
 ![](ohteepee_cover.png)
 
-# OhTeePee
-
-![latestVersion](https://img.shields.io/github/v/tag/composeuisuite/ohteepee?display_name=tag)
+# OhTeePee ![latestVersion](https://img.shields.io/github/v/tag/composeuisuite/ohteepee?display_name=tag)
 
 ## Demo
 
@@ -24,7 +22,7 @@ repositories {
 Then add OhTeePee dependency to your module build.gradle file.
 
 ```groovy
-implementation 'com.github.composeuisuite:ohteepee:$versionName'
+implementation "com.github.composeuisuite:ohteepee:$versionName"
 ```
 
 ### Usage
@@ -94,9 +92,9 @@ This is just the tip of the iceberg when it comes to customization of OhTeePee l
 
 ## Todo List
 
-- [ ] Read OTP Code directly from SMS
-- [ ] Add animations
-- [ ] Write UI tests
+- [x] Read OTP Code directly from SMS
+- [x] Add animations
+- [x] Write UI tests
 
 ## Authors
 
