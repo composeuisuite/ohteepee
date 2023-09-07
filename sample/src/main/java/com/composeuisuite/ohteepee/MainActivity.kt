@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -24,6 +25,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,7 +38,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
@@ -57,12 +59,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val pageCount = 4
             val pagerState = rememberPagerState(initialPage = 0)
 
             OtpFieldTheme {
                 Box(modifier = Modifier.fillMaxSize()) {
                     HorizontalPager(
-                        pageCount = 3,
+                        pageCount = pageCount,
                         modifier = Modifier.fillMaxSize(),
                         state = pagerState
                     ) {
@@ -70,18 +73,29 @@ class MainActivity : ComponentActivity() {
                             0 -> Sample0()
                             1 -> Sample1()
                             2 -> Sample2()
+                            3 -> Sample3()
                         }
                     }
 
-                    Text(
-                        text = "Sample No: ${pagerState.currentPage}",
+                    Row(
                         modifier = Modifier
+                            .padding(top = 8.dp)
+                            .background(color = Color.Black.copy(alpha = 0.6f), shape = CircleShape)
                             .align(Alignment.TopCenter)
-                            .padding(8.dp)
-                            .background(color = Color.Black.copy(0.6f), RoundedCornerShape(8.dp))
-                            .padding(8.dp),
-                        color = Color.White
-                    )
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    ) {
+                        repeat(pageCount) { index ->
+                            Box(
+                                modifier = Modifier
+                                    .padding(2.dp)
+                                    .size(8.dp)
+                                    .background(
+                                        if (index == pagerState.currentPage) Color.White else Color.Gray,
+                                        shape = CircleShape
+                                    )
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -95,9 +109,12 @@ private fun Sample0(
     val backgroundColor = Color(0xFF4F4F83)
     var otpValue: String by remember { mutableStateOf("") }
     val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
-        backgroundColor = backgroundColor.copy(alpha = 0.6f), textStyle = TextStyle(
+        backgroundColor = backgroundColor.copy(alpha = 0.6f),
+        textStyle = TextStyle(
             color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold
-        ), borderColor = Color.Transparent, borderWidth = 1.dp
+        ),
+        borderColor = Color.Transparent,
+        borderWidth = 1.dp
     )
 
     Column(
@@ -164,9 +181,12 @@ private fun Sample1(
     val surfaceColor = Color(0xFFFFE09A)
     var otpValue: String by remember { mutableStateOf("") }
     val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
-        backgroundColor = backgroundColor.copy(alpha = 0.6f), textStyle = TextStyle(
+        backgroundColor = backgroundColor.copy(alpha = 0.6f),
+        textStyle = TextStyle(
             color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold
-        ), borderColor = Color.Transparent, borderWidth = 1.dp
+        ),
+        borderColor = Color.Transparent,
+        borderWidth = 1.dp
     )
 
     Column(
@@ -272,6 +292,88 @@ private fun Sample1(
 private fun Sample2(
     modifier: Modifier = Modifier
 ) {
+    val backgroundColor = Color(0xFF1A1E22)
+    var otpValue: String by remember { mutableStateOf("") }
+    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+        backgroundColor = backgroundColor.copy(alpha = 0.6f),
+        textStyle = TextStyle(
+            color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold
+        ),
+        borderColor = Color.Transparent,
+        borderWidth = 1.dp
+    )
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(backgroundColor)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Text(
+            text = "Verification Code",
+            fontSize = 24.sp,
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Please type the verification code sent to +1111111111",
+            color = Color.White,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        OhTeePeeInput(
+            value = otpValue,
+            onValueChange = { newValue, isValid ->
+                otpValue = newValue
+            },
+            isValueInvalid = otpValue == "1111",
+            configurations = OhTeePeeConfigurations.withDefaults(
+                cellsCount = 4,
+                emptyCellConfig = defaultConfig,
+                activeCellConfig = defaultConfig,
+                cellModifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .size(48.dp),
+            ),
+            autoFocusByDefault = false,
+            modifier = Modifier
+                .background(color = Color(0xFF272D33), shape = RoundedCornerShape(8.dp))
+                .padding(32.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier
+                .background(color = Color.White, shape = RoundedCornerShape(8.dp))
+                .padding(vertical = 16.dp, horizontal = 32.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = "Continue", fontSize = 24.sp, color = backgroundColor)
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Image(imageVector = Icons.Default.ArrowForward, contentDescription = "")
+        }
+
+        Spacer(modifier = Modifier.height(64.dp))
+    }
+}
+
+@Composable
+private fun Sample3(
+    modifier: Modifier = Modifier
+) {
     val largeRadialGradient = object : ShaderBrush() {
         override fun createShader(size: Size): Shader {
             val biggerDimension = maxOf(size.height, size.width)
@@ -325,81 +427,6 @@ private fun Sample2(
             ),
             autoFocusByDefault = false
         )
-    }
-}
-
-@Composable
-private fun Sample3(
-    modifier: Modifier = Modifier
-) {
-    val backgroundColor = Color(0xFF4F4F83)
-    var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
-        backgroundColor = backgroundColor.copy(alpha = 0.6f), textStyle = TextStyle(
-            color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold
-        ), borderColor = Color.Transparent, borderWidth = 1.dp
-    )
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(
-                Brush.radialGradient(
-                    listOf(
-                        Color(0xFF2be4dc),
-                        Color(0xFF243484)
-                    )
-                )
-            )
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Image(
-            painter = painterResource(id = R.drawable.sample_image_0),
-            contentDescription = "",
-            modifier = Modifier.size(200.dp)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Verification Code",
-            fontSize = 24.sp,
-            color = Color.White,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Please type the verification code sent to +1111111111",
-            color = Color.White,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        OhTeePeeInput(
-            value = otpValue,
-            onValueChange = { newValue, isValid ->
-                otpValue = newValue
-            },
-            isValueInvalid = otpValue == "1111",
-            configurations = OhTeePeeConfigurations.withDefaults(
-                cellsCount = 4,
-                emptyCellConfig = defaultConfig,
-                activeCellConfig = defaultConfig,
-                cellModifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .size(48.dp),
-            ),
-            autoFocusByDefault = false
-        )
-
-        Spacer(modifier = Modifier.height(64.dp))
     }
 }
 
