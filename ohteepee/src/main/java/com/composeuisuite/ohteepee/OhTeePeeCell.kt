@@ -66,6 +66,7 @@ internal fun OhTeePeeCell(
         key3 = isErrorOccurred
     ) {
         val config = when {
+            !enabled -> if (value.isEmpty()) configurations.emptyCellConfig else configurations.filledCellConfig
             isErrorOccurred -> configurations.errorCellConfig
             isFocused -> configurations.activeCellConfig
             value.isNotEmpty() -> configurations.filledCellConfig
