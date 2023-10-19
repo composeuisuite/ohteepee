@@ -141,7 +141,8 @@ internal fun OhTeePeeCell(
                 .background(cellConfiguration.backgroundColor),
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                autoCorrect = false,
             ),
             keyboardActions = KeyboardActions(
                 onNext = {},

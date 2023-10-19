@@ -65,7 +65,7 @@ fun OhTeePeeInput(
     configurations: OhTeePeeConfigurations,
     modifier: Modifier = Modifier,
     isValueInvalid: Boolean = false,
-    keyboardType: KeyboardType = KeyboardType.Number,
+    keyboardType: KeyboardType = KeyboardType.NumberPassword,
     enabled: Boolean = true,
     autoFocusByDefault: Boolean = true
 ) {
