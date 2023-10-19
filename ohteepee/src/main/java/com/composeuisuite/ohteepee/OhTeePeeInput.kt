@@ -114,7 +114,7 @@ fun OhTeePeeInput(
     }
 
     LaunchedEffect(autoFocusByDefault) {
-        if (autoFocusByDefault) focusRequester.first().requestFocus()
+        if (autoFocusByDefault) requestFocus(value.trim().length)
     }
 
     LaunchedEffect(isValueInvalid) {
