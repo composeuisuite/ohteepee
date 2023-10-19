@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -138,17 +139,6 @@ fun OhTeePeeInput(
             val formattedNewValue = newValue.replace(placeHolder, String.EMPTY)
                 .replace(obscureText, String.EMPTY)
 
-            if (formattedNewValue == currentCellText) {
-                requestFocus(currentCellIndex + 1)
-                return@onCellInputChange
-            }
-
-            if (formattedNewValue.length == cellsCount) {
-                onValueChange(formattedNewValue, true)
-                focusRequester.last().requestFocusSafely()
-                return@onCellInputChange
-            }
-
             if (formattedNewValue.isNotEmpty()) {
                 otpValue[currentCellIndex] = formattedNewValue.last()
                 requestFocus(currentCellIndex + 1)
@@ -196,6 +186,12 @@ private fun OhTeePeeInput(
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
                     modifier = ohTeePeeConfigurations.cellModifier
+                        .onFocusChanged {
+                            val filledLength = getFilledLength(otpValue)
+                            if (it.isFocused && index > filledLength) {
+                                focusRequesters[filledLength].requestFocusSafely()
+                            }
+                        }
                         .focusRequester(focusRequester = focusRequesters[index]),
                     enabled = enabled,
                     configurations = ohTeePeeConfigurations,
@@ -214,3 +210,7 @@ private fun OhTeePeeInput(
 private fun getCellDisplayCharacter(
     currentChar: Char
 ): String = currentChar.toString().replace(NOT_ENTERED_VALUE.toString(), String.EMPTY)
+
+private fun getFilledLength(otpValue: CharArray) = otpValue.count {
+    it != NOT_ENTERED_VALUE
+}
