@@ -51,7 +51,7 @@ data class OhTeePeeConfigurations(
     val errorCellConfig: OhTeePeeCellConfiguration,
     val emptyCellConfig: OhTeePeeCellConfiguration,
     val filledCellConfig: OhTeePeeCellConfiguration,
-    val enableBottomLine: Boolean
+    val enableBottomLine: Boolean,
 ) {
 
     companion object {
@@ -61,10 +61,10 @@ data class OhTeePeeConfigurations(
             emptyCellConfig: OhTeePeeCellConfiguration,
             filledCellConfig: OhTeePeeCellConfiguration = emptyCellConfig,
             activeCellConfig: OhTeePeeCellConfiguration = emptyCellConfig.copy(
-                borderColor = MaterialTheme.colors.primary
+                borderColor = MaterialTheme.colors.primary,
             ),
             errorCellConfig: OhTeePeeCellConfiguration = emptyCellConfig.copy(
-                borderColor = MaterialTheme.colors.error
+                borderColor = MaterialTheme.colors.error,
             ),
             cellModifier: Modifier = Modifier
                 .padding(horizontal = 2.dp)
@@ -85,9 +85,7 @@ data class OhTeePeeConfigurations(
             enableBottomLine = enableBottomLine,
             placeHolder = placeHolder,
             obscureText = obscureText,
-            cellsCount = cellsCount
+            cellsCount = cellsCount,
         )
     }
 }
-
-

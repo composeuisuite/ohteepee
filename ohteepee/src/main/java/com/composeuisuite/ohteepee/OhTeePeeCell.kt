@@ -61,14 +61,14 @@ internal fun OhTeePeeCell(
     val cellConfiguration by remember(
         key1 = value,
         key2 = isFocused,
-        key3 = isErrorOccurred
+        key3 = isErrorOccurred,
     ) {
         val config = getCellConfig(
             enabled = enabled,
             cellText = value,
             configurations = configurations,
             isErrorOccurred = isErrorOccurred,
-            isFocused = isFocused
+            isFocused = isFocused,
         )
         mutableStateOf(config)
     }
@@ -88,7 +88,7 @@ internal fun OhTeePeeCell(
     Surface(
         modifier = modifier
             .defaultMinSize(
-                minHeight = MIN_HEIGHT_CELL_SIZE
+                minHeight = MIN_HEIGHT_CELL_SIZE,
             )
             .conditional(configurations.enableBottomLine) {
                 drawBehind {
@@ -99,7 +99,7 @@ internal fun OhTeePeeCell(
                             color = cellConfiguration.borderColor,
                             start = Offset(0f, y),
                             end = Offset(size.width, y),
-                            strokeWidth = cellConfiguration.borderWidth.toPx()
+                            strokeWidth = cellConfiguration.borderWidth.toPx(),
                         )
                     }
                 }
@@ -108,9 +108,9 @@ internal fun OhTeePeeCell(
                 border(
                     border = BorderStroke(
                         width = cellConfiguration.borderWidth,
-                        color = cellConfiguration.borderColor
+                        color = cellConfiguration.borderColor,
                     ),
-                    shape = cellConfiguration.shape
+                    shape = cellConfiguration.shape,
                 )
             },
         elevation = configurations.elevation,
@@ -145,7 +145,7 @@ internal fun OhTeePeeCell(
             ),
             keyboardActions = KeyboardActions(
                 onNext = {},
-                onDone = {}
+                onDone = {},
             ),
             singleLine = true,
             enabled = enabled,
@@ -162,7 +162,7 @@ internal fun OhTeePeeCell(
                 placeholder = {
                     CellPlaceHolder(
                         placeHolder = placeHolder,
-                        placeHolderTextStyle = placeHolderTextStyle
+                        placeHolderTextStyle = placeHolderTextStyle,
                     )
                 },
             )
@@ -175,7 +175,7 @@ private fun getCellConfig(
     cellText: String,
     configurations: OhTeePeeConfigurations,
     isErrorOccurred: Boolean,
-    isFocused: Boolean
+    isFocused: Boolean,
 ) = when {
     !enabled -> if (cellText.isEmpty()) configurations.emptyCellConfig else configurations.filledCellConfig
     isErrorOccurred -> configurations.errorCellConfig
@@ -193,6 +193,6 @@ private fun CellPlaceHolder(
     Text(
         text = placeHolder,
         style = placeHolderTextStyle,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     )
 }

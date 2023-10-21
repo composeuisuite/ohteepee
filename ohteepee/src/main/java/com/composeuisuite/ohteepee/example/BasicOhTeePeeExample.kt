@@ -26,8 +26,8 @@ internal fun BasicOhTeePeeExample() {
         borderWidth = 1.dp,
         shape = RoundedCornerShape(16.dp),
         textStyle = TextStyle(
-            color = Color.Black
-        )
+            color = Color.Black,
+        ),
     )
 
     OhTeePeeInput(
@@ -46,11 +46,11 @@ internal fun BasicOhTeePeeExample() {
             filledCellConfig = defaultConfig,
             activeCellConfig = defaultConfig.copy(
                 borderColor = Color.Black,
-                borderWidth = 2.dp
+                borderWidth = 2.dp,
             ),
             errorCellConfig = defaultConfig.copy(
                 borderColor = Color.Red,
-                borderWidth = 2.dp
+                borderWidth = 2.dp,
             ),
             placeHolder = "-",
             cellModifier = Modifier
