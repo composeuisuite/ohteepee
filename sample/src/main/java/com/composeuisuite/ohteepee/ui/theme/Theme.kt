@@ -10,14 +10,14 @@ import androidx.compose.ui.graphics.Color
 private val DarkColorPalette = darkColors(
     primary = Purple200,
     primaryVariant = Purple700,
-    secondary = Teal200
+    secondary = Teal200,
 )
 
 private val LightColorPalette = lightColors(
     primary = Color(0xFF5499A0),
     primaryVariant = Purple700,
     secondary = Teal200,
-    error = Color(0xFFEC7C7C)
+    error = Color(0xFFEC7C7C),
     /* Other default colors to override
     background = Color.White,
     surface = Color.White,
@@ -40,6 +40,6 @@ fun OtpFieldTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composab
         colors = colors,
         typography = Typography,
         shapes = Shapes,
-        content = content
+        content = content,
     )
 }

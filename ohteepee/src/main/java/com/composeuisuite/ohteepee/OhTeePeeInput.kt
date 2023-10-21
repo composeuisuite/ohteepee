@@ -101,7 +101,7 @@ fun OhTeePeeInput(
     val transparentTextSelectionColors: TextSelectionColors = remember {
         TextSelectionColors(
             handleColor = Transparent,
-            backgroundColor = Transparent
+            backgroundColor = Transparent,
         )
     }
 
@@ -191,11 +191,11 @@ private fun OhTeePeeInput(
 ) {
     CompositionLocalProvider(
         LocalTextSelectionColors provides textSelectionColors,
-        LocalLayoutDirection provides layoutDirection
+        LocalLayoutDirection provides layoutDirection,
     ) {
         Row(
             modifier = modifier,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             repeat(cellsCount) { index ->
                 val displayValue = getCellDisplayCharacter(
@@ -213,7 +213,7 @@ private fun OhTeePeeInput(
                         onCellInputChange(index, it)
                     },
                     placeHolder = placeHolder,
-                    visualTransformation = visualTransformation
+                    visualTransformation = visualTransformation,
                 )
             }
         }
@@ -222,5 +222,5 @@ private fun OhTeePeeInput(
 
 @Composable
 private fun getCellDisplayCharacter(
-    currentChar: Char
+    currentChar: Char,
 ): String = currentChar.toString().replace(NOT_ENTERED_VALUE.toString(), String.EMPTY)
