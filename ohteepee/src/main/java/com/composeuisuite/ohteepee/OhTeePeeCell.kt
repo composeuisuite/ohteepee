@@ -29,9 +29,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -65,13 +63,13 @@ internal fun OhTeePeeCell(
         key2 = isFocused,
         key3 = isErrorOccurred
     ) {
-        val config = when {
-            !enabled -> if (value.isEmpty()) configurations.emptyCellConfig else configurations.filledCellConfig
-            isErrorOccurred -> configurations.errorCellConfig
-            isFocused -> configurations.activeCellConfig
-            value.isNotEmpty() -> configurations.filledCellConfig
-            else -> configurations.emptyCellConfig
-        }
+        val config = getCellConfig(
+            enabled = enabled,
+            cellText = value,
+            configurations = configurations,
+            isErrorOccurred = isErrorOccurred,
+            isFocused = isFocused
+        )
         mutableStateOf(config)
     }
     val textStyle = remember(cellConfiguration.textStyle) {
@@ -170,6 +168,20 @@ internal fun OhTeePeeCell(
             )
         }
     }
+}
+
+private fun getCellConfig(
+    enabled: Boolean,
+    cellText: String,
+    configurations: OhTeePeeConfigurations,
+    isErrorOccurred: Boolean,
+    isFocused: Boolean
+) = when {
+    !enabled -> if (cellText.isEmpty()) configurations.emptyCellConfig else configurations.filledCellConfig
+    isErrorOccurred -> configurations.errorCellConfig
+    isFocused -> configurations.activeCellConfig
+    cellText.isNotEmpty() -> configurations.filledCellConfig
+    else -> configurations.emptyCellConfig
 }
 
 @Composable
