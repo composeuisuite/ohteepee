@@ -14,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.LayoutDirection
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.example.BasicOhTeePeeExample
 import com.composeuisuite.ohteepee.utils.EMPTY
@@ -56,6 +58,8 @@ private const val NOT_ENTERED_VALUE = '₺'
  *
  * @param autoFocusByDefault when set to true, first cell will be focused by default.
  *
+ * @param layoutDirection it can be used to specify/reverse the layout direction.
+ *
  * @sample BasicOhTeePeeExample
  */
 @Composable
@@ -67,7 +71,8 @@ fun OhTeePeeInput(
     isValueInvalid: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.NumberPassword,
     enabled: Boolean = true,
-    autoFocusByDefault: Boolean = true
+    autoFocusByDefault: Boolean = true,
+    layoutDirection: LayoutDirection = LocalLayoutDirection.current,
 ) {
     require(configurations.placeHolder.length <= 1) {
         "placeHolder can't be more then 1 characters"
@@ -133,6 +138,7 @@ fun OhTeePeeInput(
         focusRequesters = focusRequester,
         enabled = enabled,
         visualTransformation = visualTransformation,
+        layoutDirection = layoutDirection,
         onCellInputChange = onCellInputChange@{ currentCellIndex, newValue ->
             val currentCellText = otpValue[currentCellIndex].toString()
             val formattedNewValue = newValue.replace(placeHolder, String.EMPTY)
@@ -180,9 +186,13 @@ private fun OhTeePeeInput(
     focusRequesters: List<FocusRequester>,
     enabled: Boolean,
     visualTransformation: VisualTransformation,
-    onCellInputChange: (index: Int, value: String) -> Unit
+    onCellInputChange: (index: Int, value: String) -> Unit,
+    layoutDirection: LayoutDirection,
 ) {
-    CompositionLocalProvider(LocalTextSelectionColors provides textSelectionColors) {
+    CompositionLocalProvider(
+        LocalTextSelectionColors provides textSelectionColors,
+        LocalLayoutDirection provides layoutDirection
+    ) {
         Row(
             modifier = modifier,
             verticalAlignment = Alignment.CenterVertically
