@@ -34,8 +34,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
@@ -432,108 +430,6 @@ private fun Sample3(
                     backgroundColor = Color.White,
                 ),
                 errorCellConfig = defaultConfig,
-            ),
-            autoFocusByDefault = false,
-        )
-    }
-}
-
-@Composable
-private fun Sample4(
-    modifier: Modifier = Modifier,
-) {
-    var otpValue: String by remember { mutableStateOf("") }
-    val transparentConfig = OhTeePeeCellConfiguration.withDefaults(
-        borderColor = Color.Transparent,
-        borderWidth = 0.dp,
-        shape = RoundedCornerShape(0.dp),
-    )
-
-    Row(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        OhTeePeeInput(
-            value = otpValue,
-            modifier = Modifier.drawBehind {
-                val strokeWidth = 1f * density
-                val y = size.height
-
-                drawLine(
-                    color = Color.LightGray,
-                    strokeWidth = strokeWidth,
-                    start = Offset(0f, y),
-                    end = Offset(size.width, y),
-                )
-            },
-
-            onValueChange = { newValue, _ ->
-                otpValue = newValue
-            },
-            isValueInvalid = otpValue == "111111",
-            configurations = OhTeePeeConfigurations.withDefaults(
-                emptyCellConfig = transparentConfig,
-                cellModifier = Modifier.size(48.dp),
-                filledCellConfig = transparentConfig,
-                activeCellConfig = transparentConfig,
-                errorCellConfig = transparentConfig,
-                cellsCount = 4,
-                obscureText = "•",
-                placeHolder = "-",
-            ),
-            autoFocusByDefault = false,
-        )
-    }
-}
-
-@Composable
-private fun Sample5(
-    modifier: Modifier = Modifier,
-) {
-    var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
-        borderColor = Color.LightGray,
-        borderWidth = 1.dp,
-        shape = RoundedCornerShape(16.dp),
-        textStyle = TextStyle(
-            color = Color(0xFF000000),
-        ),
-    )
-
-    Row(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        OhTeePeeInput(
-            modifier = Modifier.padding(8.dp),
-            value = otpValue,
-
-            onValueChange = { newValue, _ ->
-                otpValue = newValue
-            },
-            isValueInvalid = otpValue == "111111",
-            configurations = OhTeePeeConfigurations.withDefaults(
-                cellsCount = 6,
-                emptyCellConfig = defaultConfig,
-                cellModifier = Modifier
-                    .padding(horizontal = 1.dp)
-                    .size(48.dp),
-                filledCellConfig = defaultConfig,
-                activeCellConfig = defaultConfig.copy(
-                    borderWidth = 2.dp,
-                    borderColor = Color.Black,
-                ),
-                errorCellConfig = defaultConfig.copy(
-                    borderWidth = 2.dp,
-                    borderColor = Color.Red,
-                ),
-                placeHolder = " ",
             ),
             autoFocusByDefault = false,
         )
