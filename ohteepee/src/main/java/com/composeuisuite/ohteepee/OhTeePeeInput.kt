@@ -11,9 +11,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -97,6 +99,7 @@ fun OhTeePeeInput(
         }
         mutableStateOf(charList)
     }
+    val focusManager = LocalFocusManager.current
     val focusRequester = remember(cellsCount) { List(cellsCount) { FocusRequester() } }
     val transparentTextSelectionColors: TextSelectionColors = remember {
         TextSelectionColors(
@@ -116,6 +119,17 @@ fun OhTeePeeInput(
     fun requestFocus(index: Int) {
         val nextIndex = index.coerceIn(0, cellsCount - 1)
         focusRequester[nextIndex].requestFocusSafely()
+    }
+
+    fun moveFocus(currentIndex: Int, targetIndex: Int) {
+        if (targetIndex !in (0 until cellsCount)) return
+
+        val direction = if (targetIndex > currentIndex) {
+            FocusDirection.Next
+        } else {
+            FocusDirection.Previous
+        }
+        focusManager.moveFocus(direction)
     }
 
     LaunchedEffect(autoFocusByDefault) {
@@ -145,7 +159,7 @@ fun OhTeePeeInput(
                 .replace(obscureText, String.EMPTY)
 
             if (formattedNewValue == currentCellText) {
-                requestFocus(currentCellIndex + 1)
+                moveFocus(currentCellIndex, currentCellIndex + 1)
                 return@onCellInputChange
             }
 
@@ -157,13 +171,13 @@ fun OhTeePeeInput(
 
             if (formattedNewValue.isNotEmpty()) {
                 otpValue[currentCellIndex] = formattedNewValue.last()
-                requestFocus(currentCellIndex + 1)
+                moveFocus(currentCellIndex, currentCellIndex + 1)
             } else if (currentCellText != NOT_ENTERED_VALUE.toString()) {
                 otpValue[currentCellIndex] = NOT_ENTERED_VALUE
             } else {
                 val previousIndex = (currentCellIndex - 1).coerceIn(0, cellsCount)
                 otpValue[previousIndex] = NOT_ENTERED_VALUE
-                requestFocus(previousIndex)
+                moveFocus(currentCellIndex, previousIndex)
             }
             val otpValueAsString = otpValue.joinToString(String.EMPTY) {
                 if (it == NOT_ENTERED_VALUE) " " else it.toString()
@@ -205,13 +219,12 @@ private fun OhTeePeeInput(
                     value = displayValue,
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
-                    modifier = ohTeePeeConfigurations.cellModifier
+                    modifier = ohTeePeeConfigurations
+                        .cellModifier
                         .focusRequester(focusRequester = focusRequesters[index]),
                     enabled = enabled,
                     configurations = ohTeePeeConfigurations,
-                    onValueChange = {
-                        onCellInputChange(index, it)
-                    },
+                    onValueChange = { onCellInputChange(index, it) },
                     placeHolder = placeHolder,
                     visualTransformation = visualTransformation,
                 )
