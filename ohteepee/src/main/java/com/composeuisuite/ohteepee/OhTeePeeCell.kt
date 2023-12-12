@@ -84,35 +84,31 @@ internal fun OhTeePeeCell(
             selection = TextRange(value.length),
         )
     }
+    val borderModifier = if (configurations.enableBottomLine) {
+        Modifier.drawBehind {
+            val y = size.height
+
+            drawLine(
+                color = cellConfiguration.borderColor,
+                start = Offset(0f, y),
+                end = Offset(size.width, y),
+                strokeWidth = cellConfiguration.borderWidth.toPx(),
+            )
+        }
+    } else {
+        Modifier.border(
+            border = BorderStroke(
+                width = cellConfiguration.borderWidth,
+                color = cellConfiguration.borderColor,
+            ),
+            shape = cellConfiguration.shape,
+        )
+    }
 
     Surface(
         modifier = modifier
-            .defaultMinSize(
-                minHeight = MIN_HEIGHT_CELL_SIZE,
-            )
-            .conditional(configurations.enableBottomLine) {
-                drawBehind {
-                    if (configurations.enableBottomLine) {
-                        val y = size.height
-
-                        drawLine(
-                            color = cellConfiguration.borderColor,
-                            start = Offset(0f, y),
-                            end = Offset(size.width, y),
-                            strokeWidth = cellConfiguration.borderWidth.toPx(),
-                        )
-                    }
-                }
-            }
-            .conditional(configurations.enableBottomLine.not()) {
-                border(
-                    border = BorderStroke(
-                        width = cellConfiguration.borderWidth,
-                        color = cellConfiguration.borderColor,
-                    ),
-                    shape = cellConfiguration.shape,
-                )
-            },
+            .defaultMinSize(minHeight = MIN_HEIGHT_CELL_SIZE)
+            .then(borderModifier),
         elevation = configurations.elevation,
         shape = if (configurations.enableBottomLine) RoundedCornerShape(0.dp) else cellConfiguration.shape,
     ) {
