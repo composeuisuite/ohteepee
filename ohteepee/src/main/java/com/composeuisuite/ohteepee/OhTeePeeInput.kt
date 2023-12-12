@@ -87,17 +87,9 @@ fun OhTeePeeInput(
     val placeHolder = configurations.placeHolder
     val cellsCount = configurations.cellsCount
     val placeHolderAsChar = placeHolder.first()
-    val otpValue by remember(value, isValueInvalid) {
-        val charList = CharArray(cellsCount) { index ->
-            if (isValueInvalid) {
-                NOT_ENTERED_VALUE
-            } else {
-                value.getOrNull(index)
-                    ?.takeIf { it.isWhitespace().not() }
-                    ?: NOT_ENTERED_VALUE
-            }
-        }
-        mutableStateOf(charList)
+    val otpValueCharArray: CharArray by remember(value, isValueInvalid) {
+        val charArray = getOtpValueCharArray(cellsCount, isValueInvalid, value)
+        mutableStateOf(charArray)
     }
     val focusManager = LocalFocusManager.current
     val focusRequester = remember(cellsCount) { List(cellsCount) { FocusRequester() } }
@@ -107,18 +99,12 @@ fun OhTeePeeInput(
             backgroundColor = Transparent,
         )
     }
-
     val visualTransformation = remember(obscureText) {
         if (obscureText.isEmpty()) {
             VisualTransformation.None
         } else {
             PasswordVisualTransformation(obscureText.first())
         }
-    }
-
-    fun requestFocus(index: Int) {
-        val nextIndex = index.coerceIn(0, cellsCount - 1)
-        focusRequester[nextIndex].requestFocusSafely()
     }
 
     fun moveFocus(currentIndex: Int, targetIndex: Int) {
@@ -133,7 +119,10 @@ fun OhTeePeeInput(
     }
 
     LaunchedEffect(autoFocusByDefault) {
-        if (autoFocusByDefault) requestFocus(value.trim().length)
+        if (autoFocusByDefault) {
+            val focusIndex = value.trim().length
+            focusRequester[focusIndex].requestFocusSafely()
+        }
     }
 
     LaunchedEffect(isValueInvalid) {
@@ -144,7 +133,7 @@ fun OhTeePeeInput(
         modifier = modifier,
         textSelectionColors = transparentTextSelectionColors,
         cellsCount = cellsCount,
-        otpValue = otpValue,
+        otpValue = otpValueCharArray,
         placeHolder = placeHolder,
         isErrorOccurred = isValueInvalid,
         keyboardType = keyboardType,
@@ -153,36 +142,19 @@ fun OhTeePeeInput(
         enabled = enabled,
         visualTransformation = visualTransformation,
         layoutDirection = layoutDirection,
-        onCellInputChange = onCellInputChange@{ currentCellIndex, newValue ->
-            val currentCellText = otpValue[currentCellIndex].toString()
-            val formattedNewValue = newValue.replace(placeHolder, String.EMPTY)
-                .replace(obscureText, String.EMPTY)
-
-            if (formattedNewValue == currentCellText) {
-                moveFocus(currentCellIndex, currentCellIndex + 1)
-                return@onCellInputChange
-            }
-
-            if (formattedNewValue.length == cellsCount) {
-                onValueChange(formattedNewValue, true)
-                focusRequester.last().requestFocusSafely()
-                return@onCellInputChange
-            }
-
-            if (formattedNewValue.isNotEmpty()) {
-                otpValue[currentCellIndex] = formattedNewValue.last()
-                moveFocus(currentCellIndex, currentCellIndex + 1)
-            } else if (currentCellText != NOT_ENTERED_VALUE.toString()) {
-                otpValue[currentCellIndex] = NOT_ENTERED_VALUE
-            } else {
-                val previousIndex = (currentCellIndex - 1).coerceIn(0, cellsCount)
-                otpValue[previousIndex] = NOT_ENTERED_VALUE
-                moveFocus(currentCellIndex, previousIndex)
-            }
-            val otpValueAsString = otpValue.joinToString(String.EMPTY) {
-                if (it == NOT_ENTERED_VALUE) " " else it.toString()
-            }
-            onValueChange(otpValueAsString, otpValueAsString.none { it == placeHolderAsChar })
+        onCellInputChange = { currentCellIndex, newValue ->
+            handleCellInputChange(
+                otpValueCharArray = otpValueCharArray,
+                currentCellIndex = currentCellIndex,
+                newValue = newValue,
+                placeHolder = placeHolder,
+                obscureText = obscureText,
+                cellsCount = cellsCount,
+                onValueChange = onValueChange,
+                focusRequester = focusRequester,
+                placeHolderAsChar = placeHolderAsChar,
+                moveFocus = ::moveFocus,
+            )
         },
     )
 }
@@ -231,6 +203,66 @@ private fun OhTeePeeInput(
             }
         }
     }
+}
+
+private fun getOtpValueCharArray(
+    cellsCount: Int,
+    isValueInvalid: Boolean,
+    value: String,
+): CharArray {
+    val charList = CharArray(cellsCount) { index ->
+        if (isValueInvalid) {
+            NOT_ENTERED_VALUE
+        } else {
+            value.getOrNull(index)
+                ?.takeIf { it.isWhitespace().not() }
+                ?: NOT_ENTERED_VALUE
+        }
+    }
+    return charList
+}
+
+private fun handleCellInputChange(
+    otpValueCharArray: CharArray,
+    currentCellIndex: Int,
+    newValue: String,
+    placeHolder: String,
+    obscureText: String,
+    cellsCount: Int,
+    onValueChange: (newValue: String, isValid: Boolean) -> Unit,
+    focusRequester: List<FocusRequester>,
+    placeHolderAsChar: Char,
+    moveFocus: (currentIndex: Int, targetIndex: Int) -> Unit,
+) {
+    val currentCellText = otpValueCharArray[currentCellIndex].toString()
+    val formattedNewValue = newValue.replace(placeHolder, String.EMPTY)
+        .replace(obscureText, String.EMPTY)
+
+    if (formattedNewValue == currentCellText) {
+        moveFocus(currentCellIndex, currentCellIndex + 1)
+        return
+    }
+
+    if (formattedNewValue.length == cellsCount) {
+        onValueChange(formattedNewValue, true)
+        focusRequester.last().requestFocusSafely()
+        return
+    }
+
+    if (formattedNewValue.isNotEmpty()) {
+        otpValueCharArray[currentCellIndex] = formattedNewValue.last()
+        moveFocus(currentCellIndex, currentCellIndex + 1)
+    } else if (currentCellText != NOT_ENTERED_VALUE.toString()) {
+        otpValueCharArray[currentCellIndex] = NOT_ENTERED_VALUE
+    } else {
+        val previousIndex = (currentCellIndex - 1).coerceIn(0, cellsCount)
+        otpValueCharArray[previousIndex] = NOT_ENTERED_VALUE
+        moveFocus(currentCellIndex, previousIndex)
+    }
+    val otpValueAsString = otpValueCharArray.joinToString(String.EMPTY) {
+        if (it == NOT_ENTERED_VALUE) " " else it.toString()
+    }
+    onValueChange(otpValueAsString, otpValueAsString.none { it == placeHolderAsChar })
 }
 
 @Composable
