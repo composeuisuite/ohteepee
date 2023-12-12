@@ -108,7 +108,7 @@ fun OhTeePeeInput(
     }
 
     fun moveFocus(currentIndex: Int, targetIndex: Int) {
-        if (targetIndex !in (0 until cellsCount)) return
+        if (currentIndex == targetIndex || targetIndex !in (0 until cellsCount)) return
 
         val direction = if (targetIndex > currentIndex) {
             FocusDirection.Next
