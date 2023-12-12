@@ -118,15 +118,17 @@ fun OhTeePeeInput(
         focusManager.moveFocus(direction)
     }
 
-    LaunchedEffect(autoFocusByDefault) {
-        if (autoFocusByDefault) {
+    if (autoFocusByDefault) {
+        LaunchedEffect(Unit) {
             val focusIndex = value.trim().length
             focusRequester[focusIndex].requestFocusSafely()
         }
     }
 
-    LaunchedEffect(isValueInvalid) {
-        if (isValueInvalid) focusRequester.first().requestFocus()
+    if (isValueInvalid) {
+        LaunchedEffect(Unit) {
+            focusRequester.first().requestFocus()
+        }
     }
 
     OhTeePeeInput(
