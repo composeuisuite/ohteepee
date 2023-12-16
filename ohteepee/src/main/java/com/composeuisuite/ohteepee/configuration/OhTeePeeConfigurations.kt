@@ -37,6 +37,8 @@ private const val DEFAULT_PLACE_HOLDER = " "
  * @param filledCellConfig [OhTeePeeCellConfiguration] cell ui configuration when it's filled.
  * @param enableBottomLine when set to `true`, a bottom line will be drawn for each
  * cell instead of full shape using the other cell configurations.
+ * @param errorAnimationConfig [OhTeePeeErrorAnimationConfig] animation config when an error occurred.
+ * it will run only once when isValueInvalid is `true`.
  *
  * @see [OhTeePeeCellConfiguration.withDefaults]
  */
@@ -52,8 +54,8 @@ data class OhTeePeeConfigurations(
     val emptyCellConfig: OhTeePeeCellConfiguration,
     val filledCellConfig: OhTeePeeCellConfiguration,
     val enableBottomLine: Boolean,
+    val errorAnimationConfig: OhTeePeeErrorAnimationConfig?,
 ) {
-
     companion object {
         @Composable
         fun withDefaults(
@@ -74,6 +76,7 @@ data class OhTeePeeConfigurations(
             enableBottomLine: Boolean = false,
             obscureText: String = String.EMPTY,
             placeHolder: String = DEFAULT_PLACE_HOLDER,
+            errorAnimationConfig: OhTeePeeErrorAnimationConfig? = OhTeePeeErrorAnimationConfig.Shake(),
         ) = OhTeePeeConfigurations(
             cellModifier = cellModifier,
             elevation = elevation,
@@ -86,6 +89,7 @@ data class OhTeePeeConfigurations(
             placeHolder = placeHolder,
             obscureText = obscureText,
             cellsCount = cellsCount,
+            errorAnimationConfig = errorAnimationConfig,
         )
     }
 }
