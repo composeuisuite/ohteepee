@@ -8,6 +8,8 @@
 
 ![ohteepee_demo_2](ohteepee_demo_2.gif)
 
+![ohteepee_demo_3](ohteepee_demo_3.gif)
+
 ## Implementation
 
 Add the Jitpack repository to your root build.gradle file. If you’re using the settings.gradle file, include it there.
@@ -61,7 +63,7 @@ fun OtpInput() {
 }
 ```
 
-To customize it further, you can use config parameters such as **filledCellConfig**, **activeCellConfig** and **errorCellConfig** to create different UI behaviour for different situations.
+To customize it further, you can use config parameters such as **filledCellConfig**, **activeCellConfig**, **errorCellConfig** and **errorAnimationConfig** to create different UI behaviour for different situations.
 
 ```kotlin
 @Composable
@@ -82,6 +84,7 @@ fun OtpInput() {
                 borderColor = Color.Red,
                 borderWidth = 2.dp
             ),
+            errorAnimationConfig = null, // default is OhTeePeeErrorAnimationConfig.Shake(),
             placeHolder = "-", // a place holder (great comment isn't it)
         ),
     )

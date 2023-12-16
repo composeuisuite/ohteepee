@@ -1,5 +1,7 @@
 package com.composeuisuite.ohteepee
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -15,6 +17,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,6 +25,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.LayoutDirection
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
+import com.composeuisuite.ohteepee.configuration.OhTeePeeErrorAnimationConfig
 import com.composeuisuite.ohteepee.example.BasicOhTeePeeExample
 import com.composeuisuite.ohteepee.utils.EMPTY
 import com.composeuisuite.ohteepee.utils.requestFocusSafely
@@ -83,6 +87,10 @@ fun OhTeePeeInput(
         "obscureText can't be more then 1 characters"
     }
 
+    val shakeErrorAnimatable = configurations.errorAnimationConfig
+        ?.takeIf { it is OhTeePeeErrorAnimationConfig.Shake }
+        ?.let { remember { Animatable(0f) } }
+
     val obscureText = configurations.obscureText
     val placeHolder = configurations.placeHolder
     val cellsCount = configurations.cellsCount
@@ -128,11 +136,24 @@ fun OhTeePeeInput(
     if (isValueInvalid) {
         LaunchedEffect(Unit) {
             focusRequester.first().requestFocus()
+
+            if (configurations.errorAnimationConfig != null) {
+                triggerErrorAnimation(configurations.errorAnimationConfig, shakeErrorAnimatable)
+            }
         }
     }
 
     OhTeePeeInput(
-        modifier = modifier,
+        modifier = modifier
+            .then(
+                if (shakeErrorAnimatable != null) {
+                    Modifier.graphicsLayer {
+                        translationX = shakeErrorAnimatable.value
+                    }
+                } else {
+                    Modifier
+                },
+            ),
         textSelectionColors = transparentTextSelectionColors,
         cellsCount = cellsCount,
         otpValue = otpValueCharArray,
@@ -159,6 +180,26 @@ fun OhTeePeeInput(
             )
         },
     )
+}
+
+private suspend fun triggerErrorAnimation(
+    animationConfig: OhTeePeeErrorAnimationConfig,
+    shakeErrorAnimatable: Animatable<Float, AnimationVector1D>?,
+) {
+    when (animationConfig) {
+        is OhTeePeeErrorAnimationConfig.Shake -> {
+            shakeErrorAnimatable ?: return
+
+            repeat(animationConfig.repeat) { index ->
+                val targetValue =
+                    (if (index % 2 == 0) -1 else 1) * animationConfig.translationXRange
+                shakeErrorAnimatable.animateTo(
+                    targetValue = targetValue,
+                    animationSpec = animationConfig.animationSpec,
+                )
+            }
+        }
+    }
 }
 
 @Composable

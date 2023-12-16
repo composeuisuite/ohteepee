@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.composeuisuite.ohteepee.configuration.OhTeePeeCellConfiguration
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
+import com.composeuisuite.ohteepee.configuration.OhTeePeeErrorAnimationConfig
 import com.composeuisuite.ohteepee.ui.theme.OtpFieldTheme
 
 class MainActivity : ComponentActivity() {
@@ -165,6 +166,10 @@ private fun Sample0(
                 cellModifier = Modifier
                     .padding(horizontal = 4.dp)
                     .size(48.dp),
+                errorAnimationConfig = OhTeePeeErrorAnimationConfig.Shake(
+                    repeat = 15,
+                    translationXRange = 5f,
+                ),
             ),
             autoFocusByDefault = false,
         )
