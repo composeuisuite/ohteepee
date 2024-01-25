@@ -2,6 +2,7 @@ package com.composeuisuite.ohteepee
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -78,6 +79,7 @@ fun OhTeePeeInput(
     keyboardType: KeyboardType = KeyboardType.NumberPassword,
     enabled: Boolean = true,
     autoFocusByDefault: Boolean = true,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     layoutDirection: LayoutDirection = LocalLayoutDirection.current,
 ) {
     require(configurations.placeHolder.length <= 1) {
@@ -165,6 +167,7 @@ fun OhTeePeeInput(
         enabled = enabled,
         visualTransformation = visualTransformation,
         layoutDirection = layoutDirection,
+        horizontalArrangement = horizontalArrangement,
         onCellInputChange = { currentCellIndex, newValue ->
             handleCellInputChange(
                 otpValueCharArray = otpValueCharArray,
@@ -216,6 +219,7 @@ private fun OhTeePeeInput(
     enabled: Boolean,
     visualTransformation: VisualTransformation,
     onCellInputChange: (index: Int, value: String) -> Unit,
+    horizontalArrangement: Arrangement.Horizontal,
     layoutDirection: LayoutDirection,
 ) {
     CompositionLocalProvider(
@@ -225,6 +229,7 @@ private fun OhTeePeeInput(
         Row(
             modifier = modifier,
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = horizontalArrangement,
         ) {
             repeat(cellsCount) { index ->
                 val displayValue = getCellDisplayCharacter(
