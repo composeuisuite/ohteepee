@@ -67,6 +67,9 @@ private const val NOT_ENTERED_VALUE = '₺'
  *
  * @param layoutDirection it can be used to specify/reverse the layout direction.
  *
+ * @param horizontalArrangement it can be used to specify the horizontal arrangement of cells when
+ * the size of the OhTeePeeInput is larger than the sum of its children sizes.
+ *
  * @sample BasicOhTeePeeExample
  */
 @Composable
