@@ -8,15 +8,15 @@ jobs:
   fastlane:
     steps:
       - checkout
-      - run:
-          name: Install fastlane
-          command: gem install fastlane
-      - run:
-          name: Install dependencies
-          command: fastlane install_plugins
-      - run:
-          name: Deploy to firebase
-          command: fastlane distribute firebase_app_id:$FIREBASE_APP_ID firebase_token:$FIREBASE_TOKEN
+#      - run:
+#          name: Install fastlane
+#          command: gem install fastlane
+#      - run:
+#          name: Install dependencies
+#          command: fastlane install_plugins
+#      - run:
+#          name: Deploy to firebase
+#          command: fastlane distribute firebase_app_id:$FIREBASE_APP_ID firebase_token:$FIREBASE_TOKEN
     docker:
       - image: circleci/android:api-26-node
 
