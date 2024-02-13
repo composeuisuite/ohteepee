@@ -254,6 +254,7 @@ private fun Sample1(
                 isValueInvalid = otpValue == "111111",
                 configurations = OhTeePeeConfigurations.withDefaults(
                     cellsCount = 6,
+                    placeHolder = "-",
                     emptyCellConfig = defaultConfig,
                     activeCellConfig = defaultConfig,
                     cellModifier = Modifier

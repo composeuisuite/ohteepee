@@ -176,7 +176,6 @@ fun OhTeePeeInput(
                 otpValueCharArray = otpValueCharArray,
                 currentCellIndex = currentCellIndex,
                 newValue = newValue,
-                placeHolder = placeHolder,
                 obscureText = obscureText,
                 cellsCount = cellsCount,
                 onValueChange = onValueChange,
@@ -277,7 +276,6 @@ private fun handleCellInputChange(
     otpValueCharArray: CharArray,
     currentCellIndex: Int,
     newValue: String,
-    placeHolder: String,
     obscureText: String,
     cellsCount: Int,
     onValueChange: (newValue: String, isValid: Boolean) -> Unit,
@@ -286,8 +284,7 @@ private fun handleCellInputChange(
     moveFocus: (currentIndex: Int, targetIndex: Int) -> Unit,
 ) {
     val currentCellText = otpValueCharArray[currentCellIndex].toString()
-    val formattedNewValue = newValue.replace(placeHolder, String.EMPTY)
-        .replace(obscureText, String.EMPTY)
+    val formattedNewValue = newValue.replace(obscureText, String.EMPTY)
 
     if (formattedNewValue == currentCellText) {
         moveFocus(currentCellIndex, currentCellIndex + 1)
