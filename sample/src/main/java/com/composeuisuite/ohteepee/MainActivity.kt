@@ -59,14 +59,18 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val pageCount = 4
-            val pagerState = rememberPagerState(initialPage = 0)
+            val pagerState = rememberPagerState(
+                initialPage = 0,
+                pageCount = {
+                    pageCount
+                },
+            )
 
             OtpFieldTheme {
                 Box(modifier = Modifier.fillMaxSize()) {
                     HorizontalPager(
-                        pageCount = pageCount,
-                        modifier = Modifier.fillMaxSize(),
                         state = pagerState,
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         when (it) {
                             0 -> Sample0()
