@@ -133,7 +133,8 @@ fun OhTeePeeInput(
 
     if (autoFocusByDefault) {
         LaunchedEffect(Unit) {
-            val focusIndex = value.trim().length
+            val length = value.trim().length
+            val focusIndex = length.coerceAtLeast(1) - 1
             focusRequester[focusIndex].requestFocusSafely()
         }
     }
