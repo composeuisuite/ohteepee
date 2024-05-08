@@ -1,12 +1,12 @@
 buildscript {
     ext {
-        compose = '1.4.3'
-        composeActivity = '1.7.2'
+        compose = '1.6.7'
+        composeActivity = '1.9.0'
 
         ktxCore = '1.10.1'
         ktxLifeCycle = '2.6.1'
 
-        material = '1.4.3'
+        material = '1.6.7'
     }
 }
 plugins {
