@@ -33,14 +33,14 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.5.1'
+        kotlinCompilerExtensionVersion "$kotlin_compiler_extension"
     }
 }
 
 dependencies {
     // Compose
     implementation "androidx.activity:activity-compose:$composeActivity"
-    implementation "androidx.compose.ui:ui:$compose"
+    implementation "androidx.compose.ui:ui:1.7.0-alpha08"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose"
 
