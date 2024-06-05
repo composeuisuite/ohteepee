@@ -38,7 +38,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.5.1'
+        kotlinCompilerExtensionVersion "$kotlinCompilerExtension"
     }
     packagingOptions {
         resources {
@@ -55,7 +55,7 @@ dependencies {
 
     // Compose
     implementation "androidx.activity:activity-compose:$composeActivity"
-    implementation "androidx.compose.ui:ui:$compose"
+    implementation "androidx.compose.ui:ui:1.7.0-alpha08"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose"
 
     // Material

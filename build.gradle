@@ -1,22 +1,24 @@
 buildscript {
     ext {
-        compose = '1.6.7'
+        compose = '1.7.0-alpha08'
         composeActivity = '1.9.0'
 
-        ktxCore = '1.10.1'
-        ktxLifeCycle = '2.6.1'
+        ktxCore = '1.12.0'
+        ktxLifeCycle = '2.6.2'
 
         material = '1.6.7'
+        kotlinCompilerExtension = '1.5.4'
     }
 }
 plugins {
-    id 'com.android.application' version '7.0.4' apply false
-    id 'com.android.library' version '7.0.4' apply false
-    id 'org.jetbrains.kotlin.android' version '1.9.0' apply false
+    id 'com.android.application' version '8.1.2' apply false
+    id 'com.android.library' version '8.1.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.20' apply false
     id("com.google.gms.google-services") version "4.3.15" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
 }
 
 allprojects {
     apply plugin: "org.jlleitschuh.gradle.ktlint"
+
 }
