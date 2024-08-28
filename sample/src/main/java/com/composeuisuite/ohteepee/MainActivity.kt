@@ -339,6 +339,12 @@ private fun Sample2(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
+            text = "(Keep input on error)",
+            color = Color.White,
+            textAlign = TextAlign.Center,
+        )
+
+        Text(
             text = "Please type the verification code sent to +1111111111",
             color = Color.White,
             textAlign = TextAlign.Center,
@@ -359,6 +365,7 @@ private fun Sample2(
                 cellModifier = Modifier
                     .padding(horizontal = 4.dp)
                     .size(48.dp),
+                clearInputOnError = false,
             ),
             autoFocusByDefault = false,
             modifier = Modifier

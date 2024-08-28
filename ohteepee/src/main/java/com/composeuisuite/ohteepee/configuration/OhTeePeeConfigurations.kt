@@ -35,6 +35,8 @@ private const val DEFAULT_PLACE_HOLDER = " "
  * @param errorCellConfig [OhTeePeeCellConfiguration] cell ui configuration when an error occurred.
  * @param emptyCellConfig [OhTeePeeCellConfiguration] cell ui configuration when it's empty & not focused.
  * @param filledCellConfig [OhTeePeeCellConfiguration] cell ui configuration when it's filled.
+ * @param clearInputOnError when set to `true`, the input will be cleared and the focus will be reset to the first char
+ * when an error occurred.
  * @param enableBottomLine when set to `true`, a bottom line will be drawn for each
  * cell instead of full shape using the other cell configurations.
  * @param errorAnimationConfig [OhTeePeeErrorAnimationConfig] animation config when an error occurred.
@@ -53,6 +55,7 @@ data class OhTeePeeConfigurations(
     val errorCellConfig: OhTeePeeCellConfiguration,
     val emptyCellConfig: OhTeePeeCellConfiguration,
     val filledCellConfig: OhTeePeeCellConfiguration,
+    val clearInputOnError: Boolean,
     val enableBottomLine: Boolean,
     val errorAnimationConfig: OhTeePeeErrorAnimationConfig?,
 ) {
@@ -73,6 +76,7 @@ data class OhTeePeeConfigurations(
                 .size(48.dp),
             elevation: Dp = 0.dp,
             cursorColor: Color = Color.Transparent,
+            clearInputOnError: Boolean = true,
             enableBottomLine: Boolean = false,
             obscureText: String = String.EMPTY,
             placeHolder: String = DEFAULT_PLACE_HOLDER,
@@ -85,6 +89,7 @@ data class OhTeePeeConfigurations(
             emptyCellConfig = emptyCellConfig,
             filledCellConfig = filledCellConfig,
             cursorColor = cursorColor,
+            clearInputOnError = clearInputOnError,
             enableBottomLine = enableBottomLine,
             placeHolder = placeHolder,
             obscureText = obscureText,
