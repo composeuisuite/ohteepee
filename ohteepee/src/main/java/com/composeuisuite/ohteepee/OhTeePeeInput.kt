@@ -101,7 +101,11 @@ fun OhTeePeeInput(
     val cellsCount = configurations.cellsCount
     val placeHolderAsChar = placeHolder.first()
     val otpValueCharArray: CharArray by remember(value, isValueInvalid) {
-        val charArray = getOtpValueCharArray(cellsCount, isValueInvalid, value)
+        val charArray = getOtpValueCharArray(
+            cellsCount = cellsCount,
+            shouldClearInput = isValueInvalid && configurations.clearInputOnError,
+            value = value,
+        )
         mutableStateOf(charArray)
     }
     val focusManager = LocalFocusManager.current
@@ -141,7 +145,9 @@ fun OhTeePeeInput(
 
     if (isValueInvalid) {
         LaunchedEffect(Unit) {
-            focusRequester.first().requestFocus()
+            if (configurations.clearInputOnError) {
+                focusRequester.first().requestFocus()
+            }
 
             if (configurations.errorAnimationConfig != null) {
                 triggerErrorAnimation(configurations.errorAnimationConfig, shakeErrorAnimatable)
@@ -258,11 +264,11 @@ private fun OhTeePeeInput(
 
 private fun getOtpValueCharArray(
     cellsCount: Int,
-    isValueInvalid: Boolean,
+    shouldClearInput: Boolean,
     value: String,
 ): CharArray {
     val charList = CharArray(cellsCount) { index ->
-        if (isValueInvalid) {
+        if (shouldClearInput) {
             NOT_ENTERED_VALUE
         } else {
             value.getOrNull(index)
