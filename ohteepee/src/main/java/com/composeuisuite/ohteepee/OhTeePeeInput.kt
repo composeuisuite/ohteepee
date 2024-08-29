@@ -39,7 +39,8 @@ private const val NOT_ENTERED_VALUE = '₺'
  * Whenever the user edits the text, [onValueChange] is called with the most up to date state
  * including the empty values that represented by [OhTeePeeConfigurations.placeHolder].
  *
- * When the user fills all the cells, [onValueChange]'s isValid parameter will be `true`,
+ * When the user fills all the cells, [onValueChange]'s isValid parameter will be `true`
+ * (if the [OhTeePeeConfigurations.checkValidOnLastCellInput] is `false` or if the last cell is just filled),
  * otherwise it will be `false`.
  *
  * To customize the appearance of cells you can pass [configurations] parameter with
@@ -180,6 +181,7 @@ fun OhTeePeeInput(
         horizontalArrangement = horizontalArrangement,
         onCellInputChange = { currentCellIndex, newValue ->
             handleCellInputChange(
+                checkValidOnLastCellInput = configurations.checkValidOnLastCellInput,
                 otpValueCharArray = otpValueCharArray,
                 currentCellIndex = currentCellIndex,
                 newValue = newValue,
@@ -280,6 +282,7 @@ private fun getOtpValueCharArray(
 }
 
 private fun handleCellInputChange(
+    checkValidOnLastCellInput: Boolean,
     otpValueCharArray: CharArray,
     currentCellIndex: Int,
     newValue: String,
@@ -304,20 +307,26 @@ private fun handleCellInputChange(
         return
     }
 
+    var focusTargetIndex: Int? = null
     if (formattedNewValue.isNotEmpty()) {
         otpValueCharArray[currentCellIndex] = formattedNewValue.last()
-        moveFocus(currentCellIndex, currentCellIndex + 1)
+        focusTargetIndex = currentCellIndex + 1
+        moveFocus(currentCellIndex, focusTargetIndex)
     } else if (currentCellText != NOT_ENTERED_VALUE.toString()) {
         otpValueCharArray[currentCellIndex] = NOT_ENTERED_VALUE
     } else {
-        val previousIndex = (currentCellIndex - 1).coerceIn(0, cellsCount)
-        otpValueCharArray[previousIndex] = NOT_ENTERED_VALUE
-        moveFocus(currentCellIndex, previousIndex)
+        focusTargetIndex = (currentCellIndex - 1).coerceIn(0, cellsCount)
+        otpValueCharArray[focusTargetIndex] = NOT_ENTERED_VALUE
+        moveFocus(currentCellIndex, focusTargetIndex)
     }
     val otpValueAsString = otpValueCharArray.joinToString(String.EMPTY) {
         if (it == NOT_ENTERED_VALUE) " " else it.toString()
     }
-    onValueChange(otpValueAsString, otpValueAsString.none { it == placeHolderAsChar })
+    onValueChange(
+        otpValueAsString,
+        otpValueAsString.none { it == placeHolderAsChar }
+                && (!checkValidOnLastCellInput || focusTargetIndex == cellsCount),
+    )
 }
 
 @Composable

@@ -1,6 +1,7 @@
 package com.composeuisuite.ohteepee
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -40,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -306,6 +308,7 @@ private fun Sample1(
 private fun Sample2(
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     val backgroundColor = Color(0xFF1A1E22)
     var otpValue: String by remember { mutableStateOf("") }
     val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
@@ -339,7 +342,7 @@ private fun Sample2(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "(Keep input on error)",
+            text = "(Keep input on error + Check Valid on last input)",
             color = Color.White,
             textAlign = TextAlign.Center,
         )
@@ -354,8 +357,11 @@ private fun Sample2(
 
         OhTeePeeInput(
             value = otpValue,
-            onValueChange = { newValue, _ ->
+            onValueChange = { newValue, isValid ->
                 otpValue = newValue
+                if (isValid) {
+                    Toast.makeText(context, "Validate the value here...", Toast.LENGTH_SHORT).show()
+                }
             },
             isValueInvalid = otpValue == "1111",
             configurations = OhTeePeeConfigurations.withDefaults(
@@ -365,6 +371,7 @@ private fun Sample2(
                 cellModifier = Modifier
                     .padding(horizontal = 4.dp)
                     .size(48.dp),
+                checkValidOnLastCellInput = true,
                 clearInputOnError = false,
             ),
             autoFocusByDefault = false,

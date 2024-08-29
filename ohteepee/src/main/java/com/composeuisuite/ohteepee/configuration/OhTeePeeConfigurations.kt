@@ -35,6 +35,8 @@ private const val DEFAULT_PLACE_HOLDER = " "
  * @param errorCellConfig [OhTeePeeCellConfiguration] cell ui configuration when an error occurred.
  * @param emptyCellConfig [OhTeePeeCellConfiguration] cell ui configuration when it's empty & not focused.
  * @param filledCellConfig [OhTeePeeCellConfiguration] cell ui configuration when it's filled.
+ * @param checkValidOnLastCellInput when set to `true`, the valid input value will be checked only
+ * when the last cell is filled.
  * @param clearInputOnError when set to `true`, the input will be cleared and the focus will be reset to the first char
  * when an error occurred.
  * @param enableBottomLine when set to `true`, a bottom line will be drawn for each
@@ -55,6 +57,7 @@ data class OhTeePeeConfigurations(
     val errorCellConfig: OhTeePeeCellConfiguration,
     val emptyCellConfig: OhTeePeeCellConfiguration,
     val filledCellConfig: OhTeePeeCellConfiguration,
+    val checkValidOnLastCellInput: Boolean,
     val clearInputOnError: Boolean,
     val enableBottomLine: Boolean,
     val errorAnimationConfig: OhTeePeeErrorAnimationConfig?,
@@ -77,6 +80,7 @@ data class OhTeePeeConfigurations(
             elevation: Dp = 0.dp,
             cursorColor: Color = Color.Transparent,
             clearInputOnError: Boolean = true,
+            checkValidOnLastCellInput: Boolean = false,
             enableBottomLine: Boolean = false,
             obscureText: String = String.EMPTY,
             placeHolder: String = DEFAULT_PLACE_HOLDER,
@@ -89,6 +93,7 @@ data class OhTeePeeConfigurations(
             emptyCellConfig = emptyCellConfig,
             filledCellConfig = filledCellConfig,
             cursorColor = cursorColor,
+            checkValidOnLastCellInput = checkValidOnLastCellInput,
             clearInputOnError = clearInputOnError,
             enableBottomLine = enableBottomLine,
             placeHolder = placeHolder,
