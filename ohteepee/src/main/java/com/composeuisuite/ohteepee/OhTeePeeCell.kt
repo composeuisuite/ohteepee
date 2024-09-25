@@ -22,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.onFocusEvent
@@ -44,7 +43,7 @@ import com.composeuisuite.ohteepee.utils.conditional
 
 private val MIN_HEIGHT_CELL_SIZE = 48.dp
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun OhTeePeeCell(
     value: String,
@@ -180,6 +179,9 @@ internal fun OhTeePeeCell(
                         placeHolderTextStyle = placeHolderTextStyle,
                     )
                 },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = cellConfiguration.backgroundColor
+                ),
             )
         }
     }
