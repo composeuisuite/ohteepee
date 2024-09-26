@@ -52,12 +52,13 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$ktxLifeCycle"
 
     // Compose
-    implementation "androidx.activity:activity-compose:$composeActivity"
-    implementation "androidx.compose.ui:ui:1.7.2"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose"
+    api(platform("androidx.compose:compose-bom:$composeBom"))
+    implementation "androidx.compose.material:material"
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.ui:ui-tooling-preview"
+    implementation "androidx.compose.material:material-icons-core-android"
 
-    // Material
-    implementation "androidx.compose.material:material:$material"
+    implementation "androidx.activity:activity-compose:$composeActivity"
 
     // Firebase
     implementation platform("com.google.firebase:firebase-bom:33.3.0")
