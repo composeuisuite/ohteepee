@@ -111,9 +111,10 @@ private fun Sample0(
     modifier: Modifier = Modifier,
 ) {
     val backgroundColor = Color(0xFF4F4F83)
+    val cellBackgroundColor = Color(0xFFFFE09A).copy(alpha = 0.2f)
     var otpValue: String by remember { mutableStateOf("") }
     val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
-        cellBackground = OhTeePeeCellBackground.Solid(backgroundColor.copy(alpha = 0.6f)),
+        cellBackground = OhTeePeeCellBackground.Solid(cellBackgroundColor),
         textStyle = TextStyle(
             color = Color.White,
             fontSize = 18.sp,
@@ -312,10 +313,11 @@ private fun Sample2(
     val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
         cellBackground = OhTeePeeCellBackground.Gradient(
             brush = Brush.linearGradient(
-                colors = listOf(Color(0x1FAB5EEE), Color(0x1F4F0995)),
+                colors = listOf(Color(0xFFAB5EEE), Color(0xFF4F0995)),
                 start = Offset.Zero,
                 end = Offset.Infinite,
             ),
+            alpha = 0.12f,
         ),
         textStyle = TextStyle(
             color = Color.White,

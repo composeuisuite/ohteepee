@@ -123,6 +123,8 @@ internal fun OhTeePeeCell(
         modifier = modifier
             .defaultMinSize(minHeight = MIN_HEIGHT_CELL_SIZE)
             .then(borderModifier),
+        color = Color.Transparent,
+        contentColor = Color.Unspecified,
         elevation = configurations.elevation,
         shape = if (configurations.enableBottomLine) RoundedCornerShape(0.dp) else cellConfiguration.shape,
     ) {
@@ -182,7 +184,7 @@ internal fun OhTeePeeCell(
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent
+                    backgroundColor = Color.Transparent,
                 ),
             )
         }
