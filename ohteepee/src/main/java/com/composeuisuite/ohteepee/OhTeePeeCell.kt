@@ -2,7 +2,6 @@ package com.composeuisuite.ohteepee
 
 import android.view.KeyEvent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
@@ -39,6 +39,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
+import com.composeuisuite.ohteepee.configuration.cellBackground
 import com.composeuisuite.ohteepee.utils.conditional
 
 private val MIN_HEIGHT_CELL_SIZE = 48.dp
@@ -88,7 +89,8 @@ internal fun OhTeePeeCell(
 
     SideEffect {
         if (textFieldValue.selection != textFieldValueState.selection ||
-            textFieldValue.composition != textFieldValueState.composition) {
+            textFieldValue.composition != textFieldValueState.composition
+        ) {
             textFieldValueState = textFieldValue
         }
     }
@@ -151,7 +153,7 @@ internal fun OhTeePeeCell(
                     }
                 }
                 .onFocusEvent { isFocused = it.isFocused }
-                .background(cellConfiguration.backgroundColor),
+                .cellBackground(cellConfiguration.cellBackground),
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = ImeAction.Next,
@@ -180,7 +182,7 @@ internal fun OhTeePeeCell(
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = cellConfiguration.backgroundColor
+                    backgroundColor = Color.Transparent
                 ),
             )
         }
