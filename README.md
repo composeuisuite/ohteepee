@@ -91,7 +91,7 @@ fun OtpInput() {
 }
 ```
 
-This is just the tip of the iceberg when it comes to customization of OhTeePee libray. If you want to see more, definitely check out [this amazing article](https://medium.com/@ilyas_ipek/d26785d53ab3) written by co-author [Ilyas Ipek](https://medium.com/@ilyas_ipek)
+This is just the tip of the iceberg when it comes to customization of OhTeePee libray. If you want to see more, definitely check out [this article](https://medium.com/@ilyas_ipek/d26785d53ab3) written by co-author [Ilyas Ipek](https://medium.com/@ilyas_ipek)
 
 ## Todo List
 
