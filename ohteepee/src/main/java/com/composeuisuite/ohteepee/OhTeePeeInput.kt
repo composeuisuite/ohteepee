@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
@@ -70,6 +71,9 @@ private const val NOT_ENTERED_VALUE = '₺'
  * @param horizontalArrangement it can be used to specify the horizontal arrangement of cells when
  * the size of the OhTeePeeInput is larger than the sum of its children sizes.
  *
+ * @param divider an optional slot that will be used to draw a divider between cells.
+ * It's placed at the end of the cell.
+ *
  * @sample BasicOhTeePeeExample
  */
 @Composable
@@ -84,6 +88,7 @@ fun OhTeePeeInput(
     autoFocusByDefault: Boolean = true,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     layoutDirection: LayoutDirection = LocalLayoutDirection.current,
+    divider: @Composable (RowScope.(cellIndex: Int) -> Unit)? = null,
 ) {
     require(configurations.placeHolder.length <= 1) {
         "placeHolder can't be more then 1 characters"
@@ -172,6 +177,7 @@ fun OhTeePeeInput(
         placeHolder = placeHolder,
         isErrorOccurred = isValueInvalid,
         keyboardType = keyboardType,
+        divider = divider,
         ohTeePeeConfigurations = configurations,
         focusRequesters = focusRequester,
         enabled = enabled,
@@ -230,6 +236,7 @@ private fun OhTeePeeInput(
     onCellInputChange: (index: Int, value: String) -> Unit,
     horizontalArrangement: Arrangement.Horizontal,
     layoutDirection: LayoutDirection,
+    divider: @Composable (RowScope.(cellIndex: Int) -> Unit)?,
 ) {
     CompositionLocalProvider(
         LocalTextSelectionColors provides textSelectionColors,
@@ -257,6 +264,9 @@ private fun OhTeePeeInput(
                     placeHolder = placeHolder,
                     visualTransformation = visualTransformation,
                 )
+                if (divider != null && index != cellsCount - 1) {
+                    divider(index)
+                }
             }
         }
     }
