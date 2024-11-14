@@ -365,6 +365,11 @@ private fun Sample2(
                     .size(48.dp),
                 clearInputOnError = false,
             ),
+            divider = { index ->
+                if (index == 1) {
+                    Text(" - ", color = Color.White)
+                }
+            },
             autoFocusByDefault = false,
             modifier = Modifier
                 .background(color = Color(0xFF272D33), shape = RoundedCornerShape(8.dp))
