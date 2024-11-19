@@ -3,6 +3,7 @@ package com.composeuisuite.ohteepee
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
@@ -53,6 +55,7 @@ import com.composeuisuite.ohteepee.ui.theme.OtpFieldTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -80,9 +83,9 @@ class MainActivity : ComponentActivity() {
 
                     Row(
                         modifier = Modifier
-                            .padding(top = 8.dp)
+                            .safeContentPadding()
                             .background(color = Color.Black.copy(alpha = 0.6f), shape = CircleShape)
-                            .align(Alignment.TopCenter)
+                            .align(Alignment.BottomCenter)
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                     ) {
                         repeat(pageCount) { index ->
