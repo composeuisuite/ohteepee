@@ -168,9 +168,7 @@ private fun Sample0(
                 cellsCount = 4,
                 emptyCellConfig = defaultConfig,
                 activeCellConfig = defaultConfig,
-                cellModifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .size(48.dp),
+                cellModifier = Modifier.size(48.dp),
                 errorAnimationConfig = OhTeePeeErrorAnimationConfig.Shake(
                     repeat = 15,
                     translationXRange = 5f,
@@ -262,11 +260,12 @@ private fun Sample1(
                     placeHolder = "-",
                     emptyCellConfig = defaultConfig,
                     activeCellConfig = defaultConfig,
-                    cellModifier = Modifier
-                        .padding(horizontal = 4.dp)
-                        .size(48.dp),
+                    cellModifier = Modifier.size(48.dp),
                     obscureText = "●",
                 ),
+                divider = {
+                    Spacer(modifier = Modifier.width(4.dp))
+                },
                 autoFocusByDefault = false,
             )
 
@@ -363,14 +362,16 @@ private fun Sample2(
                 cellsCount = 4,
                 emptyCellConfig = defaultConfig,
                 activeCellConfig = defaultConfig,
-                cellModifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .size(48.dp),
+                cellModifier = Modifier.size(48.dp),
                 clearInputOnError = false,
             ),
             divider = { index ->
-                if (index == 1) {
-                    Text(" - ", color = Color.White)
+                Row {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    if (index == 1) {
+                        Text(" - ", color = Color.White)
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
                 }
             },
             autoFocusByDefault = false,
@@ -443,9 +444,7 @@ private fun Sample3(
             configurations = OhTeePeeConfigurations.withDefaults(
                 emptyCellConfig = defaultConfig,
                 cellsCount = 6,
-                cellModifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .size(48.dp),
+                cellModifier = Modifier.size(48.dp),
                 filledCellConfig = defaultConfig.copy(
                     backgroundColor = Color.White,
                 ),
