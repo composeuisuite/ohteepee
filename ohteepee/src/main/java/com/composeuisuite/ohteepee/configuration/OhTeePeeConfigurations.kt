@@ -1,6 +1,5 @@
 package com.composeuisuite.ohteepee.configuration
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -71,9 +70,7 @@ data class OhTeePeeConfigurations(
             errorCellConfig: OhTeePeeCellConfiguration = emptyCellConfig.copy(
                 borderColor = MaterialTheme.colors.error,
             ),
-            cellModifier: Modifier = Modifier
-                .padding(horizontal = 2.dp)
-                .size(48.dp),
+            cellModifier: Modifier = Modifier.size(48.dp),
             elevation: Dp = 0.dp,
             cursorColor: Color = Color.Transparent,
             clearInputOnError: Boolean = true,
