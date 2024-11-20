@@ -167,7 +167,9 @@ private fun Sample0(
             configurations = OhTeePeeConfigurations.withDefaults(
                 cellsCount = 4,
                 emptyCellConfig = defaultConfig,
-                activeCellConfig = defaultConfig,
+                activeCellConfig = defaultConfig.copy(
+                    borderColor = Color.White,
+                ),
                 cellModifier = Modifier.size(48.dp),
                 errorAnimationConfig = OhTeePeeErrorAnimationConfig.Shake(
                     repeat = 15,
@@ -259,7 +261,9 @@ private fun Sample1(
                     cellsCount = 6,
                     placeHolder = "-",
                     emptyCellConfig = defaultConfig,
-                    activeCellConfig = defaultConfig,
+                    activeCellConfig = defaultConfig.copy(
+                        borderColor = Color.Black,
+                    ),
                     cellModifier = Modifier.size(48.dp),
                     obscureText = "●",
                 ),
@@ -361,7 +365,9 @@ private fun Sample2(
             configurations = OhTeePeeConfigurations.withDefaults(
                 cellsCount = 4,
                 emptyCellConfig = defaultConfig,
-                activeCellConfig = defaultConfig,
+                activeCellConfig = defaultConfig.copy(
+                    borderColor = Color.White,
+                ),
                 cellModifier = Modifier.size(48.dp),
                 clearInputOnError = false,
             ),
@@ -419,7 +425,7 @@ private fun Sample3(
     var otpValue: String by remember { mutableStateOf("") }
     val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
         borderColor = Color.Transparent,
-        borderWidth = 0.dp,
+        borderWidth = 1.dp,
         backgroundColor = backgroundColor.copy(alpha = 0.6f),
         textStyle = TextStyle(
             color = Color.Black,
@@ -442,16 +448,16 @@ private fun Sample3(
             },
             isValueInvalid = otpValue == "111111",
             configurations = OhTeePeeConfigurations.withDefaults(
-                emptyCellConfig = defaultConfig,
                 cellsCount = 6,
                 cellModifier = Modifier.size(48.dp),
+                emptyCellConfig = defaultConfig,
                 filledCellConfig = defaultConfig.copy(
                     backgroundColor = Color.White,
                 ),
                 activeCellConfig = defaultConfig.copy(
                     backgroundColor = Color.White,
+                    borderColor = Color.Black,
                 ),
-                errorCellConfig = defaultConfig,
             ),
             autoFocusByDefault = false,
         )
