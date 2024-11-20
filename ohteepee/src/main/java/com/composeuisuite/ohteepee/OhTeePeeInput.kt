@@ -91,7 +91,7 @@ fun OhTeePeeInput(
     autoFocusByDefault: Boolean = true,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     layoutDirection: LayoutDirection = LocalLayoutDirection.current,
-    divider: @Composable (RowScope.(cellIndex: Int) -> Unit)? = { Spacer(modifier = modifier.width(8.dp)) },
+    divider: @Composable (RowScope.(cellIndex: Int) -> Unit)? = { Spacer(modifier = Modifier.width(8.dp)) },
 ) {
     require(configurations.placeHolder.length <= 1) {
         "placeHolder can't be more then 1 characters"
