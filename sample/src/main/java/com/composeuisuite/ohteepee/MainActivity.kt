@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val pageCount = 4
+            val pageCount = 5
             val pagerState = rememberPagerState(
                 initialPage = 0,
                 pageCount = {
@@ -78,6 +78,7 @@ class MainActivity : ComponentActivity() {
                             1 -> Sample1()
                             2 -> Sample2()
                             3 -> Sample3()
+                            4 -> Sample4()
                         }
                     }
 
@@ -107,9 +108,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun Sample0(
-    modifier: Modifier = Modifier,
-) {
+private fun Sample0(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFF4F4F83)
     var otpValue: String by remember { mutableStateOf("") }
     val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
@@ -184,9 +183,7 @@ private fun Sample0(
 }
 
 @Composable
-private fun Sample1(
-    modifier: Modifier = Modifier,
-) {
+private fun Sample1(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFFF5CB6C)
     val surfaceColor = Color(0xFFFFE09A)
     var otpValue: String by remember { mutableStateOf("") }
@@ -307,9 +304,7 @@ private fun Sample1(
 }
 
 @Composable
-private fun Sample2(
-    modifier: Modifier = Modifier,
-) {
+private fun Sample2(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFF1A1E22)
     var otpValue: String by remember { mutableStateOf("") }
     val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
@@ -407,9 +402,7 @@ private fun Sample2(
 }
 
 @Composable
-private fun Sample3(
-    modifier: Modifier = Modifier,
-) {
+private fun Sample3(modifier: Modifier = Modifier) {
     val largeRadialGradient = object : ShaderBrush() {
         override fun createShader(size: Size): Shader {
             val biggerDimension = maxOf(size.height, size.width)
@@ -461,5 +454,85 @@ private fun Sample3(
             ),
             autoFocusByDefault = false,
         )
+    }
+}
+
+@Composable
+private fun Sample4(modifier: Modifier = Modifier) {
+    var otpValue: String by remember { mutableStateOf("") }
+    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+        backgroundColor = Color(0xFF272D33),
+        textStyle = TextStyle(
+            color = Color.White,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+        ),
+        borderWidth = 2.dp,
+    )
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+    ) {
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Text(
+            text = "Verification Code",
+            fontSize = 24.sp,
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Please type the verification code sent to +1111111111",
+            color = Color.White,
+            textAlign = TextAlign.Center,
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        OhTeePeeInput(
+            value = otpValue,
+            onValueChange = { newValue, _ ->
+                otpValue = newValue
+            },
+            isValueInvalid = otpValue == "11111",
+            configurations = OhTeePeeConfigurations.withDefaults(
+                cellsCount = 5,
+                emptyCellConfig = defaultConfig.copy(
+                    borderColor = Color.Gray,
+                ),
+                activeCellConfig = defaultConfig.copy(
+                    borderColor = Color.White,
+                ),
+                cellModifier = Modifier.size(48.dp),
+                clearInputOnError = false,
+                enableBottomLine = true,
+            ),
+            autoFocusByDefault = false,
+            modifier = Modifier
+                .background(color = Color(0xFF272D33), shape = RoundedCornerShape(8.dp))
+                .padding(32.dp),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.White,
+                contentColor = Color.Black,
+            ),
+        ) {
+            Text(text = "Continue")
+        }
+
+        Spacer(modifier = Modifier.height(64.dp))
     }
 }
