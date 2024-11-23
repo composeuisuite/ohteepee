@@ -17,7 +17,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,11 +30,9 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -85,24 +82,7 @@ internal fun OhTeePeeCell(
     val placeHolderTextStyle = remember(cellConfiguration.placeHolderTextStyle) {
         cellConfiguration.placeHolderTextStyle.copy(textAlign = TextAlign.Center)
     }
-    // Holds the latest internal TextFieldValue state. We need to keep it to have the correct value
-    // of the composition.
-    var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = value)) }
-    // Holds the latest TextFieldValue that BasicTextField was recomposed with. We couldn't simply
-    // pass `TextFieldValue(text = value)` to the CoreTextField because we need to preserve the
-    // composition.
-    val textFieldValue = textFieldValueState.copy(text = value, selection = TextRange(value.length))
 
-    SideEffect {
-        if (textFieldValue.selection != textFieldValueState.selection ||
-            textFieldValue.composition != textFieldValueState.composition) {
-            textFieldValueState = textFieldValue
-        }
-    }
-    // Last String value that either text field was recomposed with or updated in the onValueChange
-    // callback. We keep track of it to prevent calling onValueChange(String) for same String when
-    // CoreTextField's onValueChange is called multiple times without recomposition in between.
-    var lastTextValue by remember(value) { mutableStateOf(value) }
     val borderModifier = if (configurations.enableBottomLine) {
         Modifier.drawBehind {
             val y = size.height
@@ -132,16 +112,10 @@ internal fun OhTeePeeCell(
         shape = if (configurations.enableBottomLine) RoundedCornerShape(0.dp) else cellConfiguration.shape,
     ) {
         BasicTextField(
-            value = textFieldValue,
+            value = value,
             onValueChange = {
-                textFieldValueState = it
-
-                val stringChangedSinceLastInvocation = lastTextValue != it.text
-                lastTextValue = it.text
-
-                if (stringChangedSinceLastInvocation) {
-                    onValueChange(it.text)
-                }
+                if (it == value) return@BasicTextField
+                onValueChange(it)
             },
             visualTransformation = visualTransformation,
             textStyle = textStyle,
