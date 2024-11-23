@@ -25,6 +25,9 @@ import androidx.compose.ui.test.assertIsNotFocused
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onLast
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.composeuisuite.ohteepee.configuration.OhTeePeeCellConfiguration
@@ -106,6 +109,50 @@ class OhTeePeeInputAutoFocusTest {
         repeat(CELLS_COUNT) {
             cells[it].assertIsNotFocused()
         }
+    }
+
+    @Test
+    fun ohTeePeeInput_basicFlow_shouldFocusOnTheNextCellAfterTextInput() {
+        composeTestRule.setContent {
+            var otpValue: String by remember { mutableStateOf("") }
+            val defaultConfig = OhTeePeeCellConfiguration.withDefaults()
+
+            MaterialTheme {
+                BasicOhTeePeeScreen(
+                    ohTeePeeInput = {
+                        OhTeePeeInput(
+                            value = otpValue,
+                            onValueChange = { newValue, _ ->
+                                otpValue = newValue
+                            },
+                            configurations = OhTeePeeConfigurations.withDefaults(
+                                cellsCount = CELLS_COUNT,
+                                emptyCellConfig = defaultConfig,
+                                activeCellConfig = defaultConfig.copy(
+                                    borderColor = Color.Yellow,
+                                ),
+                                cellModifier = Modifier.size(48.dp),
+                            ),
+                            autoFocusByDefault = true,
+                        )
+                    },
+                )
+            }
+        }
+
+        // First cell is focused by default
+        val cells = composeTestRule.onAllNodesWithTag(OH_TEE_PEE_CELL_TEST_TAG)
+        repeat(CELLS_COUNT) {
+            cells[it].assertIsFocused()
+            cells[it].performTextInput("$it")
+        }
+        cells.onLast().assertIsFocused()
+
+        // Test user clicking to in random cell to modify a cell.
+        cells[2].performClick().performTextInput("9")
+        cells[3].assertIsFocused()
+        cells[3].performTextInput("7")
+        cells[4].assertIsFocused()
     }
 
     @Composable
