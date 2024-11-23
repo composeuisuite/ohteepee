@@ -155,6 +155,7 @@ fun OhTeePeeInput(
         LaunchedEffect(Unit) {
             if (configurations.clearInputOnError) {
                 focusRequester.first().requestFocus()
+                onValueChange("", false)
             }
 
             if (configurations.errorAnimationConfig != null) {
