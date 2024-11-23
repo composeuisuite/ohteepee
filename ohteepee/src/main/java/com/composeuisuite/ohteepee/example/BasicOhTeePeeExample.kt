@@ -1,6 +1,5 @@
 package com.composeuisuite.ohteepee.example
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -53,9 +52,7 @@ internal fun BasicOhTeePeeExample() {
                 borderWidth = 2.dp,
             ),
             placeHolder = "-",
-            cellModifier = Modifier
-                .padding(horizontal = 4.dp)
-                .size(48.dp),
+            cellModifier = Modifier.size(48.dp),
         ),
     )
 }
