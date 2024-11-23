@@ -258,8 +258,8 @@ private fun OhTeePeeInput(
                     value = displayValue,
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
-                    modifier = ohTeePeeConfigurations
-                        .cellModifier
+                    modifier = Modifier
+                        .then(ohTeePeeConfigurations.cellModifier)
                         .focusRequester(focusRequester = focusRequesters[index]),
                     enabled = enabled,
                     configurations = ohTeePeeConfigurations,

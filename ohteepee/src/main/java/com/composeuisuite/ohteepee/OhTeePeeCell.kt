@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -40,6 +41,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.utils.conditional
+
+/**
+ * This will be assigned to each cell's inputs, you can use it for ui-tests.
+ * Check our androidTest package for examples.
+ * */
+const val OH_TEE_PEE_CELL_TEST_TAG = "OH_TEE_PEE_CELL"
 
 private val MIN_HEIGHT_CELL_SIZE = 48.dp
 
@@ -151,7 +158,8 @@ internal fun OhTeePeeCell(
                     }
                 }
                 .onFocusEvent { isFocused = it.isFocused }
-                .background(cellConfiguration.backgroundColor),
+                .background(cellConfiguration.backgroundColor)
+                .testTag(OH_TEE_PEE_CELL_TEST_TAG),
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = ImeAction.Next,
@@ -180,7 +188,7 @@ internal fun OhTeePeeCell(
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = cellConfiguration.backgroundColor
+                    backgroundColor = cellConfiguration.backgroundColor,
                 ),
             )
         }
