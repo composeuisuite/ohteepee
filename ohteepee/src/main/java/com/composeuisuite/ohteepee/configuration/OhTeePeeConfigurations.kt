@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.composeuisuite.ohteepee.utils.EMPTY
 
-private const val DEFAULT_PLACE_HOLDER = " "
+const val OH_TEE_PEE_DEFAULT_PLACE_HOLDER = ' '
 
 /**
  * OhTeePeeConfigurations is a class that holds all the ui configurations for OhTeePeeInput.
@@ -76,7 +76,7 @@ data class OhTeePeeConfigurations(
             clearInputOnError: Boolean = true,
             enableBottomLine: Boolean = false,
             obscureText: String = String.EMPTY,
-            placeHolder: String = DEFAULT_PLACE_HOLDER,
+            placeHolder: String = OH_TEE_PEE_DEFAULT_PLACE_HOLDER.toString(),
             errorAnimationConfig: OhTeePeeErrorAnimationConfig? = OhTeePeeErrorAnimationConfig.Shake(),
         ) = OhTeePeeConfigurations(
             cellModifier = cellModifier,
