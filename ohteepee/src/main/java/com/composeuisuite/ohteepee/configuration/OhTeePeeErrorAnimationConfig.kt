@@ -1,8 +1,7 @@
 package com.composeuisuite.ohteepee.configuration
 
 import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
+import com.composeuisuite.ohteepee.OhTeePeeDefaults
 
 sealed class OhTeePeeErrorAnimationConfig {
     /**
@@ -15,11 +14,7 @@ sealed class OhTeePeeErrorAnimationConfig {
     data class Shake(
         val repeat: Int = 10,
         val translationXRange: Float = 5f,
-        val animationSpec: AnimationSpec<Float> = defaultShakeAnimationSpec,
+        val animationSpec: AnimationSpec<Float> = OhTeePeeDefaults.defaultShakeAnimationSpec,
     ) : OhTeePeeErrorAnimationConfig()
 }
 
-private val defaultShakeAnimationSpec: AnimationSpec<Float> = spring(
-    dampingRatio = Spring.DampingRatioHighBouncy,
-    stiffness = 10_000_000f,
-)

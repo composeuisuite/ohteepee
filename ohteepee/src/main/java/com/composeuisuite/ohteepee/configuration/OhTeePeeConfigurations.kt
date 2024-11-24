@@ -7,14 +7,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.composeuisuite.ohteepee.OhTeePeeDefaults
 import com.composeuisuite.ohteepee.utils.EMPTY
-
-const val OH_TEE_PEE_DEFAULT_PLACE_HOLDER = ' '
 
 /**
  * OhTeePeeConfigurations is a class that holds all the ui configurations for OhTeePeeInput.
  *
- * If you don't want to pass all the configurations, you can use [OhTeePeeConfigurations.withDefaults] to pass
+ * If you don't want to pass all the configurations, you can use [OhTeePeeDefaults.inputConfiguration] to pass
  * only the configurations you want.
  *
  * @param cellModifier a [Modifier] for each cell.
@@ -41,7 +40,7 @@ const val OH_TEE_PEE_DEFAULT_PLACE_HOLDER = ' '
  * @param errorAnimationConfig [OhTeePeeErrorAnimationConfig] animation config when an error occurred.
  * it will run only once when isValueInvalid is `true`.
  *
- * @see [OhTeePeeCellConfiguration.withDefaults]
+ * @see [OhTeePeeDefaults.cellConfiguration]
  */
 data class OhTeePeeConfigurations(
     val cellModifier: Modifier,
@@ -59,6 +58,10 @@ data class OhTeePeeConfigurations(
     val errorAnimationConfig: OhTeePeeErrorAnimationConfig?,
 ) {
     companion object {
+
+        @Deprecated(
+            message = "This function has been replaced by OhTeePeeDefaults.inputConfiguration",
+        )
         @Composable
         fun withDefaults(
             cellsCount: Int,
@@ -76,9 +79,9 @@ data class OhTeePeeConfigurations(
             clearInputOnError: Boolean = true,
             enableBottomLine: Boolean = false,
             obscureText: String = String.EMPTY,
-            placeHolder: String = OH_TEE_PEE_DEFAULT_PLACE_HOLDER.toString(),
+            placeHolder: String = OhTeePeeDefaults.PLACE_HOLDER.toString(),
             errorAnimationConfig: OhTeePeeErrorAnimationConfig? = OhTeePeeErrorAnimationConfig.Shake(),
-        ) = OhTeePeeConfigurations(
+        ) = OhTeePeeDefaults.inputConfiguration(
             cellModifier = cellModifier,
             elevation = elevation,
             activeCellConfig = activeCellConfig,

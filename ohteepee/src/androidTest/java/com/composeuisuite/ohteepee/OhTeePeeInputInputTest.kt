@@ -15,9 +15,6 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.unit.dp
-import com.composeuisuite.ohteepee.configuration.OH_TEE_PEE_DEFAULT_PLACE_HOLDER
-import com.composeuisuite.ohteepee.configuration.OhTeePeeCellConfiguration
-import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.helpers.sleepThreadToSeeUiTestResults
 import com.composeuisuite.ohteepee.utils.EMPTY
 import org.junit.Assert
@@ -95,7 +92,7 @@ class OhTeePeeInputInputTest {
 
         composeTestRule.setContent {
             var otpValue: String by remember { mutableStateOf("") }
-            val defaultConfig = OhTeePeeCellConfiguration.withDefaults()
+            val defaultConfig = OhTeePeeDefaults.cellConfiguration()
 
             MaterialTheme {
                 BasicOhTeePeeTestScreen(
@@ -104,9 +101,9 @@ class OhTeePeeInputInputTest {
                             value = otpValue,
                             onValueChange = { newValue, _ ->
                                 otpValue = newValue
-                                currentOtpValue = newValue.filter { it != OH_TEE_PEE_DEFAULT_PLACE_HOLDER }
+                                currentOtpValue = newValue.filter { it != OhTeePeeDefaults.PLACE_HOLDER }
                             },
-                            configurations = OhTeePeeConfigurations.withDefaults(
+                            configurations = OhTeePeeDefaults.inputConfiguration(
                                 cellsCount = CELLS_COUNT,
                                 emptyCellConfig = defaultConfig,
                             ),
@@ -142,7 +139,7 @@ class OhTeePeeInputInputTest {
     ) {
         composeTestRule.setContent {
             var otpValue: String by remember { mutableStateOf("") }
-            val defaultConfig = OhTeePeeCellConfiguration.withDefaults()
+            val defaultConfig = OhTeePeeDefaults.cellConfiguration()
             var isInValidValue by remember {
                 mutableStateOf(false)
             }
@@ -162,7 +159,7 @@ class OhTeePeeInputInputTest {
                                 }
                             },
                             isValueInvalid = isInValidValue,
-                            configurations = OhTeePeeConfigurations.withDefaults(
+                            configurations = OhTeePeeDefaults.inputConfiguration(
                                 cellsCount = CELLS_COUNT,
                                 emptyCellConfig = defaultConfig,
                                 activeCellConfig = defaultConfig.copy(

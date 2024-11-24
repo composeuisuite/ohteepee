@@ -17,8 +17,6 @@ import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.unit.dp
-import com.composeuisuite.ohteepee.configuration.OhTeePeeCellConfiguration
-import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import org.junit.Rule
 import org.junit.Test
 
@@ -34,7 +32,7 @@ class OhTeePeeInputAutoFocusTest {
     fun ohTeePeeInput_whenAutoFocusIsTrue_shouldFocusFirstCell() {
         composeTestRule.setContent {
             var otpValue: String by remember { mutableStateOf("") }
-            val defaultConfig = OhTeePeeCellConfiguration.withDefaults()
+            val defaultConfig = OhTeePeeDefaults.cellConfiguration()
 
             MaterialTheme {
                 BasicOhTeePeeTestScreen(
@@ -44,7 +42,7 @@ class OhTeePeeInputAutoFocusTest {
                             onValueChange = { newValue, _ ->
                                 otpValue = newValue
                             },
-                            configurations = OhTeePeeConfigurations.withDefaults(
+                            configurations = OhTeePeeDefaults.inputConfiguration(
                                 cellsCount = CELLS_COUNT,
                                 emptyCellConfig = defaultConfig,
                                 activeCellConfig = defaultConfig.copy(
@@ -67,7 +65,7 @@ class OhTeePeeInputAutoFocusTest {
     fun ohTeePeeInput_whenAutoFocusIsFalse_shouldNotFocusOnAnyCell() {
         composeTestRule.setContent {
             var otpValue: String by remember { mutableStateOf("") }
-            val defaultConfig = OhTeePeeCellConfiguration.withDefaults()
+            val defaultConfig = OhTeePeeDefaults.cellConfiguration()
 
             MaterialTheme {
                 BasicOhTeePeeTestScreen(
@@ -77,7 +75,7 @@ class OhTeePeeInputAutoFocusTest {
                             onValueChange = { newValue, _ ->
                                 otpValue = newValue
                             },
-                            configurations = OhTeePeeConfigurations.withDefaults(
+                            configurations = OhTeePeeDefaults.inputConfiguration(
                                 cellsCount = CELLS_COUNT,
                                 emptyCellConfig = defaultConfig,
                                 activeCellConfig = defaultConfig.copy(
@@ -102,7 +100,7 @@ class OhTeePeeInputAutoFocusTest {
     fun ohTeePeeInput_basicFlow_shouldFocusOnTheNextCellAfterTextInput() {
         composeTestRule.setContent {
             var otpValue: String by remember { mutableStateOf("") }
-            val defaultConfig = OhTeePeeCellConfiguration.withDefaults()
+            val defaultConfig = OhTeePeeDefaults.cellConfiguration()
 
             MaterialTheme {
                 BasicOhTeePeeTestScreen(
@@ -112,7 +110,7 @@ class OhTeePeeInputAutoFocusTest {
                             onValueChange = { newValue, _ ->
                                 otpValue = newValue
                             },
-                            configurations = OhTeePeeConfigurations.withDefaults(
+                            configurations = OhTeePeeDefaults.inputConfiguration(
                                 cellsCount = CELLS_COUNT,
                                 emptyCellConfig = defaultConfig,
                                 activeCellConfig = defaultConfig.copy(

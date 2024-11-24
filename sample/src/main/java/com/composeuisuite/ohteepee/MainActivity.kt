@@ -48,8 +48,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.composeuisuite.ohteepee.configuration.OhTeePeeCellConfiguration
-import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.configuration.OhTeePeeErrorAnimationConfig
 import com.composeuisuite.ohteepee.ui.theme.OtpFieldTheme
 
@@ -111,7 +109,7 @@ class MainActivity : ComponentActivity() {
 private fun Sample0(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFF4F4F83)
     var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         backgroundColor = backgroundColor.copy(alpha = 0.6f),
         textStyle = TextStyle(
             color = Color.White,
@@ -163,7 +161,7 @@ private fun Sample0(modifier: Modifier = Modifier) {
                 otpValue = newValue
             },
             isValueInvalid = otpValue == "1111",
-            configurations = OhTeePeeConfigurations.withDefaults(
+            configurations = OhTeePeeDefaults.inputConfiguration(
                 cellsCount = 4,
                 emptyCellConfig = defaultConfig,
                 activeCellConfig = defaultConfig.copy(
@@ -187,7 +185,7 @@ private fun Sample1(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFFF5CB6C)
     val surfaceColor = Color(0xFFFFE09A)
     var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         backgroundColor = backgroundColor.copy(alpha = 0.6f),
         textStyle = TextStyle(
             color = Color.Black,
@@ -254,7 +252,7 @@ private fun Sample1(modifier: Modifier = Modifier) {
                     otpValue = newValue
                 },
                 isValueInvalid = otpValue == "111111",
-                configurations = OhTeePeeConfigurations.withDefaults(
+                configurations = OhTeePeeDefaults.inputConfiguration(
                     cellsCount = 6,
                     placeHolder = "-",
                     emptyCellConfig = defaultConfig,
@@ -307,7 +305,7 @@ private fun Sample1(modifier: Modifier = Modifier) {
 private fun Sample2(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFF1A1E22)
     var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         backgroundColor = backgroundColor.copy(alpha = 0.6f),
         textStyle = TextStyle(
             color = Color.White,
@@ -357,7 +355,7 @@ private fun Sample2(modifier: Modifier = Modifier) {
                 otpValue = newValue
             },
             isValueInvalid = otpValue == "1111",
-            configurations = OhTeePeeConfigurations.withDefaults(
+            configurations = OhTeePeeDefaults.inputConfiguration(
                 cellsCount = 4,
                 emptyCellConfig = defaultConfig,
                 activeCellConfig = defaultConfig.copy(
@@ -416,7 +414,7 @@ private fun Sample3(modifier: Modifier = Modifier) {
     }
     val backgroundColor = Color(0xFFFFFFFF)
     var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         borderColor = Color.Transparent,
         borderWidth = 1.dp,
         backgroundColor = backgroundColor.copy(alpha = 0.6f),
@@ -440,7 +438,7 @@ private fun Sample3(modifier: Modifier = Modifier) {
                 otpValue = newValue
             },
             isValueInvalid = otpValue == "111111",
-            configurations = OhTeePeeConfigurations.withDefaults(
+            configurations = OhTeePeeDefaults.inputConfiguration(
                 cellsCount = 6,
                 cellModifier = Modifier.size(48.dp),
                 emptyCellConfig = defaultConfig,
@@ -460,7 +458,7 @@ private fun Sample3(modifier: Modifier = Modifier) {
 @Composable
 private fun Sample4(modifier: Modifier = Modifier) {
     var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         backgroundColor = Color(0xFF272D33),
         textStyle = TextStyle(
             color = Color.White,
@@ -503,7 +501,7 @@ private fun Sample4(modifier: Modifier = Modifier) {
                 otpValue = newValue
             },
             isValueInvalid = otpValue == "11111",
-            configurations = OhTeePeeConfigurations.withDefaults(
+            configurations = OhTeePeeDefaults.inputConfiguration(
                 cellsCount = 5,
                 emptyCellConfig = defaultConfig.copy(
                     borderColor = Color.Gray,
