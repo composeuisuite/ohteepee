@@ -22,7 +22,7 @@ import org.junit.Test
 
 class OhTeePeeInputAutoFocusTest {
     companion object {
-        const val CELLS_COUNT = 6
+        private const val CELLS_COUNT = 6
     }
 
     @get:Rule
