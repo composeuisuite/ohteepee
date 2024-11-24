@@ -12,13 +12,15 @@ import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.unit.dp
+import com.composeuisuite.ohteepee.configuration.OH_TEE_PEE_DEFAULT_PLACE_HOLDER
 import com.composeuisuite.ohteepee.configuration.OhTeePeeCellConfiguration
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.helpers.sleepThreadToSeeUiTestResults
 import com.composeuisuite.ohteepee.utils.EMPTY
-import junit.framework.Assert
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 
@@ -84,6 +86,55 @@ class OhTeePeeInputInputTest {
         }
 
         sleepThreadToSeeUiTestResults()
+    }
+
+    @Test
+    fun ohTeePeeInput_whenEnteringCode_shouldOnValueChangeTriggeredWithCorrectValues() {
+        var currentOtpValue = ""
+        var expectedValue = ""
+
+        composeTestRule.setContent {
+            var otpValue: String by remember { mutableStateOf("") }
+            val defaultConfig = OhTeePeeCellConfiguration.withDefaults()
+
+            MaterialTheme {
+                BasicOhTeePeeTestScreen(
+                    ohTeePeeInput = {
+                        OhTeePeeInput(
+                            value = otpValue,
+                            onValueChange = { newValue, _ ->
+                                otpValue = newValue
+                                currentOtpValue = newValue.filter { it != OH_TEE_PEE_DEFAULT_PLACE_HOLDER }
+                            },
+                            configurations = OhTeePeeConfigurations.withDefaults(
+                                cellsCount = CELLS_COUNT,
+                                emptyCellConfig = defaultConfig,
+                            ),
+                        )
+                    },
+                )
+            }
+        }
+
+        val cells = composeTestRule.onAllNodesWithTag(OH_TEE_PEE_CELL_TEST_TAG)
+
+        // Test1: Fill the component with 012345
+        repeat(CELLS_COUNT) {
+            cells[it].performTextInput("$it")
+            expectedValue += it
+            Assert.assertEquals(expectedValue, currentOtpValue)
+        }
+
+        // Test2: Replace the first cell with 6 -> 612345
+        cells.onFirst().performTextInput("6")
+        expectedValue = "6" + expectedValue.substring(1)
+        Assert.assertEquals("Current otp isn't equal to expected value", expectedValue, currentOtpValue)
+
+        // Test3: Clear the otp code
+        repeat(CELLS_COUNT) {
+            cells[it].performTextInput(" ")
+        }
+        Assert.assertEquals("Current otp value should be empty", String.EMPTY, currentOtpValue)
     }
 
     private fun setContentForClearInputTest(
