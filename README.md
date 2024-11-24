@@ -38,7 +38,7 @@ fun OtpInput() {
     var otpValue: String by remember { mutableStateOf("") }
 
     // this config will be used for each cell
-    val defaultCellConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultCellConfig = OhTeePeeDefaults.cellConfiguration(
         borderColor = Color.LightGray,
         borderWidth = 1.dp,
         shape = RoundedCornerShape(16.dp),
@@ -52,7 +52,7 @@ fun OtpInput() {
         onValueChange = { newValue, isValid ->
             otpValue = newValue
         },
-        configurations = OhTeePeeConfigurations.withDefaults(
+        configurations = OhTeePeeDefaults.inputConfiguration(
             cellsCount = 6,
             emptyCellConfig = defaultCellConfig,
             cellModifier = Modifier
@@ -72,7 +72,7 @@ fun OtpInput() {
 
     OhTeePeeInput(
         ...
-        configurations = OhTeePeeConfigurations.withDefaults(
+    configurations = OhTeePeeDefaults.inputConfiguration(
             ...,
             emptyCellConfig = defaultCellConfig,
             filledCellConfig = defaultCellConfig,

@@ -41,7 +41,7 @@ private const val NOT_ENTERED_VALUE = '₺'
  * OhTeePeeInput is a composable that can be used to get OTP/Pin from user.
  *
  * Whenever the user edits the text, [onValueChange] is called with the most up to date state
- * including the empty values that represented by [OhTeePeeConfigurations.placeHolder].
+ * including the empty values that represented by [OhTeePeeDefaults.PLACE_HOLDER].
  *
  * When the user fills all the cells, [onValueChange]'s isValid parameter will be `true`,
  * otherwise it will be `false`.
@@ -49,7 +49,7 @@ private const val NOT_ENTERED_VALUE = '₺'
  * To customize the appearance of cells you can pass [configurations] parameter with
  * a lot of options like , [OhTeePeeConfigurations.cellModifier], [OhTeePeeConfigurations.errorCellConfig] and more.
  *
- * If you don't want to pass all the configurations, you can use [OhTeePeeConfigurations.withDefaults] to customize
+ * If you don't want to pass all the configurations, you can use [OhTeePeeDefaults.inputConfiguration] to customize
  * only the configurations you want.
  *
  * @param value will be split to chars and shown in the [OhTeePeeInput].
