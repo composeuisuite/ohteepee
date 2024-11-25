@@ -252,9 +252,9 @@ private fun OhTeePeeInput(
             horizontalArrangement = horizontalArrangement,
         ) {
             repeat(cellsCount) { index ->
-                val displayValue = getCellDisplayCharacter(
-                    currentChar = otpValue[index],
-                )
+                val displayValue = remember(otpValue[index]) {
+                    getCellDisplayCharacter(currentChar = otpValue[index])
+                }
                 OhTeePeeCell(
                     value = displayValue,
                     isErrorOccurred = isErrorOccurred,
@@ -334,7 +334,6 @@ private fun handleCellInputChange(
     onValueChange(otpValueAsString, otpValueAsString.none { it == placeHolderAsChar })
 }
 
-@Composable
 private fun getCellDisplayCharacter(
     currentChar: Char,
-): String = currentChar.toString().replace(NOT_ENTERED_VALUE.toString(), String.EMPTY)
+): String = if (currentChar == NOT_ENTERED_VALUE) String.EMPTY else currentChar.toString()
