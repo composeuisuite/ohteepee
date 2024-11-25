@@ -59,9 +59,7 @@ fun OtpInput() {
         configurations = OhTeePeeDefaults.inputConfiguration(
             cellsCount = 6,
             emptyCellConfig = defaultCellConfig,
-            cellModifier = Modifier
-                .padding(horizontal = 4.dp)
-                .size(48.dp),
+            cellModifier = Modifier.size(48.dp),
         ),
     )
 }
@@ -89,17 +87,28 @@ fun OtpInput() {
                 borderWidth = 2.dp
             ),
             errorAnimationConfig = null, // default is OhTeePeeErrorAnimationConfig.Shake(),
-            placeHolder = "-", // a place holder (great comment isn't it)
-            divider = { index -> // Optionally, you can insert a divider between cells like e.g padding or a '-'
-                Row {
-                    Spacer(modifier = Modifier.width(4.dp))
-                    if (index == 1) {
-                        Text(" - ", color = Color.White)
-                    }
-                    Spacer(modifier = Modifier.width(4.dp))
-                }
-            },
+            placeHolder = "-",
         ),
+    )
+}
+```
+
+Optionally, you can insert a **divider** between cells like a padding or a dash.
+
+```kotlin
+@Composable
+fun OtpInput() {
+    OhTeePeeInput(
+        ...
+        divider = { index -> 
+            Row {
+                Spacer(modifier = Modifier.width(4.dp))
+                if (index == 1) {
+                    Text(" - ", color = Color.White)
+                }
+                Spacer(modifier = Modifier.width(4.dp))
+            } 
+        }
     )
 }
 ```
