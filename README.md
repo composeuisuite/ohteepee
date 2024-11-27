@@ -119,7 +119,6 @@ This is just the tip of the iceberg when it comes to customization of OhTeePee l
 
 - [x] Read OTP Code directly from SMS
 - [x] Add animations
-- [x] Write UI tests
 
 ## Authors
 
