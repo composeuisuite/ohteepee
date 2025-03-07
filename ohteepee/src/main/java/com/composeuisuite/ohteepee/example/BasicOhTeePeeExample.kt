@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.composeuisuite.ohteepee.OhTeePeeDefaults
 import com.composeuisuite.ohteepee.OhTeePeeInput
+import com.composeuisuite.ohteepee.configuration.OhTeePeeCellBackground
 
 @Composable
 internal fun BasicOhTeePeeExample() {
@@ -22,6 +23,7 @@ internal fun BasicOhTeePeeExample() {
     val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         borderColor = Color.LightGray,
         borderWidth = 1.dp,
+        cellBackground = OhTeePeeCellBackground.Solid(Color.White),
         shape = RoundedCornerShape(16.dp),
         textStyle = TextStyle(
             color = Color.Black,
