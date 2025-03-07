@@ -3,6 +3,7 @@ package com.composeuisuite.ohteepee
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
@@ -49,17 +51,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.composeuisuite.ohteepee.configuration.OhTeePeeCellBackground
-import com.composeuisuite.ohteepee.configuration.OhTeePeeCellConfiguration
-import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.configuration.OhTeePeeErrorAnimationConfig
 import com.composeuisuite.ohteepee.ui.theme.OtpFieldTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         setContent {
-            val pageCount = 4
+            val pageCount = 5
             val pagerState = rememberPagerState(
                 initialPage = 0,
                 pageCount = {
@@ -78,14 +79,15 @@ class MainActivity : ComponentActivity() {
                             1 -> Sample1()
                             2 -> Sample2()
                             3 -> Sample3()
+                            4 -> Sample4()
                         }
                     }
 
                     Row(
                         modifier = Modifier
-                            .padding(top = 8.dp)
+                            .safeContentPadding()
                             .background(color = Color.Black.copy(alpha = 0.6f), shape = CircleShape)
-                            .align(Alignment.TopCenter)
+                            .align(Alignment.BottomCenter)
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                     ) {
                         repeat(pageCount) { index ->
@@ -107,13 +109,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun Sample0(
-    modifier: Modifier = Modifier,
-) {
+private fun Sample0(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFF4F4F83)
     val cellBackgroundColor = Color(0xFFFFE09A).copy(alpha = 0.2f)
     var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         cellBackground = OhTeePeeCellBackground.Solid(cellBackgroundColor),
         textStyle = TextStyle(
             color = Color.White,
@@ -165,13 +165,13 @@ private fun Sample0(
                 otpValue = newValue
             },
             isValueInvalid = otpValue == "1111",
-            configurations = OhTeePeeConfigurations.withDefaults(
+            configurations = OhTeePeeDefaults.inputConfiguration(
                 cellsCount = 4,
                 emptyCellConfig = defaultConfig,
-                activeCellConfig = defaultConfig,
-                cellModifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .size(48.dp),
+                activeCellConfig = defaultConfig.copy(
+                    borderColor = Color.White,
+                ),
+                cellModifier = Modifier.size(48.dp),
                 errorAnimationConfig = OhTeePeeErrorAnimationConfig.Shake(
                     repeat = 15,
                     translationXRange = 5f,
@@ -185,13 +185,11 @@ private fun Sample0(
 }
 
 @Composable
-private fun Sample1(
-    modifier: Modifier = Modifier,
-) {
+private fun Sample1(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFFF5CB6C)
     val surfaceColor = Color(0xFFFFE09A)
     var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         cellBackground = OhTeePeeCellBackground.Solid(backgroundColor.copy(alpha = 0.6f)),
         textStyle = TextStyle(
             color = Color.Black,
@@ -258,16 +256,19 @@ private fun Sample1(
                     otpValue = newValue
                 },
                 isValueInvalid = otpValue == "111111",
-                configurations = OhTeePeeConfigurations.withDefaults(
+                configurations = OhTeePeeDefaults.inputConfiguration(
                     cellsCount = 6,
                     placeHolder = "-",
                     emptyCellConfig = defaultConfig,
-                    activeCellConfig = defaultConfig,
-                    cellModifier = Modifier
-                        .padding(horizontal = 4.dp)
-                        .size(48.dp),
+                    activeCellConfig = defaultConfig.copy(
+                        borderColor = Color.Black,
+                    ),
+                    cellModifier = Modifier.size(48.dp),
                     obscureText = "●",
                 ),
+                divider = {
+                    Spacer(modifier = Modifier.width(4.dp))
+                },
                 autoFocusByDefault = false,
             )
 
@@ -305,12 +306,10 @@ private fun Sample1(
 }
 
 @Composable
-private fun Sample2(
-    modifier: Modifier = Modifier,
-) {
+private fun Sample2(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFF1A1E22)
     var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         cellBackground = OhTeePeeCellBackground.Gradient(
             brush = Brush.linearGradient(
                 colors = listOf(Color(0xFFAB5EEE), Color(0xFF4F0995)),
@@ -367,15 +366,24 @@ private fun Sample2(
                 otpValue = newValue
             },
             isValueInvalid = otpValue == "1111",
-            configurations = OhTeePeeConfigurations.withDefaults(
+            configurations = OhTeePeeDefaults.inputConfiguration(
                 cellsCount = 4,
                 emptyCellConfig = defaultConfig,
-                activeCellConfig = defaultConfig,
-                cellModifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .size(48.dp),
+                activeCellConfig = defaultConfig.copy(
+                    borderColor = Color.White,
+                ),
+                cellModifier = Modifier.size(48.dp),
                 clearInputOnError = false,
             ),
+            divider = { index ->
+                Row {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    if (index == 1) {
+                        Text(" - ", color = Color.White)
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+            },
             autoFocusByDefault = false,
             modifier = Modifier
                 .background(color = Color(0xFF272D33), shape = RoundedCornerShape(8.dp))
@@ -403,9 +411,7 @@ private fun Sample2(
 }
 
 @Composable
-private fun Sample3(
-    modifier: Modifier = Modifier,
-) {
+private fun Sample3(modifier: Modifier = Modifier) {
     val largeRadialGradient = object : ShaderBrush() {
         override fun createShader(size: Size): Shader {
             val biggerDimension = maxOf(size.height, size.width)
@@ -419,9 +425,9 @@ private fun Sample3(
     }
     val backgroundColor = Color(0xFFFFFFFF)
     var otpValue: String by remember { mutableStateOf("") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         borderColor = Color.Transparent,
-        borderWidth = 0.dp,
+        borderWidth = 1.dp,
         cellBackground = OhTeePeeCellBackground.Solid(backgroundColor.copy(alpha = 0.6f)),
         textStyle = TextStyle(
             color = Color.Black,
@@ -443,21 +449,99 @@ private fun Sample3(
                 otpValue = newValue
             },
             isValueInvalid = otpValue == "111111",
-            configurations = OhTeePeeConfigurations.withDefaults(
-                emptyCellConfig = defaultConfig,
+            configurations = OhTeePeeDefaults.inputConfiguration(
                 cellsCount = 6,
-                cellModifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .size(48.dp),
+                cellModifier = Modifier.size(48.dp),
+                emptyCellConfig = defaultConfig,
                 filledCellConfig = defaultConfig.copy(
                     cellBackground = OhTeePeeCellBackground.Solid(Color.White),
                 ),
                 activeCellConfig = defaultConfig.copy(
                     cellBackground = OhTeePeeCellBackground.Solid(Color.White),
+                    borderColor = Color.Black,
                 ),
-                errorCellConfig = defaultConfig,
             ),
             autoFocusByDefault = false,
         )
+    }
+}
+
+@Composable
+private fun Sample4(modifier: Modifier = Modifier) {
+    var otpValue: String by remember { mutableStateOf("") }
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
+        backgroundColor = Color(0xFF272D33),
+        textStyle = TextStyle(
+            color = Color.White,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+        ),
+        borderWidth = 2.dp,
+    )
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+    ) {
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Text(
+            text = "Verification Code",
+            fontSize = 24.sp,
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Please type the verification code sent to +1111111111",
+            color = Color.White,
+            textAlign = TextAlign.Center,
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        OhTeePeeInput(
+            value = otpValue,
+            onValueChange = { newValue, _ ->
+                otpValue = newValue
+            },
+            isValueInvalid = otpValue == "11111",
+            configurations = OhTeePeeDefaults.inputConfiguration(
+                cellsCount = 5,
+                emptyCellConfig = defaultConfig.copy(
+                    borderColor = Color.Gray,
+                ),
+                activeCellConfig = defaultConfig.copy(
+                    borderColor = Color.White,
+                ),
+                cellModifier = Modifier.size(48.dp),
+                clearInputOnError = false,
+                enableBottomLine = true,
+            ),
+            autoFocusByDefault = false,
+            modifier = Modifier
+                .background(color = Color(0xFF272D33), shape = RoundedCornerShape(8.dp))
+                .padding(32.dp),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.White,
+                contentColor = Color.Black,
+            ),
+        ) {
+            Text(text = "Continue")
+        }
+
+        Spacer(modifier = Modifier.height(64.dp))
     }
 }

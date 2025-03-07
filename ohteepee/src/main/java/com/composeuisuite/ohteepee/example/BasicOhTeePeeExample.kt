@@ -1,6 +1,5 @@
 package com.composeuisuite.ohteepee.example
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -14,14 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.composeuisuite.ohteepee.OhTeePeeDefaults
 import com.composeuisuite.ohteepee.OhTeePeeInput
-import com.composeuisuite.ohteepee.configuration.OhTeePeeCellConfiguration
-import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 
 @Composable
 internal fun BasicOhTeePeeExample() {
     var otpValue: String by remember { mutableStateOf("12") }
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         borderColor = Color.LightGray,
         borderWidth = 1.dp,
         shape = RoundedCornerShape(16.dp),
@@ -40,7 +38,7 @@ internal fun BasicOhTeePeeExample() {
         },
         /* when the value is 1111, all cells will use errorCellConfig */
         isValueInvalid = otpValue == "1111",
-        configurations = OhTeePeeConfigurations.withDefaults(
+        configurations = OhTeePeeDefaults.inputConfiguration(
             cellsCount = 4,
             emptyCellConfig = defaultConfig,
             filledCellConfig = defaultConfig,
@@ -53,9 +51,7 @@ internal fun BasicOhTeePeeExample() {
                 borderWidth = 2.dp,
             ),
             placeHolder = "-",
-            cellModifier = Modifier
-                .padding(horizontal = 4.dp)
-                .size(48.dp),
+            cellModifier = Modifier.size(48.dp),
         ),
     )
 }

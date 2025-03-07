@@ -4,6 +4,9 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
@@ -25,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.configuration.OhTeePeeErrorAnimationConfig
 import com.composeuisuite.ohteepee.example.BasicOhTeePeeExample
@@ -37,7 +41,7 @@ private const val NOT_ENTERED_VALUE = '₺'
  * OhTeePeeInput is a composable that can be used to get OTP/Pin from user.
  *
  * Whenever the user edits the text, [onValueChange] is called with the most up to date state
- * including the empty values that represented by [OhTeePeeConfigurations.placeHolder].
+ * including the empty values that represented by [OhTeePeeDefaults.PLACE_HOLDER].
  *
  * When the user fills all the cells, [onValueChange]'s isValid parameter will be `true`,
  * otherwise it will be `false`.
@@ -45,7 +49,7 @@ private const val NOT_ENTERED_VALUE = '₺'
  * To customize the appearance of cells you can pass [configurations] parameter with
  * a lot of options like , [OhTeePeeConfigurations.cellModifier], [OhTeePeeConfigurations.errorCellConfig] and more.
  *
- * If you don't want to pass all the configurations, you can use [OhTeePeeConfigurations.withDefaults] to customize
+ * If you don't want to pass all the configurations, you can use [OhTeePeeDefaults.inputConfiguration] to customize
  * only the configurations you want.
  *
  * @param value will be split to chars and shown in the [OhTeePeeInput].
@@ -70,6 +74,9 @@ private const val NOT_ENTERED_VALUE = '₺'
  * @param horizontalArrangement it can be used to specify the horizontal arrangement of cells when
  * the size of the OhTeePeeInput is larger than the sum of its children sizes.
  *
+ * @param divider an optional slot that will be used to draw a divider between cells.
+ * It's placed at the end of the cell.
+ *
  * @sample BasicOhTeePeeExample
  */
 @Composable
@@ -84,6 +91,7 @@ fun OhTeePeeInput(
     autoFocusByDefault: Boolean = true,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     layoutDirection: LayoutDirection = LocalLayoutDirection.current,
+    divider: @Composable (RowScope.(cellIndex: Int) -> Unit)? = { Spacer(modifier = Modifier.width(8.dp)) },
 ) {
     require(configurations.placeHolder.length <= 1) {
         "placeHolder can't be more then 1 characters"
@@ -147,6 +155,7 @@ fun OhTeePeeInput(
         LaunchedEffect(Unit) {
             if (configurations.clearInputOnError) {
                 focusRequester.first().requestFocus()
+                onValueChange("", false)
             }
 
             if (configurations.errorAnimationConfig != null) {
@@ -172,6 +181,7 @@ fun OhTeePeeInput(
         placeHolder = placeHolder,
         isErrorOccurred = isValueInvalid,
         keyboardType = keyboardType,
+        divider = divider,
         ohTeePeeConfigurations = configurations,
         focusRequesters = focusRequester,
         enabled = enabled,
@@ -230,6 +240,7 @@ private fun OhTeePeeInput(
     onCellInputChange: (index: Int, value: String) -> Unit,
     horizontalArrangement: Arrangement.Horizontal,
     layoutDirection: LayoutDirection,
+    divider: @Composable (RowScope.(cellIndex: Int) -> Unit)?,
 ) {
     CompositionLocalProvider(
         LocalTextSelectionColors provides textSelectionColors,
@@ -241,15 +252,15 @@ private fun OhTeePeeInput(
             horizontalArrangement = horizontalArrangement,
         ) {
             repeat(cellsCount) { index ->
-                val displayValue = getCellDisplayCharacter(
-                    currentChar = otpValue[index],
-                )
+                val displayValue = remember(otpValue[index]) {
+                    getCellDisplayCharacter(currentChar = otpValue[index])
+                }
                 OhTeePeeCell(
                     value = displayValue,
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
-                    modifier = ohTeePeeConfigurations
-                        .cellModifier
+                    modifier = Modifier
+                        .then(ohTeePeeConfigurations.cellModifier)
                         .focusRequester(focusRequester = focusRequesters[index]),
                     enabled = enabled,
                     configurations = ohTeePeeConfigurations,
@@ -257,6 +268,9 @@ private fun OhTeePeeInput(
                     placeHolder = placeHolder,
                     visualTransformation = visualTransformation,
                 )
+                if (divider != null && index != cellsCount - 1) {
+                    divider(index)
+                }
             }
         }
     }
@@ -320,7 +334,6 @@ private fun handleCellInputChange(
     onValueChange(otpValueAsString, otpValueAsString.none { it == placeHolderAsChar })
 }
 
-@Composable
 private fun getCellDisplayCharacter(
     currentChar: Char,
-): String = currentChar.toString().replace(NOT_ENTERED_VALUE.toString(), String.EMPTY)
+): String = if (currentChar == NOT_ENTERED_VALUE) String.EMPTY else currentChar.toString()

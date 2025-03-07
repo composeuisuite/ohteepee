@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import com.composeuisuite.ohteepee.OhTeePeeDefaults
 
 data class OhTeePeeCellConfiguration(
     val shape: Shape,
@@ -18,17 +18,27 @@ data class OhTeePeeCellConfiguration(
 ) {
 
     companion object {
-        val BORDER_WIDTH = 1.dp
+        @Deprecated(
+            message = "All default values are move to OhTeePeeDefaults",
+            replaceWith = ReplaceWith(
+                expression = "OhTeePeeDefaults.BORDER_WIDTH",
+                imports = ["com.composeuisuite.ohteepee.OhTeePeeDefaults"],
+            ),
+        )
+        val BORDER_WIDTH = OhTeePeeDefaults.BORDER_WIDTH
 
+        @Deprecated(
+            message = "This function is moved to OhTeePeeDefaults.cellConfiguration",
+        )
         @Composable
         fun withDefaults(
             shape: Shape = MaterialTheme.shapes.medium,
             cellBackground: OhTeePeeCellBackground = OhTeePeeCellBackground.Solid(MaterialTheme.colors.surface),
             borderColor: Color = MaterialTheme.colors.primary,
-            borderWidth: Dp = BORDER_WIDTH,
+            borderWidth: Dp = OhTeePeeDefaults.BORDER_WIDTH,
             textStyle: TextStyle = TextStyle(),
             placeHolderTextStyle: TextStyle = textStyle,
-        ) = OhTeePeeCellConfiguration(
+        ) = OhTeePeeDefaults.cellConfiguration(
             shape = shape,
             cellBackground = cellBackground,
             borderColor = borderColor,

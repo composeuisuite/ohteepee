@@ -1,7 +1,7 @@
 buildscript {
     ext {
         composeActivity = '1.9.2'
-        composeBom = '2024.09.02'
+        composeBom = '2024.10.01'
 
         ktxCore = '1.12.0'
         ktxLifeCycle = '2.6.2'
@@ -14,7 +14,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version '2.0.10' apply false
     id("com.google.gms.google-services") version "4.4.2" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
-    id("org.jetbrains.kotlin.plugin.compose") version '2.0.10' apply false
+    id("org.jetbrains.kotlin.plugin.compose") version '2.0.21' apply false
 }
 
 allprojects {
