@@ -35,8 +35,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
@@ -48,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.composeuisuite.ohteepee.configuration.OhTeePeeCellBackground
 import com.composeuisuite.ohteepee.configuration.OhTeePeeErrorAnimationConfig
 import com.composeuisuite.ohteepee.ui.theme.OtpFieldTheme
 
@@ -108,9 +111,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun Sample0(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFF4F4F83)
+    val cellBackgroundColor = Color(0xFFFFE09A).copy(alpha = 0.2f)
     var otpValue: String by remember { mutableStateOf("") }
     val defaultConfig = OhTeePeeDefaults.cellConfiguration(
-        backgroundColor = backgroundColor.copy(alpha = 0.6f),
+        cellBackground = OhTeePeeCellBackground.Solid(cellBackgroundColor),
         textStyle = TextStyle(
             color = Color.White,
             fontSize = 18.sp,
@@ -186,7 +190,7 @@ private fun Sample1(modifier: Modifier = Modifier) {
     val surfaceColor = Color(0xFFFFE09A)
     var otpValue: String by remember { mutableStateOf("") }
     val defaultConfig = OhTeePeeDefaults.cellConfiguration(
-        backgroundColor = backgroundColor.copy(alpha = 0.6f),
+        cellBackground = OhTeePeeCellBackground.Solid(backgroundColor.copy(alpha = 0.6f)),
         textStyle = TextStyle(
             color = Color.Black,
             fontSize = 18.sp,
@@ -306,7 +310,14 @@ private fun Sample2(modifier: Modifier = Modifier) {
     val backgroundColor = Color(0xFF1A1E22)
     var otpValue: String by remember { mutableStateOf("") }
     val defaultConfig = OhTeePeeDefaults.cellConfiguration(
-        backgroundColor = backgroundColor.copy(alpha = 0.6f),
+        cellBackground = OhTeePeeCellBackground.Gradient(
+            brush = Brush.linearGradient(
+                colors = listOf(Color(0xFFAB5EEE), Color(0xFF4F0995)),
+                start = Offset.Zero,
+                end = Offset.Infinite,
+            ),
+            alpha = 0.12f,
+        ),
         textStyle = TextStyle(
             color = Color.White,
             fontSize = 18.sp,
@@ -417,7 +428,7 @@ private fun Sample3(modifier: Modifier = Modifier) {
     val defaultConfig = OhTeePeeDefaults.cellConfiguration(
         borderColor = Color.Transparent,
         borderWidth = 1.dp,
-        backgroundColor = backgroundColor.copy(alpha = 0.6f),
+        cellBackground = OhTeePeeCellBackground.Solid(backgroundColor.copy(alpha = 0.6f)),
         textStyle = TextStyle(
             color = Color.Black,
         ),
@@ -443,10 +454,10 @@ private fun Sample3(modifier: Modifier = Modifier) {
                 cellModifier = Modifier.size(48.dp),
                 emptyCellConfig = defaultConfig,
                 filledCellConfig = defaultConfig.copy(
-                    backgroundColor = Color.White,
+                    cellBackground = OhTeePeeCellBackground.Solid(Color.White),
                 ),
                 activeCellConfig = defaultConfig.copy(
-                    backgroundColor = Color.White,
+                    cellBackground = OhTeePeeCellBackground.Solid(Color.White),
                     borderColor = Color.Black,
                 ),
             ),

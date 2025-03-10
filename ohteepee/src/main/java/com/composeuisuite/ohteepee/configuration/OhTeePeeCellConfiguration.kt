@@ -10,12 +10,13 @@ import com.composeuisuite.ohteepee.OhTeePeeDefaults
 
 data class OhTeePeeCellConfiguration(
     val shape: Shape,
-    val backgroundColor: Color,
+    val cellBackground: OhTeePeeCellBackground,
     val borderColor: Color,
     val borderWidth: Dp,
     val textStyle: TextStyle,
     val placeHolderTextStyle: TextStyle,
 ) {
+
     companion object {
         @Deprecated(
             message = "All default values are move to OhTeePeeDefaults",
@@ -32,14 +33,14 @@ data class OhTeePeeCellConfiguration(
         @Composable
         fun withDefaults(
             shape: Shape = MaterialTheme.shapes.medium,
-            backgroundColor: Color = MaterialTheme.colors.surface,
+            cellBackground: OhTeePeeCellBackground = OhTeePeeCellBackground.Solid(MaterialTheme.colors.surface),
             borderColor: Color = MaterialTheme.colors.primary,
             borderWidth: Dp = OhTeePeeDefaults.BORDER_WIDTH,
             textStyle: TextStyle = TextStyle(),
             placeHolderTextStyle: TextStyle = textStyle,
         ) = OhTeePeeDefaults.cellConfiguration(
             shape = shape,
-            backgroundColor = backgroundColor,
+            cellBackground = cellBackground,
             borderColor = borderColor,
             borderWidth = borderWidth,
             textStyle = textStyle,
