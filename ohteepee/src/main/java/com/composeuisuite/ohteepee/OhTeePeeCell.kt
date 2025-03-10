@@ -2,7 +2,6 @@ package com.composeuisuite.ohteepee
 
 import android.view.KeyEvent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
@@ -37,6 +37,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
+import com.composeuisuite.ohteepee.configuration.cellBackground
 import com.composeuisuite.ohteepee.utils.conditional
 
 /**
@@ -108,6 +109,8 @@ internal fun OhTeePeeCell(
         modifier = modifier
             .defaultMinSize(minHeight = MIN_HEIGHT_CELL_SIZE)
             .then(borderModifier),
+        color = Color.Transparent,
+        contentColor = Color.Unspecified,
         elevation = configurations.elevation,
         shape = if (configurations.enableBottomLine) RoundedCornerShape(0.dp) else cellConfiguration.shape,
     ) {
@@ -132,7 +135,7 @@ internal fun OhTeePeeCell(
                     }
                 }
                 .onFocusEvent { isFocused = it.isFocused }
-                .background(cellConfiguration.backgroundColor)
+                .cellBackground(cellConfiguration.cellBackground)
                 .testTag(OH_TEE_PEE_CELL_TEST_TAG),
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
@@ -162,7 +165,7 @@ internal fun OhTeePeeCell(
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = cellConfiguration.backgroundColor,
+                    backgroundColor = Color.Transparent,
                 ),
             )
         }

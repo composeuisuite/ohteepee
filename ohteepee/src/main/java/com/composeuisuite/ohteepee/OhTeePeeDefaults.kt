@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.composeuisuite.ohteepee.configuration.OhTeePeeCellBackground
 import com.composeuisuite.ohteepee.configuration.OhTeePeeCellConfiguration
 import com.composeuisuite.ohteepee.configuration.OhTeePeeConfigurations
 import com.composeuisuite.ohteepee.configuration.OhTeePeeErrorAnimationConfig
@@ -70,7 +71,24 @@ object OhTeePeeDefaults {
         placeHolderTextStyle: TextStyle = textStyle,
     ) = OhTeePeeCellConfiguration(
         shape = shape,
-        backgroundColor = backgroundColor,
+        cellBackground = OhTeePeeCellBackground.Solid(backgroundColor),
+        borderColor = borderColor,
+        borderWidth = borderWidth,
+        textStyle = textStyle,
+        placeHolderTextStyle = placeHolderTextStyle,
+    )
+
+    @Composable
+    fun cellConfiguration(
+        shape: Shape = MaterialTheme.shapes.medium,
+        cellBackground: OhTeePeeCellBackground = OhTeePeeCellBackground.Solid(MaterialTheme.colors.surface),
+        borderColor: Color = MaterialTheme.colors.primary,
+        borderWidth: Dp = BORDER_WIDTH,
+        textStyle: TextStyle = TextStyle(),
+        placeHolderTextStyle: TextStyle = textStyle,
+    ) = OhTeePeeCellConfiguration(
+        shape = shape,
+        cellBackground = cellBackground,
         borderColor = borderColor,
         borderWidth = borderWidth,
         textStyle = textStyle,
