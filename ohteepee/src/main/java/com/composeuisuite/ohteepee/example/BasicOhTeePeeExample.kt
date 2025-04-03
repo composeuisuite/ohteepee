@@ -68,7 +68,7 @@ internal fun BasicOhTeePeeExample() {
         callbackOnSearch = {},
         callbackOnSend = {},
         callbackOnGo = {},
-        keyboardController = keyboardController
+        keyboardController = keyboardController,
     )
 }
 

@@ -17,4 +17,3 @@ sealed class OhTeePeeErrorAnimationConfig {
         val animationSpec: AnimationSpec<Float> = OhTeePeeDefaults.defaultShakeAnimationSpec,
     ) : OhTeePeeErrorAnimationConfig()
 }
-

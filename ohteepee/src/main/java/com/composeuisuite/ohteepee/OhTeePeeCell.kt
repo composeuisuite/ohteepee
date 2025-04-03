@@ -149,7 +149,7 @@ internal fun OhTeePeeCell(
             keyboardOptions = KeyboardOptions(
                 autoCorrectEnabled = false,
                 keyboardType = keyboardType,
-                imeAction = imeAction
+                imeAction = imeAction,
             ),
             keyboardActions = KeyboardActions(
                 onNext = {
@@ -169,7 +169,7 @@ internal fun OhTeePeeCell(
                 },
                 onGo = {
                     callbackOnGo()
-                }
+                },
             ),
             singleLine = true,
             enabled = enabled,

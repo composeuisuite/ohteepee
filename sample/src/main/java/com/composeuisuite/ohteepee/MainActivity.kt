@@ -112,7 +112,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun Sample0(modifier: Modifier = Modifier) {
-
     val keyboardController = LocalSoftwareKeyboardController.current
     val backgroundColor = Color(0xFF4F4F83)
     val cellBackgroundColor = Color(0xFFFFE09A).copy(alpha = 0.2f)
@@ -183,10 +182,10 @@ private fun Sample0(modifier: Modifier = Modifier) {
             ),
             imeAction = ImeAction.Done,
             autoFocusByDefault = false,
-            keyboardController =  keyboardController,
+            keyboardController = keyboardController,
             callbackOnDone = {
                 keyboardController?.hide()
-            }
+            },
         )
 
         Spacer(modifier = Modifier.height(64.dp))

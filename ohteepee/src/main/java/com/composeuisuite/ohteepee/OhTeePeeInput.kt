@@ -218,7 +218,7 @@ fun OhTeePeeInput(
         callbackOnSearch = callbackOnSearch,
         callbackOnSend = callbackOnSend,
         callbackOnGo = callbackOnGo,
-        keyboardController = keyboardController
+        keyboardController = keyboardController,
     )
 }
 
@@ -268,7 +268,6 @@ private fun OhTeePeeInput(
     keyboardController: SoftwareKeyboardController? = null,
     divider: @Composable (RowScope.(cellIndex: Int) -> Unit)?,
 ) {
-
     CompositionLocalProvider(
         LocalTextSelectionColors provides textSelectionColors,
         LocalLayoutDirection provides layoutDirection,
@@ -301,7 +300,7 @@ private fun OhTeePeeInput(
                     callbackOnSearch = callbackOnSearch,
                     callbackOnSend = callbackOnSend,
                     callbackOnGo = callbackOnGo,
-                    keyboardController = keyboardController
+                    keyboardController = keyboardController,
                 )
                 if (divider != null && index != cellsCount - 1) {
                     divider(index)
