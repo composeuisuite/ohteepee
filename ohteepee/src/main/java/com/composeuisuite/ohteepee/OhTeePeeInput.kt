@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -87,7 +89,15 @@ fun OhTeePeeInput(
     modifier: Modifier = Modifier,
     isValueInvalid: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.NumberPassword,
+    imeAction: ImeAction = ImeAction.Next,
+    callbackOnNext: () -> Unit = {},
+    callbackOnDone: () -> Unit = {},
+    callbackOnPrevious: () -> Unit = {},
+    callbackOnSearch: () -> Unit = {},
+    callbackOnSend: () -> Unit = {},
+    callbackOnGo: () -> Unit = {},
     enabled: Boolean = true,
+    keyboardController: SoftwareKeyboardController? = null,
     autoFocusByDefault: Boolean = true,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     layoutDirection: LayoutDirection = LocalLayoutDirection.current,
@@ -201,6 +211,14 @@ fun OhTeePeeInput(
                 moveFocus = ::moveFocus,
             )
         },
+        imeAction = imeAction,
+        callbackOnNext = callbackOnNext,
+        callbackOnDone = callbackOnDone,
+        callbackOnPrevious = callbackOnPrevious,
+        callbackOnSearch = callbackOnSearch,
+        callbackOnSend = callbackOnSend,
+        callbackOnGo = callbackOnGo,
+        keyboardController = keyboardController,
     )
 }
 
@@ -233,6 +251,7 @@ private fun OhTeePeeInput(
     placeHolder: String,
     isErrorOccurred: Boolean,
     keyboardType: KeyboardType,
+    imeAction: ImeAction,
     ohTeePeeConfigurations: OhTeePeeConfigurations,
     focusRequesters: List<FocusRequester>,
     enabled: Boolean,
@@ -240,6 +259,13 @@ private fun OhTeePeeInput(
     onCellInputChange: (index: Int, value: String) -> Unit,
     horizontalArrangement: Arrangement.Horizontal,
     layoutDirection: LayoutDirection,
+    callbackOnNext: () -> Unit,
+    callbackOnDone: () -> Unit,
+    callbackOnPrevious: () -> Unit,
+    callbackOnSearch: () -> Unit,
+    callbackOnSend: () -> Unit,
+    callbackOnGo: () -> Unit,
+    keyboardController: SoftwareKeyboardController? = null,
     divider: @Composable (RowScope.(cellIndex: Int) -> Unit)?,
 ) {
     CompositionLocalProvider(
@@ -267,6 +293,14 @@ private fun OhTeePeeInput(
                     onValueChange = { onCellInputChange(index, it) },
                     placeHolder = placeHolder,
                     visualTransformation = visualTransformation,
+                    imeAction = imeAction,
+                    callbackOnNext = callbackOnNext,
+                    callbackOnDone = callbackOnDone,
+                    callbackOnPrevious = callbackOnPrevious,
+                    callbackOnSearch = callbackOnSearch,
+                    callbackOnSend = callbackOnSend,
+                    callbackOnGo = callbackOnGo,
+                    keyboardController = keyboardController,
                 )
                 if (divider != null && index != cellsCount - 1) {
                     divider(index)

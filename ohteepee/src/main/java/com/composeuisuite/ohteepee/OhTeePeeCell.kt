@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -54,11 +55,19 @@ internal fun OhTeePeeCell(
     value: String,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType,
+    imeAction: ImeAction,
+    keyboardController: SoftwareKeyboardController?,
     configurations: OhTeePeeConfigurations,
     placeHolder: String,
     visualTransformation: VisualTransformation,
     isErrorOccurred: Boolean,
     enabled: Boolean,
+    callbackOnNext: () -> Unit,
+    callbackOnDone: () -> Unit,
+    callbackOnPrevious: () -> Unit,
+    callbackOnSearch: () -> Unit,
+    callbackOnSend: () -> Unit,
+    callbackOnGo: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -138,13 +147,29 @@ internal fun OhTeePeeCell(
                 .cellBackground(cellConfiguration.cellBackground)
                 .testTag(OH_TEE_PEE_CELL_TEST_TAG),
             keyboardOptions = KeyboardOptions(
+                autoCorrectEnabled = false,
                 keyboardType = keyboardType,
-                imeAction = ImeAction.Next,
-                autoCorrect = false,
+                imeAction = imeAction,
             ),
             keyboardActions = KeyboardActions(
-                onNext = {},
-                onDone = {},
+                onNext = {
+                    callbackOnNext()
+                },
+                onDone = {
+                    callbackOnDone()
+                },
+                onPrevious = {
+                    callbackOnPrevious()
+                },
+                onSearch = {
+                    callbackOnSearch()
+                },
+                onSend = {
+                    callbackOnSend()
+                },
+                onGo = {
+                    callbackOnGo()
+                },
             ),
             singleLine = true,
             enabled = enabled,

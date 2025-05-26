@@ -1,5 +1,5 @@
 package com.composeuisuite.ohteepee.helpers
 
-fun sleepThreadToSeeUiTestResults(){
+fun sleepThreadToSeeUiTestResults() {
     Thread.sleep(1000)
 }
